@@ -29,7 +29,7 @@ Phase 0 is a one-week, $150-ceiling cloud benchmark harness that produces derate
   5. RunPod and TensorWave accounts are provisioned with provider-level $75 caps each, `cost-watch.py` daemon polls billing APIs every 5 minutes, and dual cost-cap rails are demonstrably wired
 **Plans**: 5 plans
 Plans:
-- [ ] 01-01-PLAN.md — Repo skeleton + uv project + Makefile + pre-commit + config-as-code (INFRA-01..05)
+- [x] 01-01-PLAN.md — Repo skeleton + uv project + Makefile + pre-commit + config-as-code (INFRA-01..05)
 - [ ] 01-02-PLAN.md — Substrate ABC + GateResult + cost ledger + derating skeleton + lockfiles (INFRA-06, HARNESS-01, HARNESS-04, DERATE-01, REPRO-01, REPRO-02)
 - [ ] 01-03-PLAN.md — Reference prompt + UPL probes + benign control + TTS A/B text pairs + G.711 transcoder (ASSETS-04..08)
 - [ ] 01-04-PLAN.md — Local Kokoro audio rendering: 500-call corpus + 200 G.711 stratified subset + hesitation set (ASSETS-01..03)

@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v0.4
 milestone_name: milestone
 status: executing
-stopped_at: Phase 1 context gathered
-last_updated: "2026-05-04T21:31:06.388Z"
-last_activity: 2026-05-04 -- Phase 01 execution started
+stopped_at: Completed 01-01-PLAN.md
+last_updated: "2026-05-04T21:41:04.548Z"
+last_activity: 2026-05-04
 progress:
   total_phases: 4
   completed_phases: 0
   total_plans: 5
-  completed_plans: 0
-  percent: 0
+  completed_plans: 1
+  percent: 20
 ---
 
 # Project State
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-05-04)
 ## Current Position
 
 Phase: 01 (foundation) — EXECUTING
-Plan: 1 of 5
-Status: Executing Phase 01
-Last activity: 2026-05-04 -- Phase 01 execution started
+Plan: 2 of 5
+Status: Ready to execute
+Last activity: 2026-05-04
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -52,6 +52,7 @@ Progress: [░░░░░░░░░░] 0%
 - Trend: —
 
 *Updated after each plan completion*
+| Phase 01 P01 | 0.4 | 3 tasks | 33 files |
 
 ## Accumulated Context
 
@@ -65,6 +66,9 @@ Decisions are logged in PROJECT.md Key Decisions table. Recent:
 - receptionBOX PRD v0.2 is authoritative input
 - All evaluation assets curated in Phase 0 (no pre-existing corpora)
 - RunPod H100 + TensorWave MI300X (Vultr backup) — no alternatives evaluated
+- [Phase 01]: Use uv project mode (pyproject.toml + uv.lock) as canonical; emit requirements.lock as pip-compat export via make export-requirements
+- [Phase 01]: Pin jiwer >=4.0,<5.0 + whisper-normalizer as separate dep (Pitfall A — STACK.md references to jiwer 3.x are stale)
+- [Phase 01]: Pre-commit ruff hook bumped v0.7.4 -> v0.15.12 to match dev-group ruff (string-formatting drift broke make check)
 
 ### Pending Todos
 
@@ -79,6 +83,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-04T18:09:55.774Z
-Stopped at: Phase 1 context gathered
-Resume file: .planning/phases/01-foundation/01-CONTEXT.md
+Last session: 2026-05-04T21:40:55.916Z
+Stopped at: Completed 01-01-PLAN.md
+Resume file: None

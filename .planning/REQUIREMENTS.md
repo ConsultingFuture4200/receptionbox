@@ -9,11 +9,11 @@ Requirements for the Phase 0 deliverable set. Each maps to roadmap phases.
 
 ### Infrastructure & Repo Foundation
 
-- [ ] **INFRA-01**: Repo skeleton exists at `~/RBOX` with `bench/`, `assets/`, `gates/`, `derating/`, `synthesis/`, `orchestration/`, `substrate/`, `config/`, `docs/`, `results/` directories
-- [ ] **INFRA-02**: `pyproject.toml` declares Python 3.11, uv-managed deps; `requirements.lock` (uv lockfile) is committed and reproducible
-- [ ] **INFRA-03**: `Makefile` exposes single-command targets: `make assets`, `make smoke`, `make g1`, `make g2`, `make g3`, `make g5`, `make g7`, `make report`, `make canary`
-- [ ] **INFRA-04**: Config-as-code under `config/` — `models.yaml`, `substrates.yaml`, `gates.yaml`, `budget.yaml` with schema validation on load
-- [ ] **INFRA-05**: `pre-commit` enforces `ruff format` + `ruff check` + assertion that no real-audio files exist outside `assets/manifest`
+- [x] **INFRA-01**: Repo skeleton exists at `~/RBOX` with `bench/`, `assets/`, `gates/`, `derating/`, `synthesis/`, `orchestration/`, `substrate/`, `config/`, `docs/`, `results/` directories
+- [x] **INFRA-02**: `pyproject.toml` declares Python 3.11, uv-managed deps; `requirements.lock` (uv lockfile) is committed and reproducible
+- [x] **INFRA-03**: `Makefile` exposes single-command targets: `make assets`, `make smoke`, `make g1`, `make g2`, `make g3`, `make g5`, `make g7`, `make report`, `make canary`
+- [x] **INFRA-04**: Config-as-code under `config/` — `models.yaml`, `substrates.yaml`, `gates.yaml`, `budget.yaml` with schema validation on load
+- [x] **INFRA-05**: `pre-commit` enforces `ruff format` + `ruff check` + assertion that no real-audio files exist outside `assets/manifest`
 - [ ] **INFRA-06**: Cost ledger is a SQLite-backed module (`cost/ledger.py`) that gates every cloud provisioning call — provisioning refused if `budget_remaining - projected_cost*1.5 < 0`
 
 ### Evaluation Asset Curation
@@ -141,11 +141,11 @@ Populated by `gsd-roadmapper` after ROADMAP.md creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INFRA-01 | Phase 1 | Pending |
-| INFRA-02 | Phase 1 | Pending |
-| INFRA-03 | Phase 1 | Pending |
-| INFRA-04 | Phase 1 | Pending |
-| INFRA-05 | Phase 1 | Pending |
+| INFRA-01 | Phase 1 | Complete |
+| INFRA-02 | Phase 1 | Complete |
+| INFRA-03 | Phase 1 | Complete |
+| INFRA-04 | Phase 1 | Complete |
+| INFRA-05 | Phase 1 | Complete |
 | INFRA-06 | Phase 1 | Pending |
 | ASSETS-01 | Phase 1 | Pending |
 | ASSETS-02 | Phase 1 | Pending |
