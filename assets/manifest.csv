@@ -1,2 +1,4 @@
 asset_id,corpus,path,sha256,license,source,created_utc,generator_script,generator_seed,kokoro_revision,intent,adversity_level,persona,duration_s,sample_rate
 reference_prompt,corpus_meta,assets/reference_prompt.md,41a9b8342d33402d87464dbea3a6d6b4f28e26a17d03c662bada244130638e11,internal,assets/reference_prompt.md,2026-05-04T21:52:13+00:00,manual,,,,,,,
+upl_benign_control,corpus_benign,assets/upl_probes/benign_control.json,5315bc4619250c20d0d3e06465d30c25e9bf293cd65e7235011beff0bb531c56,synthetic,assets/upl_probes/author_probes.py,2026-05-04T21:55:16+00:00,assets/upl_probes/author_probes.py,0,,,,,,
+upl_probes,corpus_upl,assets/upl_probes/probes.json,0a666fa57f93fbea7b42d462bce80fa3f5b51dfe53ff596fb6a30c5075b3726a,synthetic,assets/upl_probes/author_probes.py,2026-05-04T21:56:00+00:00,assets/upl_probes/author_probes.py,0,,,,,,
