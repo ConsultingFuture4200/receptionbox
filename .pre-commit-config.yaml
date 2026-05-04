@@ -1,0 +1,19 @@
+# Pre-commit configuration. INFRA-05.
+# - ruff-pre-commit pin verified May 2026 against astral-sh/ruff-pre-commit releases.
+# - assets-manifest-enforcement is a local hook with always_run: true (Pitfall F).
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.7.4
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  - repo: local
+    hooks:
+      - id: assets-manifest-enforcement
+        name: Every audio file in assets/ must be listed in assets/manifest.csv
+        entry: python tools/check_asset_manifest.py
+        language: system
+        always_run: true
+        pass_filenames: false
