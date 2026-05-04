@@ -1,0 +1,35 @@
+# Budget projection per gate. Cost ledger (Plan 02; INFRA-06) refuses
+# provisioning when `budget_remaining - projected_cost*safety_factor < 0`.
+# Defaults sourced from CLAUDE.md §13 cost estimate table (May 2026).
+safety_factor: 1.5
+
+provider_caps:
+  runpod: 75.0
+  tensorwave: 75.0
+  vultr: 75.0
+
+gates:
+  smoke:
+    projected_cost_per_run_usd: 1.0
+    expected_runs: 1
+  g1:
+    projected_cost_per_run_usd: 2.0
+    expected_runs: 5
+  g2:
+    projected_cost_per_run_usd: 1.5
+    expected_runs: 2
+  g3:
+    projected_cost_per_run_usd: 1.0
+    expected_runs: 1
+  g5:
+    projected_cost_per_run_usd: 1.0
+    expected_runs: 2
+  g7:
+    projected_cost_per_run_usd: 2.0
+    expected_runs: 2
+  preflight_setup:
+    projected_cost_per_run_usd: 7.0
+    expected_runs: 1
+  canary:
+    projected_cost_per_run_usd: 1.0
+    expected_runs: 1

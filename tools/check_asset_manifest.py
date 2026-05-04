@@ -42,7 +42,7 @@ def main() -> int:
     unlisted = found - listed
     if unlisted:
         print(
-            "Audio files present but not listed in assets/manifest.csv " "(Pitfall 11; INFRA-05):",
+            "Audio files present but not listed in assets/manifest.csv (Pitfall 11; INFRA-05):",
             file=sys.stderr,
         )
         for p in sorted(unlisted):

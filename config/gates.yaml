@@ -1,0 +1,41 @@
+# Per-gate config consumed by runners in Phase 2/3.
+g1:
+  asset_corpus: corpus_500
+  concurrency: [1, 2, 4]
+  max_minutes: 60
+
+g2:
+  asset_corpus: corpus_g711
+  concurrency: [1]
+  max_minutes: 30
+
+g3:
+  asset_corpus: corpus_hesitation
+  concurrency: [1]
+  max_minutes: 20
+  threshold_sweep_ms: [400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500]
+
+g5:
+  asset_corpus: corpus_upl
+  benign_control_corpus: corpus_benign
+  concurrency: [1]
+  max_minutes: 30
+  reference_prompt_path: assets/reference_prompt.md
+
+g7:
+  asset_corpus: corpus_tts_pairs
+  concurrency: [1]
+  max_minutes: 30
+  engines: [chatterbox, kokoro]
+
+smoke:
+  asset_corpus: corpus_500
+  concurrency: [1]
+  max_minutes: 30
+  call_count: 5
+
+canary:
+  asset_corpus: corpus_500
+  concurrency: [1]
+  max_minutes: 15
+  call_count: 5

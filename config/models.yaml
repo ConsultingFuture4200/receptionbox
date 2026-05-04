@@ -1,0 +1,23 @@
+# Models consumed by gate runners (HARNESS-02/03 in Phase 2/3). HF revisions
+# are pinned separately in bench/models.lock.yaml (REPRO-02; Plan 02).
+stt:
+  repo_id: Systran/faster-distil-whisper-large-v3
+  filename: model.bin
+  quantization: int8
+  format: ctranslate2
+
+llm:
+  repo_id: Qwen/Qwen3-4B
+  quantization: awq-int4
+  format: hf
+  notes: "AWQ-Int4 is the cloud equivalent of the Strix Halo Q4_K_M target; substitution-error term per DERATE-04."
+
+tts_primary:
+  repo_id: ResembleAI/chatterbox
+  format: chatterbox
+  notes: "Chatterbox-Turbo 350M; ROCm path via devnen fork (Phase 3 risk per DR-27)."
+
+tts_fallback:
+  repo_id: hexgrad/Kokoro-82M
+  format: kokoro
+  notes: "Kokoro-FastAPI-ROCm fork by moritzchow."

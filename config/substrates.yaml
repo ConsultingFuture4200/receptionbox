@@ -1,0 +1,16 @@
+# Cloud substrate config (consumed by orchestration/* in Plan 05; image
+# digests pinned in bench/images.lock.yaml in Plan 02).
+cuda:
+  provider: runpod
+  gpu: H100_PCIe
+  image_ref: vllm/vllm-openai
+  image_tag: v0.10.0
+  cuda_version: "12.4"
+
+rocm:
+  provider: tensorwave
+  fallback_provider: vultr
+  gpu: MI300X
+  image_ref: rocm/vllm
+  image_tag: rocm6.4_mi300_ubuntu22.04_py3.11_vllm_0.10.0
+  rocm_version: "6.4"
