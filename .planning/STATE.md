@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v0.4
 milestone_name: milestone
-status: executing
-stopped_at: Completed 01-04-PLAN.md
-last_updated: "2026-05-04T22:59:36.854Z"
+status: verifying
+stopped_at: Plan 01-05 autonomous work complete; 2 human-action checkpoints OPEN (provider provisioning + companion docs drop) — see docs/OPERATOR-CHECKLIST-PHASE-01.md
+last_updated: "2026-05-04T23:12:04.058Z"
 last_activity: 2026-05-04
 progress:
   total_phases: 4
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 5
-  completed_plans: 4
-  percent: 80
+  completed_plans: 5
+  percent: 100
 ---
 
 # Project State
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-05-04)
 
 Phase: 01 (foundation) — EXECUTING
 Plan: 5 of 5
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-05-04
 
 Progress: [░░░░░░░░░░] 0%
@@ -56,6 +56,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01 P02 | 0.1 | 3 tasks | 18 files |
 | Phase 01 P03 | 0.15 | 3 tasks | 18 files |
 | Phase 01 P04 | 0.83 | 3 tasks | 760 files |
+| Phase 01 P05 | 0.2 | 2 tasks | 15 files |
 
 ## Accumulated Context
 
@@ -80,6 +81,10 @@ Decisions are logged in PROJECT.md Key Decisions table. Recent:
 - [Phase 01]: G.711 lowpass test uses 5 kHz out-of-band tone (above 4 kHz Nyquist) rather than 3.5 kHz (still in soxr passband)
 - [Phase 01]: Split render_env from harness venv at the uv project level (not workspace member) to enforce Pitfall 1 isolation; torch<=2.5.1 + kokoro lives entirely in assets/render_env/.venv/
 - [Phase 01]: Pre-commit manifest hook now skips .venv/ and site-packages/ paths so deps' bundled test WAVs do not trip INFRA-05; the project-owned-audio invariant is preserved
+- [Phase 01]: DR-31 sharing policy v0.1.0 drafted with 4 locked stance elements (methodology+prediction range only pre-SOW, no raw cloud numbers, two-tier presentation MANDATORY, PRD-update review gate); status pending operator approval
+- [Phase 01]: Provider asymmetry made explicit per Pitfalls B/C: Vultr full /v2/billing/pending-charges API; RunPod SDK get_pods (cap = 5 prepaid + auto-recharge OFF, NOT a programmatic API); TensorWave stub-with-warning (billing API undocumented)
+- [Phase 01]: AST-asserted ordering enforces authorize_spend MUST be the first call in every orchestration provision() — Phase 2/3 contributors cannot bypass the cost-ledger gate without breaking the test
+- [Phase 01]: Adapters MUST NOT raise — log WARNING and return (0.0, 0.0) on every error path (network, missing env, JSON, 4xx) so the 5-min watch loop is uninterruptible
 
 ### Pending Todos
 
@@ -91,9 +96,10 @@ None yet.
 - **Companion documents not yet in repo:** operator must drop parent thUMBox PRDs (technical + business v2.1), discovery addendum v0.2, hardware-pivot addendum v0.1, feasibility memo v0.3, virtual benchmark plan v0.1 into `docs/` before Phase 1 completion. Phase 4 memo-v0.4 update has no v0.3 baseline otherwise.
 - **gfx942 → gfx1151 kernel gap:** dominant residual technical risk. Phase 3 must produce op-by-op kernel-coverage audit; Phase 4 widens confidence bands for "unknown" ops.
 - **Phase 3 research recommended:** Chatterbox-Turbo ROCm install on TensorWave MI300X is highest-risk surface (devnen issues #192/#445 unresolved). Consider `/gsd-research-phase` before Phase 3 begins.
+- Plan 01-05 has 2 OPEN human-action checkpoints: (A) operator deposits $75 each into RunPod/TensorWave/Vultr (auto-recharge OFF + API keys); (B) operator drops 6 companion docs into docs/ + approves DR-31 v0.1.0. See docs/OPERATOR-CHECKLIST-PHASE-01.md. CLOUD-01/02/03 + DECISION-NC-R14 + DECISION-DOCS marked partial-pending-operator until both close.
 
 ## Session Continuity
 
-Last session: 2026-05-04T22:59:29.514Z
-Stopped at: Completed 01-04-PLAN.md
+Last session: 2026-05-04T23:11:59.711Z
+Stopped at: Plan 01-05 autonomous work complete; 2 human-action checkpoints OPEN (provider provisioning + companion docs drop) — see docs/OPERATOR-CHECKLIST-PHASE-01.md
 Resume file: None

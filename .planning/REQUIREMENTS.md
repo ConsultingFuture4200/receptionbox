@@ -161,9 +161,9 @@ Populated by `gsd-roadmapper` after ROADMAP.md creation.
 | HARNESS-04 | Phase 1 | Complete |
 | HARNESS-05 | Phase 2 | Pending |
 | HARNESS-06 | Phase 2 | Pending |
-| CLOUD-01 | Phase 1 | Pending |
-| CLOUD-02 | Phase 1 | Pending |
-| CLOUD-03 | Phase 1 | Pending |
+| CLOUD-01 | Phase 1 | Partial-pending-operator (skeleton + ledger gate shipped; awaits $75 deposit + API key) |
+| CLOUD-02 | Phase 1 | Partial-pending-operator (skeletons + adapters shipped; awaits TensorWave + Vultr $75 deposits) |
+| CLOUD-03 | Phase 1 | Partial-pending-operator (cost-watch daemon + 3 adapters shipped; awaits ledger bootstrap with funded caps) |
 | CLOUD-04 | Phase 2 | Pending |
 | CLOUD-05 | Phase 2 | Pending |
 | CLOUD-06 | Phase 2 | Pending |
@@ -196,9 +196,9 @@ Populated by `gsd-roadmapper` after ROADMAP.md creation.
 | REPRO-03 | Phase 2 | Pending |
 | REPRO-04 | Phase 4 | Pending |
 | REPRO-05 | Phase 4 | Pending |
-| DECISION-NC-R14 | Phase 1 | Pending |
+| DECISION-NC-R14 | Phase 1 | Partial-pending-operator (DR-31 v0.1.0 drafted; awaits operator review/approval) |
 | DECISION-NC-R12 | Phase 4 | Pending |
-| DECISION-DOCS | Phase 1 | Pending |
+| DECISION-DOCS | Phase 1 | Partial-pending-operator (checklist + presence test shipped; awaits operator drop of 6 companion docs) |
 
 **Coverage:**
 - v1 requirements: 58 total

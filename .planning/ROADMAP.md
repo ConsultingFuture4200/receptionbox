@@ -33,7 +33,7 @@ Plans:
 - [x] 01-02-PLAN.md — Substrate ABC + GateResult + cost ledger + derating skeleton + lockfiles (INFRA-06, HARNESS-01, HARNESS-04, DERATE-01, REPRO-01, REPRO-02)
 - [x] 01-03-PLAN.md — Reference prompt + UPL probes + benign control + TTS A/B text pairs + G.711 transcoder (ASSETS-04..08)
 - [x] 01-04-PLAN.md — Local Kokoro audio rendering: 500-call corpus + 200 G.711 stratified subset + hesitation set (ASSETS-01..03)
-- [ ] 01-05-PLAN.md — Cost-watch daemon + provider adapters + orchestration skeletons + DR-31 + companion docs (CLOUD-01..03, DECISION-NC-R14, DECISION-DOCS)
+- [x] 01-05-PLAN.md — Cost-watch daemon + provider adapters + orchestration skeletons + DR-31 + companion docs (CLOUD-01..03, DECISION-NC-R14, DECISION-DOCS)
 
 ### Phase 2: CUDA Pre-flight
 **Goal**: End-to-end pipeline (LiveKit Agents → vLLM → faster-whisper → Chatterbox/Kokoro) assembles and runs once on RunPod H100 CUDA substrate, with substrate + orchestration + cost ledger + result store all proven against real spend before any MI300X provisioning.
