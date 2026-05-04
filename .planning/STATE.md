@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v0.4
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-02-PLAN.md
-last_updated: "2026-05-04T21:50:20.747Z"
+stopped_at: Completed 01-03-PLAN.md
+last_updated: "2026-05-04T22:05:21.922Z"
 last_activity: 2026-05-04
 progress:
   total_phases: 4
   completed_phases: 0
   total_plans: 5
-  completed_plans: 2
-  percent: 40
+  completed_plans: 3
+  percent: 60
 ---
 
 # Project State
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-05-04)
 ## Current Position
 
 Phase: 01 (foundation) — EXECUTING
-Plan: 3 of 5
+Plan: 4 of 5
 Status: Ready to execute
 Last activity: 2026-05-04
 
@@ -54,6 +54,7 @@ Progress: [░░░░░░░░░░] 0%
 *Updated after each plan completion*
 | Phase 01 P01 | 0.4 | 3 tasks | 33 files |
 | Phase 01 P02 | 0.1 | 3 tasks | 18 files |
+| Phase 01 P03 | 0.15 | 3 tasks | 18 files |
 
 ## Accumulated Context
 
@@ -73,6 +74,9 @@ Decisions are logged in PROJECT.md Key Decisions table. Recent:
 - [Phase 01]: Pydantic v2 BaseModel for STT/LLMChunk/EnvFingerprint over @dataclass — JSON sidecar round-trip required for HARNESS-05/D-12
 - [Phase 01]: _StubSubstrate ships under leading-underscore name, never exported in __all__ — gate runners cannot import it accidentally
 - [Phase 01]: Lockfile pydantic schemas live in test file (not runtime module) — they are enforcement contracts on data, not application logic
+- [Phase 01]: Idempotency-preserving created_utc in manifest authoring scripts (preserve existing timestamp when sha unchanged) — required for D-06 reproducibility
+- [Phase 01]: G.711 spectral validation ships with graceful no_reference branch; Twilio reference clip is operator dependency (A4) deferred to Phase 4 synthesis
+- [Phase 01]: G.711 lowpass test uses 5 kHz out-of-band tone (above 4 kHz Nyquist) rather than 3.5 kHz (still in soxr passband)
 
 ### Pending Todos
 
@@ -87,6 +91,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-04T21:50:20.741Z
-Stopped at: Completed 01-02-PLAN.md
+Last session: 2026-05-04T22:05:21.917Z
+Stopped at: Completed 01-03-PLAN.md
 Resume file: None

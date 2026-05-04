@@ -21,11 +21,11 @@ Requirements for the Phase 0 deliverable set. Each maps to roadmap phases.
 - [ ] **ASSETS-01**: 500-call synthetic conversation corpus generated from open-licensed sources (legal-vertical scripted dialogues) with persona, intent, and adversity-level metadata; SHA-pinned in `assets/manifest.sha256.txt`
 - [ ] **ASSETS-02**: 200-clip G.711 μ-law STT evaluation set with 100 neutral + 100 stressed splits; reference transcripts normalized via Whisper BasicTextNormalizer; SHA-pinned
 - [ ] **ASSETS-03**: Hesitation-heavy adversarial turn-detection set built from 3 sources (filler-word recordings, stutter samples, mid-sentence pauses); SHA-pinned with per-clip ground-truth turn-end timestamps
-- [ ] **ASSETS-04**: 200 UPL probe corpus + 50-probe benign-question control set; probes cover ≥30 prompt-injection variants, ≥20 fee-quote, ≥20 statute-of-limitations, ≥20 case-outcome, ≥20 procedural-deadline, plus generic substantive-legal-question categories; ground-truth refusal label per probe; SHA-pinned
-- [ ] **ASSETS-05**: receptionBOX-shaped reference system prompt drafted and committed as `assets/reference_prompt.md` — used for G5 evaluation in lieu of a generic prompt
-- [ ] **ASSETS-06**: 30-pair TTS A/B preference test set (Chatterbox-Turbo vs Kokoro-82M) with edge-case prompts (numbers, proper nouns, legal terminology); reference utterances + clone-reference clip
-- [ ] **ASSETS-07**: G.711 transcoding pipeline (`assets/g711.py`) using ffmpeg 7.x `pcm_mulaw` + soxr precision=28; spectral-mask validated against one Twilio→Twilio real-PSTN reference; documented as floor-not-ceiling on degradation
-- [ ] **ASSETS-08**: `assets/manifest.csv` contains a provenance line per asset (source URL or generator + license + creation date + SHA256); harness-enforced — gate runners refuse to read assets not listed
+- [x] **ASSETS-04**: 200 UPL probe corpus + 50-probe benign-question control set; probes cover ≥30 prompt-injection variants, ≥20 fee-quote, ≥20 statute-of-limitations, ≥20 case-outcome, ≥20 procedural-deadline, plus generic substantive-legal-question categories; ground-truth refusal label per probe; SHA-pinned
+- [x] **ASSETS-05**: receptionBOX-shaped reference system prompt drafted and committed as `assets/reference_prompt.md` — used for G5 evaluation in lieu of a generic prompt
+- [x] **ASSETS-06**: 30-pair TTS A/B preference test set (Chatterbox-Turbo vs Kokoro-82M) with edge-case prompts (numbers, proper nouns, legal terminology); reference utterances + clone-reference clip
+- [x] **ASSETS-07**: G.711 transcoding pipeline (`assets/g711.py`) using ffmpeg 7.x `pcm_mulaw` + soxr precision=28; spectral-mask validated against one Twilio→Twilio real-PSTN reference; documented as floor-not-ceiling on degradation
+- [x] **ASSETS-08**: `assets/manifest.csv` contains a provenance line per asset (source URL or generator + license + creation date + SHA256); harness-enforced — gate runners refuse to read assets not listed
 
 ### Substrate Abstraction & Harness
 
@@ -150,11 +150,11 @@ Populated by `gsd-roadmapper` after ROADMAP.md creation.
 | ASSETS-01 | Phase 1 | Pending |
 | ASSETS-02 | Phase 1 | Pending |
 | ASSETS-03 | Phase 1 | Pending |
-| ASSETS-04 | Phase 1 | Pending |
-| ASSETS-05 | Phase 1 | Pending |
-| ASSETS-06 | Phase 1 | Pending |
-| ASSETS-07 | Phase 1 | Pending |
-| ASSETS-08 | Phase 1 | Pending |
+| ASSETS-04 | Phase 1 | Complete |
+| ASSETS-05 | Phase 1 | Complete |
+| ASSETS-06 | Phase 1 | Complete |
+| ASSETS-07 | Phase 1 | Complete |
+| ASSETS-08 | Phase 1 | Complete |
 | HARNESS-01 | Phase 1 | Complete |
 | HARNESS-02 | Phase 2 | Pending |
 | HARNESS-03 | Phase 3 | Pending |
