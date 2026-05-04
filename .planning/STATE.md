@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v0.4
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-03-PLAN.md
-last_updated: "2026-05-04T22:05:21.922Z"
+stopped_at: Completed 01-04-PLAN.md
+last_updated: "2026-05-04T22:59:36.854Z"
 last_activity: 2026-05-04
 progress:
   total_phases: 4
   completed_phases: 0
   total_plans: 5
-  completed_plans: 3
-  percent: 60
+  completed_plans: 4
+  percent: 80
 ---
 
 # Project State
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-05-04)
 ## Current Position
 
 Phase: 01 (foundation) — EXECUTING
-Plan: 4 of 5
+Plan: 5 of 5
 Status: Ready to execute
 Last activity: 2026-05-04
 
@@ -55,6 +55,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01 P01 | 0.4 | 3 tasks | 33 files |
 | Phase 01 P02 | 0.1 | 3 tasks | 18 files |
 | Phase 01 P03 | 0.15 | 3 tasks | 18 files |
+| Phase 01 P04 | 0.83 | 3 tasks | 760 files |
 
 ## Accumulated Context
 
@@ -77,6 +78,8 @@ Decisions are logged in PROJECT.md Key Decisions table. Recent:
 - [Phase 01]: Idempotency-preserving created_utc in manifest authoring scripts (preserve existing timestamp when sha unchanged) — required for D-06 reproducibility
 - [Phase 01]: G.711 spectral validation ships with graceful no_reference branch; Twilio reference clip is operator dependency (A4) deferred to Phase 4 synthesis
 - [Phase 01]: G.711 lowpass test uses 5 kHz out-of-band tone (above 4 kHz Nyquist) rather than 3.5 kHz (still in soxr passband)
+- [Phase 01]: Split render_env from harness venv at the uv project level (not workspace member) to enforce Pitfall 1 isolation; torch<=2.5.1 + kokoro lives entirely in assets/render_env/.venv/
+- [Phase 01]: Pre-commit manifest hook now skips .venv/ and site-packages/ paths so deps' bundled test WAVs do not trip INFRA-05; the project-owned-audio invariant is preserved
 
 ### Pending Todos
 
@@ -91,6 +94,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-04T22:05:21.917Z
-Stopped at: Completed 01-03-PLAN.md
+Last session: 2026-05-04T22:59:29.514Z
+Stopped at: Completed 01-04-PLAN.md
 Resume file: None

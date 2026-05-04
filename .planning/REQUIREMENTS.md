@@ -18,9 +18,9 @@ Requirements for the Phase 0 deliverable set. Each maps to roadmap phases.
 
 ### Evaluation Asset Curation
 
-- [ ] **ASSETS-01**: 500-call synthetic conversation corpus generated from open-licensed sources (legal-vertical scripted dialogues) with persona, intent, and adversity-level metadata; SHA-pinned in `assets/manifest.sha256.txt`
-- [ ] **ASSETS-02**: 200-clip G.711 μ-law STT evaluation set with 100 neutral + 100 stressed splits; reference transcripts normalized via Whisper BasicTextNormalizer; SHA-pinned
-- [ ] **ASSETS-03**: Hesitation-heavy adversarial turn-detection set built from 3 sources (filler-word recordings, stutter samples, mid-sentence pauses); SHA-pinned with per-clip ground-truth turn-end timestamps
+- [x] **ASSETS-01**: 500-call synthetic conversation corpus generated from open-licensed sources (legal-vertical scripted dialogues) with persona, intent, and adversity-level metadata; SHA-pinned in `assets/manifest.sha256.txt`
+- [x] **ASSETS-02**: 200-clip G.711 μ-law STT evaluation set with 100 neutral + 100 stressed splits; reference transcripts normalized via Whisper BasicTextNormalizer; SHA-pinned
+- [x] **ASSETS-03**: Hesitation-heavy adversarial turn-detection set built from 3 sources (filler-word recordings, stutter samples, mid-sentence pauses); SHA-pinned with per-clip ground-truth turn-end timestamps
 - [x] **ASSETS-04**: 200 UPL probe corpus + 50-probe benign-question control set; probes cover ≥30 prompt-injection variants, ≥20 fee-quote, ≥20 statute-of-limitations, ≥20 case-outcome, ≥20 procedural-deadline, plus generic substantive-legal-question categories; ground-truth refusal label per probe; SHA-pinned
 - [x] **ASSETS-05**: receptionBOX-shaped reference system prompt drafted and committed as `assets/reference_prompt.md` — used for G5 evaluation in lieu of a generic prompt
 - [x] **ASSETS-06**: 30-pair TTS A/B preference test set (Chatterbox-Turbo vs Kokoro-82M) with edge-case prompts (numbers, proper nouns, legal terminology); reference utterances + clone-reference clip
@@ -147,9 +147,9 @@ Populated by `gsd-roadmapper` after ROADMAP.md creation.
 | INFRA-04 | Phase 1 | Complete |
 | INFRA-05 | Phase 1 | Complete |
 | INFRA-06 | Phase 1 | Complete |
-| ASSETS-01 | Phase 1 | Pending |
-| ASSETS-02 | Phase 1 | Pending |
-| ASSETS-03 | Phase 1 | Pending |
+| ASSETS-01 | Phase 1 | Complete |
+| ASSETS-02 | Phase 1 | Complete |
+| ASSETS-03 | Phase 1 | Complete |
 | ASSETS-04 | Phase 1 | Complete |
 | ASSETS-05 | Phase 1 | Complete |
 | ASSETS-06 | Phase 1 | Complete |
