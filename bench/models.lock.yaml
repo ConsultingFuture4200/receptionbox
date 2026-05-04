@@ -1,0 +1,37 @@
+# HF model pins (REPRO-02).
+# Each entry records: name (logical), repo_id (HF), revision (40-char commit SHA),
+# files (per-file SHA-256 — Pitfall 9 belt-and-suspenders per RESEARCH Open Q #4).
+# revision = "pending" until first fetch; tools/fetch_models.py resolves it.
+
+models:
+  - name: distil_whisper_large_v3_int8
+    repo_id: Systran/faster-distil-whisper-large-v3
+    revision: pending
+    files:
+      - filename: model.bin
+        sha256: pending
+      - filename: config.json
+        sha256: pending
+      - filename: tokenizer.json
+        sha256: pending
+      - filename: vocabulary.json
+        sha256: pending
+    notes: "CTranslate2 INT8 build; consumed by faster-whisper in Phase 2/3 substrates."
+
+  - name: qwen3_4b_awq_int4
+    repo_id: Qwen/Qwen3-4B
+    revision: pending
+    files: []  # populated when AWQ-Int4 quantized variant is selected on H100/MI300X
+    notes: "AWQ-Int4 cloud equivalent of Strix Halo Q4_K_M; substitution-error per DERATE-04."
+
+  - name: chatterbox_turbo
+    repo_id: ResembleAI/chatterbox
+    revision: pending
+    files: []
+    notes: "Chatterbox-Turbo 350M; ROCm path via devnen/Chatterbox-TTS-Server (DR-27 risk)."
+
+  - name: kokoro_82m
+    repo_id: hexgrad/Kokoro-82M
+    revision: pending
+    files: []
+    notes: "TTS fallback per DR-27; rendered locally on GTX 1070 for Phase 1 ASSETS-01."

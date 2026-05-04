@@ -1,0 +1,43 @@
+# Container image digest pins (REPRO-01).
+# Digests resolved at first-pull on the cloud substrate (Phase 2 for CUDA;
+# Phase 3 for ROCm). Phase 1 ships the schema + image_ref + tag; the
+# `digest` field is the literal string "pending" until cloud-side resolution.
+#
+# Schema validated by pydantic in tests/test_lockfiles.py.
+
+images:
+  - provider: runpod
+    rail: cuda
+    image_ref: vllm/vllm-openai
+    tag: v0.10.0
+    digest: pending
+    registry: docker.io
+    captured_utc: pending
+    notes: "vLLM CUDA 12.4 wheel; matches config/substrates.yaml cuda.image_ref."
+
+  - provider: runpod
+    rail: cuda
+    image_ref: nvcr.io/nvidia/pytorch
+    tag: 25.04-py3
+    digest: pending
+    registry: nvcr.io
+    captured_utc: pending
+    notes: "NGC PyTorch base image for STT/TTS dev work on H100 (preflight)."
+
+  - provider: tensorwave
+    rail: rocm
+    image_ref: rocm/vllm
+    tag: rocm6.4_mi300_ubuntu22.04_py3.11_vllm_0.10.0
+    digest: pending
+    registry: docker.io
+    captured_utc: pending
+    notes: "AMD-validated MI300X-tuned vLLM ROCm 6.4."
+
+  - provider: tensorwave
+    rail: rocm
+    image_ref: rocm/pytorch
+    tag: rocm6.4_ubuntu22.04_py3.10_pytorch_2.5.1
+    digest: pending
+    registry: docker.io
+    captured_utc: pending
+    notes: "AMD-validated PyTorch ROCm 6.4 base for STT/TTS dev on MI300X."
