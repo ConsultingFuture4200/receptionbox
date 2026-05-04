@@ -1,0 +1,7 @@
+# Ignore generated artifacts; index.sqlite already excluded by root .gitignore
+*.parquet
+# Per-gate jsonl files: keep .gitkeep so dir is tracked, but jsonl rows
+# are run output, not source. Phase 2+ will append; commit policy TBD.
+# For now, keep them out of source control by default.
+*.jsonl
+!.gitkeep
