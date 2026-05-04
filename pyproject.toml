@@ -41,6 +41,14 @@ ignore = ["S101"]  # allow assert in tests
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["S"]
 "derating/tests/*" = ["S"]
+# Hand-curated dialogue utterance literals (Plan 04 / D-01); long natural-language
+# strings cannot be reflowed without changing semantics. S311 is benign here --
+# random.Random(seed) is for deterministic dialogue ordering, not security.
+"assets/scripts/templates.py" = ["E501", "S311"]
+# Asset-rendering scripts run inside the separate render_env venv; we lint them
+# with the harness ruff but accept long literal hesitation utterances and
+# subprocess/random usage analogous to the rules already applied to assets/g711.py.
+"assets/render_env/*.py" = ["E501", "S311", "S603"]
 
 [tool.ruff.format]
 quote-style = "double"
@@ -49,3 +57,9 @@ indent-style = "space"
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
+
+# NOTE: assets/render_env is intentionally NOT a uv workspace member.
+# Pitfall 1 (RESEARCH.md) requires the asset-rendering venv (torch <=2.5,
+# kokoro, sm_61 GTX 1070 wheel) to be fully isolated from the harness venv
+# so deps cannot leak across. render_env carries its own pyproject.toml +
+# uv.lock + .venv/ and is operated from inside that directory.

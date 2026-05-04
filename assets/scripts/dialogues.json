@@ -1,0 +1,4502 @@
+[
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "nervous_first_time",
+    "script_id": "call-0001",
+    "utterance": "Hi, I -- I'm not sure if I'm in the right place. I had something happen with my landlord and I think I need to talk to someone.",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "returning_client",
+    "script_id": "call-0002",
+    "utterance": "Hi, this is Pat. I worked with the firm last spring and I have a new matter -- can I get on the schedule again?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "frustrated_billing",
+    "script_id": "call-0003",
+    "utterance": "I need an attorney for a billing dispute with my contractor. Can someone call me back today?",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "calm_professional",
+    "script_id": "call-0004",
+    "utterance": "Good morning. I'd like to schedule a consultation regarding a commercial lease question.",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0005",
+    "utterance": "Hello? I -- yes -- I want to set up a meeting about my late husband's estate.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "esl_speaker",
+    "script_id": "call-0006",
+    "utterance": "Hello, I have problem with my employer and I want to make consultation, please.",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "fast_talker",
+    "script_id": "call-0007",
+    "utterance": "Hi I'm calling because my neighbor is doing something on the property line and I think I need a lawyer fast can someone get back to me?",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "soft_voice",
+    "script_id": "call-0008",
+    "utterance": "I'd like to ask about consulting on a personal injury matter.",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "interrupting_caller",
+    "script_id": "call-0009",
+    "utterance": "Yeah hi -- listen -- I just need to know -- can you handle a small business dispute?",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "cooperative_brief",
+    "script_id": "call-0010",
+    "utterance": "Hi, I'd like to set up a consultation about a landlord-tenant matter.",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "nervous_first_time",
+    "script_id": "call-0011",
+    "utterance": "Hi, I -- I'm not sure if I'm in the right place. I had something happen with my landlord and I think I need to talk to someone.",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "returning_client",
+    "script_id": "call-0012",
+    "utterance": "Hi, this is Pat. I worked with the firm last spring and I have a new matter -- can I get on the schedule again?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "frustrated_billing",
+    "script_id": "call-0013",
+    "utterance": "I need an attorney for a billing dispute with my contractor. Can someone call me back today?",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "calm_professional",
+    "script_id": "call-0014",
+    "utterance": "Good morning. I'd like to schedule a consultation regarding a commercial lease question.",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0015",
+    "utterance": "Hello? I -- yes -- I want to set up a meeting about my late husband's estate.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "esl_speaker",
+    "script_id": "call-0016",
+    "utterance": "Hello, I have problem with my employer and I want to make consultation, please.",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "fast_talker",
+    "script_id": "call-0017",
+    "utterance": "Hi I'm calling because my neighbor is doing something on the property line and I think I need a lawyer fast can someone get back to me?",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "soft_voice",
+    "script_id": "call-0018",
+    "utterance": "I'd like to ask about consulting on a personal injury matter.",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "interrupting_caller",
+    "script_id": "call-0019",
+    "utterance": "Yeah hi -- listen -- I just need to know -- can you handle a small business dispute?",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "cooperative_brief",
+    "script_id": "call-0020",
+    "utterance": "Hi, I'd like to set up a consultation about a landlord-tenant matter.",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "nervous_first_time",
+    "script_id": "call-0021",
+    "utterance": "Hi, I -- I'm not sure if I'm in the right place. I had something happen with my landlord and I think I need to talk to someone.",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "returning_client",
+    "script_id": "call-0022",
+    "utterance": "Hi, this is Pat. I worked with the firm last spring and I have a new matter -- can I get on the schedule again?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "frustrated_billing",
+    "script_id": "call-0023",
+    "utterance": "I need an attorney for a billing dispute with my contractor. Can someone call me back today?",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "calm_professional",
+    "script_id": "call-0024",
+    "utterance": "Good morning. I'd like to schedule a consultation regarding a commercial lease question.",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0025",
+    "utterance": "Hello? I -- yes -- I want to set up a meeting about my late husband's estate.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "esl_speaker",
+    "script_id": "call-0026",
+    "utterance": "Hello, I have problem with my employer and I want to make consultation, please.",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "fast_talker",
+    "script_id": "call-0027",
+    "utterance": "Hi I'm calling because my neighbor is doing something on the property line and I think I need a lawyer fast can someone get back to me?",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "soft_voice",
+    "script_id": "call-0028",
+    "utterance": "I'd like to ask about consulting on a personal injury matter.",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "interrupting_caller",
+    "script_id": "call-0029",
+    "utterance": "Yeah hi -- listen -- I just need to know -- can you handle a small business dispute?",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "cooperative_brief",
+    "script_id": "call-0030",
+    "utterance": "Hi, I'd like to set up a consultation about a landlord-tenant matter.",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "nervous_first_time",
+    "script_id": "call-0031",
+    "utterance": "Hi, I -- I'm not sure if I'm in the right place. I had something happen with my landlord and I think I need to talk to someone.",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "returning_client",
+    "script_id": "call-0032",
+    "utterance": "Hi, this is Pat. I worked with the firm last spring and I have a new matter -- can I get on the schedule again?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "frustrated_billing",
+    "script_id": "call-0033",
+    "utterance": "I need an attorney for a billing dispute with my contractor. Can someone call me back today?",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "calm_professional",
+    "script_id": "call-0034",
+    "utterance": "Good morning. I'd like to schedule a consultation regarding a commercial lease question.",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0035",
+    "utterance": "Hello? I -- yes -- I want to set up a meeting about my late husband's estate.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "esl_speaker",
+    "script_id": "call-0036",
+    "utterance": "Hello, I have problem with my employer and I want to make consultation, please.",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "fast_talker",
+    "script_id": "call-0037",
+    "utterance": "Hi I'm calling because my neighbor is doing something on the property line and I think I need a lawyer fast can someone get back to me?",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "soft_voice",
+    "script_id": "call-0038",
+    "utterance": "I'd like to ask about consulting on a personal injury matter.",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "interrupting_caller",
+    "script_id": "call-0039",
+    "utterance": "Yeah hi -- listen -- I just need to know -- can you handle a small business dispute?",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "cooperative_brief",
+    "script_id": "call-0040",
+    "utterance": "Hi, I'd like to set up a consultation about a landlord-tenant matter.",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "nervous_first_time",
+    "script_id": "call-0041",
+    "utterance": "Hi, I -- I'm not sure if I'm in the right place. I had something happen with my landlord and I think I need to talk to someone.",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "returning_client",
+    "script_id": "call-0042",
+    "utterance": "Hi, this is Pat. I worked with the firm last spring and I have a new matter -- can I get on the schedule again?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "frustrated_billing",
+    "script_id": "call-0043",
+    "utterance": "I need an attorney for a billing dispute with my contractor. Can someone call me back today?",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "calm_professional",
+    "script_id": "call-0044",
+    "utterance": "Good morning. I'd like to schedule a consultation regarding a commercial lease question.",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0045",
+    "utterance": "Hello? I -- yes -- I want to set up a meeting about my late husband's estate.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "esl_speaker",
+    "script_id": "call-0046",
+    "utterance": "Hello, I have problem with my employer and I want to make consultation, please.",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "fast_talker",
+    "script_id": "call-0047",
+    "utterance": "Hi I'm calling because my neighbor is doing something on the property line and I think I need a lawyer fast can someone get back to me?",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "soft_voice",
+    "script_id": "call-0048",
+    "utterance": "I'd like to ask about consulting on a personal injury matter.",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "interrupting_caller",
+    "script_id": "call-0049",
+    "utterance": "Yeah hi -- listen -- I just need to know -- can you handle a small business dispute?",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "intake_inquiry",
+    "persona": "cooperative_brief",
+    "script_id": "call-0050",
+    "utterance": "Hi, I'd like to set up a consultation about a landlord-tenant matter.",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "nervous_first_time",
+    "script_id": "call-0051",
+    "utterance": "I -- this might be a silly question -- but how much would something like a will cost?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "returning_client",
+    "script_id": "call-0052",
+    "utterance": "Quick question -- ballpark, what would a contract review run me?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "frustrated_billing",
+    "script_id": "call-0053",
+    "utterance": "I just want to know the rate before I waste any more of my time.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "calm_professional",
+    "script_id": "call-0054",
+    "utterance": "What is the typical retainer for an employment matter at the firm?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0055",
+    "utterance": "How much will it cost? I'm on a fixed income.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "esl_speaker",
+    "script_id": "call-0056",
+    "utterance": "Please, what is the price for the consultation?",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "fast_talker",
+    "script_id": "call-0057",
+    "utterance": "Whats the hourly rate I just need a number to compare with another firm we got a quote from yesterday.",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "soft_voice",
+    "script_id": "call-0058",
+    "utterance": "Could you tell me what you charge for an initial review?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "interrupting_caller",
+    "script_id": "call-0059",
+    "utterance": "Just tell me -- how much -- how much for a divorce consultation?",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "cooperative_brief",
+    "script_id": "call-0060",
+    "utterance": "What does a 30-minute consultation cost?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "nervous_first_time",
+    "script_id": "call-0061",
+    "utterance": "I -- this might be a silly question -- but how much would something like a will cost?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "returning_client",
+    "script_id": "call-0062",
+    "utterance": "Quick question -- ballpark, what would a contract review run me?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "frustrated_billing",
+    "script_id": "call-0063",
+    "utterance": "I just want to know the rate before I waste any more of my time.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "calm_professional",
+    "script_id": "call-0064",
+    "utterance": "What is the typical retainer for an employment matter at the firm?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0065",
+    "utterance": "How much will it cost? I'm on a fixed income.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "esl_speaker",
+    "script_id": "call-0066",
+    "utterance": "Please, what is the price for the consultation?",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "fast_talker",
+    "script_id": "call-0067",
+    "utterance": "Whats the hourly rate I just need a number to compare with another firm we got a quote from yesterday.",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "soft_voice",
+    "script_id": "call-0068",
+    "utterance": "Could you tell me what you charge for an initial review?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "interrupting_caller",
+    "script_id": "call-0069",
+    "utterance": "Just tell me -- how much -- how much for a divorce consultation?",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "cooperative_brief",
+    "script_id": "call-0070",
+    "utterance": "What does a 30-minute consultation cost?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "nervous_first_time",
+    "script_id": "call-0071",
+    "utterance": "I -- this might be a silly question -- but how much would something like a will cost?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "returning_client",
+    "script_id": "call-0072",
+    "utterance": "Quick question -- ballpark, what would a contract review run me?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "frustrated_billing",
+    "script_id": "call-0073",
+    "utterance": "I just want to know the rate before I waste any more of my time.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "calm_professional",
+    "script_id": "call-0074",
+    "utterance": "What is the typical retainer for an employment matter at the firm?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0075",
+    "utterance": "How much will it cost? I'm on a fixed income.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "esl_speaker",
+    "script_id": "call-0076",
+    "utterance": "Please, what is the price for the consultation?",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "fast_talker",
+    "script_id": "call-0077",
+    "utterance": "Whats the hourly rate I just need a number to compare with another firm we got a quote from yesterday.",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "soft_voice",
+    "script_id": "call-0078",
+    "utterance": "Could you tell me what you charge for an initial review?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "interrupting_caller",
+    "script_id": "call-0079",
+    "utterance": "Just tell me -- how much -- how much for a divorce consultation?",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "cooperative_brief",
+    "script_id": "call-0080",
+    "utterance": "What does a 30-minute consultation cost?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "nervous_first_time",
+    "script_id": "call-0081",
+    "utterance": "I -- this might be a silly question -- but how much would something like a will cost?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "returning_client",
+    "script_id": "call-0082",
+    "utterance": "Quick question -- ballpark, what would a contract review run me?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "frustrated_billing",
+    "script_id": "call-0083",
+    "utterance": "I just want to know the rate before I waste any more of my time.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "calm_professional",
+    "script_id": "call-0084",
+    "utterance": "What is the typical retainer for an employment matter at the firm?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0085",
+    "utterance": "How much will it cost? I'm on a fixed income.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "esl_speaker",
+    "script_id": "call-0086",
+    "utterance": "Please, what is the price for the consultation?",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "fast_talker",
+    "script_id": "call-0087",
+    "utterance": "Whats the hourly rate I just need a number to compare with another firm we got a quote from yesterday.",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "soft_voice",
+    "script_id": "call-0088",
+    "utterance": "Could you tell me what you charge for an initial review?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "interrupting_caller",
+    "script_id": "call-0089",
+    "utterance": "Just tell me -- how much -- how much for a divorce consultation?",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "cooperative_brief",
+    "script_id": "call-0090",
+    "utterance": "What does a 30-minute consultation cost?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "nervous_first_time",
+    "script_id": "call-0091",
+    "utterance": "I -- this might be a silly question -- but how much would something like a will cost?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "returning_client",
+    "script_id": "call-0092",
+    "utterance": "Quick question -- ballpark, what would a contract review run me?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "frustrated_billing",
+    "script_id": "call-0093",
+    "utterance": "I just want to know the rate before I waste any more of my time.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "calm_professional",
+    "script_id": "call-0094",
+    "utterance": "What is the typical retainer for an employment matter at the firm?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0095",
+    "utterance": "How much will it cost? I'm on a fixed income.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "esl_speaker",
+    "script_id": "call-0096",
+    "utterance": "Please, what is the price for the consultation?",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "fast_talker",
+    "script_id": "call-0097",
+    "utterance": "Whats the hourly rate I just need a number to compare with another firm we got a quote from yesterday.",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "soft_voice",
+    "script_id": "call-0098",
+    "utterance": "Could you tell me what you charge for an initial review?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "interrupting_caller",
+    "script_id": "call-0099",
+    "utterance": "Just tell me -- how much -- how much for a divorce consultation?",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "fee_question",
+    "persona": "cooperative_brief",
+    "script_id": "call-0100",
+    "utterance": "What does a 30-minute consultation cost?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "nervous_first_time",
+    "script_id": "call-0101",
+    "utterance": "I think I need an actual attorney to talk to me, not just a paralegal -- is that possible?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "returning_client",
+    "script_id": "call-0102",
+    "utterance": "Can I be put through to Attorney Reyes? She handled my last matter.",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "frustrated_billing",
+    "script_id": "call-0103",
+    "utterance": "I need to speak with a partner about a problem with the invoice.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "calm_professional",
+    "script_id": "call-0104",
+    "utterance": "Could you connect me with the attorney handling commercial litigation?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0105",
+    "utterance": "I'd like to speak with the lawyer please. The actual lawyer.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "esl_speaker",
+    "script_id": "call-0106",
+    "utterance": "I want to speak with attorney directly please, not assistant.",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "fast_talker",
+    "script_id": "call-0107",
+    "utterance": "Yeah I really need to talk to an attorney can you put me through to whoever's available right now?",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "soft_voice",
+    "script_id": "call-0108",
+    "utterance": "Is there an attorney available who could speak with me briefly?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "interrupting_caller",
+    "script_id": "call-0109",
+    "utterance": "Don't transfer me again -- I want -- get me an attorney on the phone.",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "cooperative_brief",
+    "script_id": "call-0110",
+    "utterance": "Could I speak with an attorney about my matter?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "nervous_first_time",
+    "script_id": "call-0111",
+    "utterance": "I think I need an actual attorney to talk to me, not just a paralegal -- is that possible?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "returning_client",
+    "script_id": "call-0112",
+    "utterance": "Can I be put through to Attorney Reyes? She handled my last matter.",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "frustrated_billing",
+    "script_id": "call-0113",
+    "utterance": "I need to speak with a partner about a problem with the invoice.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "calm_professional",
+    "script_id": "call-0114",
+    "utterance": "Could you connect me with the attorney handling commercial litigation?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0115",
+    "utterance": "I'd like to speak with the lawyer please. The actual lawyer.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "esl_speaker",
+    "script_id": "call-0116",
+    "utterance": "I want to speak with attorney directly please, not assistant.",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "fast_talker",
+    "script_id": "call-0117",
+    "utterance": "Yeah I really need to talk to an attorney can you put me through to whoever's available right now?",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "soft_voice",
+    "script_id": "call-0118",
+    "utterance": "Is there an attorney available who could speak with me briefly?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "interrupting_caller",
+    "script_id": "call-0119",
+    "utterance": "Don't transfer me again -- I want -- get me an attorney on the phone.",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "cooperative_brief",
+    "script_id": "call-0120",
+    "utterance": "Could I speak with an attorney about my matter?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "nervous_first_time",
+    "script_id": "call-0121",
+    "utterance": "I think I need an actual attorney to talk to me, not just a paralegal -- is that possible?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "returning_client",
+    "script_id": "call-0122",
+    "utterance": "Can I be put through to Attorney Reyes? She handled my last matter.",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "frustrated_billing",
+    "script_id": "call-0123",
+    "utterance": "I need to speak with a partner about a problem with the invoice.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "calm_professional",
+    "script_id": "call-0124",
+    "utterance": "Could you connect me with the attorney handling commercial litigation?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0125",
+    "utterance": "I'd like to speak with the lawyer please. The actual lawyer.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "esl_speaker",
+    "script_id": "call-0126",
+    "utterance": "I want to speak with attorney directly please, not assistant.",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "fast_talker",
+    "script_id": "call-0127",
+    "utterance": "Yeah I really need to talk to an attorney can you put me through to whoever's available right now?",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "soft_voice",
+    "script_id": "call-0128",
+    "utterance": "Is there an attorney available who could speak with me briefly?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "interrupting_caller",
+    "script_id": "call-0129",
+    "utterance": "Don't transfer me again -- I want -- get me an attorney on the phone.",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "cooperative_brief",
+    "script_id": "call-0130",
+    "utterance": "Could I speak with an attorney about my matter?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "nervous_first_time",
+    "script_id": "call-0131",
+    "utterance": "I think I need an actual attorney to talk to me, not just a paralegal -- is that possible?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "returning_client",
+    "script_id": "call-0132",
+    "utterance": "Can I be put through to Attorney Reyes? She handled my last matter.",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "frustrated_billing",
+    "script_id": "call-0133",
+    "utterance": "I need to speak with a partner about a problem with the invoice.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "calm_professional",
+    "script_id": "call-0134",
+    "utterance": "Could you connect me with the attorney handling commercial litigation?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0135",
+    "utterance": "I'd like to speak with the lawyer please. The actual lawyer.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "esl_speaker",
+    "script_id": "call-0136",
+    "utterance": "I want to speak with attorney directly please, not assistant.",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "fast_talker",
+    "script_id": "call-0137",
+    "utterance": "Yeah I really need to talk to an attorney can you put me through to whoever's available right now?",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "soft_voice",
+    "script_id": "call-0138",
+    "utterance": "Is there an attorney available who could speak with me briefly?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "interrupting_caller",
+    "script_id": "call-0139",
+    "utterance": "Don't transfer me again -- I want -- get me an attorney on the phone.",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "cooperative_brief",
+    "script_id": "call-0140",
+    "utterance": "Could I speak with an attorney about my matter?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "nervous_first_time",
+    "script_id": "call-0141",
+    "utterance": "I think I need an actual attorney to talk to me, not just a paralegal -- is that possible?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "returning_client",
+    "script_id": "call-0142",
+    "utterance": "Can I be put through to Attorney Reyes? She handled my last matter.",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "frustrated_billing",
+    "script_id": "call-0143",
+    "utterance": "I need to speak with a partner about a problem with the invoice.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "calm_professional",
+    "script_id": "call-0144",
+    "utterance": "Could you connect me with the attorney handling commercial litigation?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0145",
+    "utterance": "I'd like to speak with the lawyer please. The actual lawyer.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "esl_speaker",
+    "script_id": "call-0146",
+    "utterance": "I want to speak with attorney directly please, not assistant.",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "fast_talker",
+    "script_id": "call-0147",
+    "utterance": "Yeah I really need to talk to an attorney can you put me through to whoever's available right now?",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "soft_voice",
+    "script_id": "call-0148",
+    "utterance": "Is there an attorney available who could speak with me briefly?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "interrupting_caller",
+    "script_id": "call-0149",
+    "utterance": "Don't transfer me again -- I want -- get me an attorney on the phone.",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "attorney_request",
+    "persona": "cooperative_brief",
+    "script_id": "call-0150",
+    "utterance": "Could I speak with an attorney about my matter?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "nervous_first_time",
+    "script_id": "call-0151",
+    "utterance": "What -- when are you guys open? I didn't want to call too early.",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "returning_client",
+    "script_id": "call-0152",
+    "utterance": "Are you open through five today?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "frustrated_billing",
+    "script_id": "call-0153",
+    "utterance": "What are your hours? I keep getting voicemail.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "calm_professional",
+    "script_id": "call-0154",
+    "utterance": "Could you tell me your business hours and whether evening appointments are available?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0155",
+    "utterance": "What time do you close? My ride is asking.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "esl_speaker",
+    "script_id": "call-0156",
+    "utterance": "What are open hours, please?",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "fast_talker",
+    "script_id": "call-0157",
+    "utterance": "What are your hours just need to know if I can swing by after work today around six fifteen.",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "soft_voice",
+    "script_id": "call-0158",
+    "utterance": "I just wanted to check what time you close.",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "interrupting_caller",
+    "script_id": "call-0159",
+    "utterance": "Hours -- what are -- when do you close today?",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "cooperative_brief",
+    "script_id": "call-0160",
+    "utterance": "What are your office hours?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "nervous_first_time",
+    "script_id": "call-0161",
+    "utterance": "What -- when are you guys open? I didn't want to call too early.",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "returning_client",
+    "script_id": "call-0162",
+    "utterance": "Are you open through five today?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "frustrated_billing",
+    "script_id": "call-0163",
+    "utterance": "What are your hours? I keep getting voicemail.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "calm_professional",
+    "script_id": "call-0164",
+    "utterance": "Could you tell me your business hours and whether evening appointments are available?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0165",
+    "utterance": "What time do you close? My ride is asking.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "esl_speaker",
+    "script_id": "call-0166",
+    "utterance": "What are open hours, please?",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "fast_talker",
+    "script_id": "call-0167",
+    "utterance": "What are your hours just need to know if I can swing by after work today around six fifteen.",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "soft_voice",
+    "script_id": "call-0168",
+    "utterance": "I just wanted to check what time you close.",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "interrupting_caller",
+    "script_id": "call-0169",
+    "utterance": "Hours -- what are -- when do you close today?",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "cooperative_brief",
+    "script_id": "call-0170",
+    "utterance": "What are your office hours?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "nervous_first_time",
+    "script_id": "call-0171",
+    "utterance": "What -- when are you guys open? I didn't want to call too early.",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "returning_client",
+    "script_id": "call-0172",
+    "utterance": "Are you open through five today?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "frustrated_billing",
+    "script_id": "call-0173",
+    "utterance": "What are your hours? I keep getting voicemail.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "calm_professional",
+    "script_id": "call-0174",
+    "utterance": "Could you tell me your business hours and whether evening appointments are available?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0175",
+    "utterance": "What time do you close? My ride is asking.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "esl_speaker",
+    "script_id": "call-0176",
+    "utterance": "What are open hours, please?",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "fast_talker",
+    "script_id": "call-0177",
+    "utterance": "What are your hours just need to know if I can swing by after work today around six fifteen.",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "soft_voice",
+    "script_id": "call-0178",
+    "utterance": "I just wanted to check what time you close.",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "interrupting_caller",
+    "script_id": "call-0179",
+    "utterance": "Hours -- what are -- when do you close today?",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "cooperative_brief",
+    "script_id": "call-0180",
+    "utterance": "What are your office hours?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "nervous_first_time",
+    "script_id": "call-0181",
+    "utterance": "What -- when are you guys open? I didn't want to call too early.",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "returning_client",
+    "script_id": "call-0182",
+    "utterance": "Are you open through five today?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "frustrated_billing",
+    "script_id": "call-0183",
+    "utterance": "What are your hours? I keep getting voicemail.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "calm_professional",
+    "script_id": "call-0184",
+    "utterance": "Could you tell me your business hours and whether evening appointments are available?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0185",
+    "utterance": "What time do you close? My ride is asking.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "esl_speaker",
+    "script_id": "call-0186",
+    "utterance": "What are open hours, please?",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "fast_talker",
+    "script_id": "call-0187",
+    "utterance": "What are your hours just need to know if I can swing by after work today around six fifteen.",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "soft_voice",
+    "script_id": "call-0188",
+    "utterance": "I just wanted to check what time you close.",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "interrupting_caller",
+    "script_id": "call-0189",
+    "utterance": "Hours -- what are -- when do you close today?",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "cooperative_brief",
+    "script_id": "call-0190",
+    "utterance": "What are your office hours?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "nervous_first_time",
+    "script_id": "call-0191",
+    "utterance": "What -- when are you guys open? I didn't want to call too early.",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "returning_client",
+    "script_id": "call-0192",
+    "utterance": "Are you open through five today?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "frustrated_billing",
+    "script_id": "call-0193",
+    "utterance": "What are your hours? I keep getting voicemail.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "calm_professional",
+    "script_id": "call-0194",
+    "utterance": "Could you tell me your business hours and whether evening appointments are available?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0195",
+    "utterance": "What time do you close? My ride is asking.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "esl_speaker",
+    "script_id": "call-0196",
+    "utterance": "What are open hours, please?",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "fast_talker",
+    "script_id": "call-0197",
+    "utterance": "What are your hours just need to know if I can swing by after work today around six fifteen.",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "soft_voice",
+    "script_id": "call-0198",
+    "utterance": "I just wanted to check what time you close.",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "interrupting_caller",
+    "script_id": "call-0199",
+    "utterance": "Hours -- what are -- when do you close today?",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "hours_inquiry",
+    "persona": "cooperative_brief",
+    "script_id": "call-0200",
+    "utterance": "What are your office hours?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "nervous_first_time",
+    "script_id": "call-0201",
+    "utterance": "Where are you located? I might be in the wrong part of town.",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "returning_client",
+    "script_id": "call-0202",
+    "utterance": "Are you still at the same address as last year?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "frustrated_billing",
+    "script_id": "call-0203",
+    "utterance": "Where do I drop off this paperwork? Just give me an address.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "calm_professional",
+    "script_id": "call-0204",
+    "utterance": "Could you confirm the office address and parking arrangements?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0205",
+    "utterance": "Where are you located? Can you spell the street?",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "esl_speaker",
+    "script_id": "call-0206",
+    "utterance": "Please, what is the address of office?",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "fast_talker",
+    "script_id": "call-0207",
+    "utterance": "What's your address I'm putting it in my GPS right now is it the building with the brick front?",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "soft_voice",
+    "script_id": "call-0208",
+    "utterance": "Could you tell me where you're located?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "interrupting_caller",
+    "script_id": "call-0209",
+    "utterance": "Address -- I just need -- the address please.",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "cooperative_brief",
+    "script_id": "call-0210",
+    "utterance": "What's your office address?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "nervous_first_time",
+    "script_id": "call-0211",
+    "utterance": "Where are you located? I might be in the wrong part of town.",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "returning_client",
+    "script_id": "call-0212",
+    "utterance": "Are you still at the same address as last year?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "frustrated_billing",
+    "script_id": "call-0213",
+    "utterance": "Where do I drop off this paperwork? Just give me an address.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "calm_professional",
+    "script_id": "call-0214",
+    "utterance": "Could you confirm the office address and parking arrangements?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0215",
+    "utterance": "Where are you located? Can you spell the street?",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "esl_speaker",
+    "script_id": "call-0216",
+    "utterance": "Please, what is the address of office?",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "fast_talker",
+    "script_id": "call-0217",
+    "utterance": "What's your address I'm putting it in my GPS right now is it the building with the brick front?",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "soft_voice",
+    "script_id": "call-0218",
+    "utterance": "Could you tell me where you're located?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "interrupting_caller",
+    "script_id": "call-0219",
+    "utterance": "Address -- I just need -- the address please.",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "cooperative_brief",
+    "script_id": "call-0220",
+    "utterance": "What's your office address?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "nervous_first_time",
+    "script_id": "call-0221",
+    "utterance": "Where are you located? I might be in the wrong part of town.",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "returning_client",
+    "script_id": "call-0222",
+    "utterance": "Are you still at the same address as last year?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "frustrated_billing",
+    "script_id": "call-0223",
+    "utterance": "Where do I drop off this paperwork? Just give me an address.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "calm_professional",
+    "script_id": "call-0224",
+    "utterance": "Could you confirm the office address and parking arrangements?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0225",
+    "utterance": "Where are you located? Can you spell the street?",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "esl_speaker",
+    "script_id": "call-0226",
+    "utterance": "Please, what is the address of office?",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "fast_talker",
+    "script_id": "call-0227",
+    "utterance": "What's your address I'm putting it in my GPS right now is it the building with the brick front?",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "soft_voice",
+    "script_id": "call-0228",
+    "utterance": "Could you tell me where you're located?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "interrupting_caller",
+    "script_id": "call-0229",
+    "utterance": "Address -- I just need -- the address please.",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "cooperative_brief",
+    "script_id": "call-0230",
+    "utterance": "What's your office address?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "nervous_first_time",
+    "script_id": "call-0231",
+    "utterance": "Where are you located? I might be in the wrong part of town.",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "returning_client",
+    "script_id": "call-0232",
+    "utterance": "Are you still at the same address as last year?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "frustrated_billing",
+    "script_id": "call-0233",
+    "utterance": "Where do I drop off this paperwork? Just give me an address.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "calm_professional",
+    "script_id": "call-0234",
+    "utterance": "Could you confirm the office address and parking arrangements?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0235",
+    "utterance": "Where are you located? Can you spell the street?",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "esl_speaker",
+    "script_id": "call-0236",
+    "utterance": "Please, what is the address of office?",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "fast_talker",
+    "script_id": "call-0237",
+    "utterance": "What's your address I'm putting it in my GPS right now is it the building with the brick front?",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "soft_voice",
+    "script_id": "call-0238",
+    "utterance": "Could you tell me where you're located?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "interrupting_caller",
+    "script_id": "call-0239",
+    "utterance": "Address -- I just need -- the address please.",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "cooperative_brief",
+    "script_id": "call-0240",
+    "utterance": "What's your office address?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "nervous_first_time",
+    "script_id": "call-0241",
+    "utterance": "Where are you located? I might be in the wrong part of town.",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "returning_client",
+    "script_id": "call-0242",
+    "utterance": "Are you still at the same address as last year?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "frustrated_billing",
+    "script_id": "call-0243",
+    "utterance": "Where do I drop off this paperwork? Just give me an address.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "calm_professional",
+    "script_id": "call-0244",
+    "utterance": "Could you confirm the office address and parking arrangements?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0245",
+    "utterance": "Where are you located? Can you spell the street?",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "esl_speaker",
+    "script_id": "call-0246",
+    "utterance": "Please, what is the address of office?",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "fast_talker",
+    "script_id": "call-0247",
+    "utterance": "What's your address I'm putting it in my GPS right now is it the building with the brick front?",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "soft_voice",
+    "script_id": "call-0248",
+    "utterance": "Could you tell me where you're located?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "interrupting_caller",
+    "script_id": "call-0249",
+    "utterance": "Address -- I just need -- the address please.",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "location_inquiry",
+    "persona": "cooperative_brief",
+    "script_id": "call-0250",
+    "utterance": "What's your office address?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "nervous_first_time",
+    "script_id": "call-0251",
+    "utterance": "I -- I haven't heard anything in a while -- could someone tell me where my case is at?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "returning_client",
+    "script_id": "call-0252",
+    "utterance": "Hi it's me again, can I get a status update on the file?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "frustrated_billing",
+    "script_id": "call-0253",
+    "utterance": "Where are we on this? It's been three weeks.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "calm_professional",
+    "script_id": "call-0254",
+    "utterance": "Could I get a status update on the matter we opened in February?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0255",
+    "utterance": "Can someone tell me what's happening with my case please?",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "esl_speaker",
+    "script_id": "call-0256",
+    "utterance": "I want to know about my case, please. Status.",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "fast_talker",
+    "script_id": "call-0257",
+    "utterance": "Hey just checking in on my case any updates I haven't heard from anyone in a couple weeks.",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "soft_voice",
+    "script_id": "call-0258",
+    "utterance": "Could someone update me on my matter when there's time?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "interrupting_caller",
+    "script_id": "call-0259",
+    "utterance": "My case -- I need an update -- where are we?",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "cooperative_brief",
+    "script_id": "call-0260",
+    "utterance": "Can I get a status update on my case?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "nervous_first_time",
+    "script_id": "call-0261",
+    "utterance": "I -- I haven't heard anything in a while -- could someone tell me where my case is at?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "returning_client",
+    "script_id": "call-0262",
+    "utterance": "Hi it's me again, can I get a status update on the file?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "frustrated_billing",
+    "script_id": "call-0263",
+    "utterance": "Where are we on this? It's been three weeks.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "calm_professional",
+    "script_id": "call-0264",
+    "utterance": "Could I get a status update on the matter we opened in February?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0265",
+    "utterance": "Can someone tell me what's happening with my case please?",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "esl_speaker",
+    "script_id": "call-0266",
+    "utterance": "I want to know about my case, please. Status.",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "fast_talker",
+    "script_id": "call-0267",
+    "utterance": "Hey just checking in on my case any updates I haven't heard from anyone in a couple weeks.",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "soft_voice",
+    "script_id": "call-0268",
+    "utterance": "Could someone update me on my matter when there's time?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "interrupting_caller",
+    "script_id": "call-0269",
+    "utterance": "My case -- I need an update -- where are we?",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "cooperative_brief",
+    "script_id": "call-0270",
+    "utterance": "Can I get a status update on my case?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "nervous_first_time",
+    "script_id": "call-0271",
+    "utterance": "I -- I haven't heard anything in a while -- could someone tell me where my case is at?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "returning_client",
+    "script_id": "call-0272",
+    "utterance": "Hi it's me again, can I get a status update on the file?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "frustrated_billing",
+    "script_id": "call-0273",
+    "utterance": "Where are we on this? It's been three weeks.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "calm_professional",
+    "script_id": "call-0274",
+    "utterance": "Could I get a status update on the matter we opened in February?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0275",
+    "utterance": "Can someone tell me what's happening with my case please?",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "esl_speaker",
+    "script_id": "call-0276",
+    "utterance": "I want to know about my case, please. Status.",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "fast_talker",
+    "script_id": "call-0277",
+    "utterance": "Hey just checking in on my case any updates I haven't heard from anyone in a couple weeks.",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "soft_voice",
+    "script_id": "call-0278",
+    "utterance": "Could someone update me on my matter when there's time?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "interrupting_caller",
+    "script_id": "call-0279",
+    "utterance": "My case -- I need an update -- where are we?",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "cooperative_brief",
+    "script_id": "call-0280",
+    "utterance": "Can I get a status update on my case?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "nervous_first_time",
+    "script_id": "call-0281",
+    "utterance": "I -- I haven't heard anything in a while -- could someone tell me where my case is at?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "returning_client",
+    "script_id": "call-0282",
+    "utterance": "Hi it's me again, can I get a status update on the file?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "frustrated_billing",
+    "script_id": "call-0283",
+    "utterance": "Where are we on this? It's been three weeks.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "calm_professional",
+    "script_id": "call-0284",
+    "utterance": "Could I get a status update on the matter we opened in February?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0285",
+    "utterance": "Can someone tell me what's happening with my case please?",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "esl_speaker",
+    "script_id": "call-0286",
+    "utterance": "I want to know about my case, please. Status.",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "fast_talker",
+    "script_id": "call-0287",
+    "utterance": "Hey just checking in on my case any updates I haven't heard from anyone in a couple weeks.",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "soft_voice",
+    "script_id": "call-0288",
+    "utterance": "Could someone update me on my matter when there's time?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "interrupting_caller",
+    "script_id": "call-0289",
+    "utterance": "My case -- I need an update -- where are we?",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "cooperative_brief",
+    "script_id": "call-0290",
+    "utterance": "Can I get a status update on my case?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "nervous_first_time",
+    "script_id": "call-0291",
+    "utterance": "I -- I haven't heard anything in a while -- could someone tell me where my case is at?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "returning_client",
+    "script_id": "call-0292",
+    "utterance": "Hi it's me again, can I get a status update on the file?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "frustrated_billing",
+    "script_id": "call-0293",
+    "utterance": "Where are we on this? It's been three weeks.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "calm_professional",
+    "script_id": "call-0294",
+    "utterance": "Could I get a status update on the matter we opened in February?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0295",
+    "utterance": "Can someone tell me what's happening with my case please?",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "esl_speaker",
+    "script_id": "call-0296",
+    "utterance": "I want to know about my case, please. Status.",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "fast_talker",
+    "script_id": "call-0297",
+    "utterance": "Hey just checking in on my case any updates I haven't heard from anyone in a couple weeks.",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "soft_voice",
+    "script_id": "call-0298",
+    "utterance": "Could someone update me on my matter when there's time?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "interrupting_caller",
+    "script_id": "call-0299",
+    "utterance": "My case -- I need an update -- where are we?",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "case_status_question",
+    "persona": "cooperative_brief",
+    "script_id": "call-0300",
+    "utterance": "Can I get a status update on my case?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "nervous_first_time",
+    "script_id": "call-0301",
+    "utterance": "I -- I have some papers I was told to bring in -- can I just drop them off?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "returning_client",
+    "script_id": "call-0302",
+    "utterance": "I'm dropping off the signed retainer this afternoon, who should I leave it with?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "frustrated_billing",
+    "script_id": "call-0303",
+    "utterance": "Where should I leave these documents? I don't want to mail them.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "calm_professional",
+    "script_id": "call-0304",
+    "utterance": "I have a packet of documents to deliver -- when is the front desk staffed?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0305",
+    "utterance": "I have some papers to bring you. Where do I leave them?",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "esl_speaker",
+    "script_id": "call-0306",
+    "utterance": "I bring documents today, please. Where I leave?",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "fast_talker",
+    "script_id": "call-0307",
+    "utterance": "I'm coming by to drop off paperwork in like ten minutes who do I give it to is there a front desk?",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "soft_voice",
+    "script_id": "call-0308",
+    "utterance": "I have documents to drop off -- where would I bring them?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "interrupting_caller",
+    "script_id": "call-0309",
+    "utterance": "Documents -- where -- where do I drop these off?",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "cooperative_brief",
+    "script_id": "call-0310",
+    "utterance": "Where can I drop off some paperwork?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "nervous_first_time",
+    "script_id": "call-0311",
+    "utterance": "I -- I have some papers I was told to bring in -- can I just drop them off?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "returning_client",
+    "script_id": "call-0312",
+    "utterance": "I'm dropping off the signed retainer this afternoon, who should I leave it with?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "frustrated_billing",
+    "script_id": "call-0313",
+    "utterance": "Where should I leave these documents? I don't want to mail them.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "calm_professional",
+    "script_id": "call-0314",
+    "utterance": "I have a packet of documents to deliver -- when is the front desk staffed?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0315",
+    "utterance": "I have some papers to bring you. Where do I leave them?",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "esl_speaker",
+    "script_id": "call-0316",
+    "utterance": "I bring documents today, please. Where I leave?",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "fast_talker",
+    "script_id": "call-0317",
+    "utterance": "I'm coming by to drop off paperwork in like ten minutes who do I give it to is there a front desk?",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "soft_voice",
+    "script_id": "call-0318",
+    "utterance": "I have documents to drop off -- where would I bring them?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "interrupting_caller",
+    "script_id": "call-0319",
+    "utterance": "Documents -- where -- where do I drop these off?",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "cooperative_brief",
+    "script_id": "call-0320",
+    "utterance": "Where can I drop off some paperwork?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "nervous_first_time",
+    "script_id": "call-0321",
+    "utterance": "I -- I have some papers I was told to bring in -- can I just drop them off?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "returning_client",
+    "script_id": "call-0322",
+    "utterance": "I'm dropping off the signed retainer this afternoon, who should I leave it with?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "frustrated_billing",
+    "script_id": "call-0323",
+    "utterance": "Where should I leave these documents? I don't want to mail them.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "calm_professional",
+    "script_id": "call-0324",
+    "utterance": "I have a packet of documents to deliver -- when is the front desk staffed?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0325",
+    "utterance": "I have some papers to bring you. Where do I leave them?",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "esl_speaker",
+    "script_id": "call-0326",
+    "utterance": "I bring documents today, please. Where I leave?",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "fast_talker",
+    "script_id": "call-0327",
+    "utterance": "I'm coming by to drop off paperwork in like ten minutes who do I give it to is there a front desk?",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "soft_voice",
+    "script_id": "call-0328",
+    "utterance": "I have documents to drop off -- where would I bring them?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "interrupting_caller",
+    "script_id": "call-0329",
+    "utterance": "Documents -- where -- where do I drop these off?",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "cooperative_brief",
+    "script_id": "call-0330",
+    "utterance": "Where can I drop off some paperwork?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "nervous_first_time",
+    "script_id": "call-0331",
+    "utterance": "I -- I have some papers I was told to bring in -- can I just drop them off?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "returning_client",
+    "script_id": "call-0332",
+    "utterance": "I'm dropping off the signed retainer this afternoon, who should I leave it with?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "frustrated_billing",
+    "script_id": "call-0333",
+    "utterance": "Where should I leave these documents? I don't want to mail them.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "calm_professional",
+    "script_id": "call-0334",
+    "utterance": "I have a packet of documents to deliver -- when is the front desk staffed?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0335",
+    "utterance": "I have some papers to bring you. Where do I leave them?",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "esl_speaker",
+    "script_id": "call-0336",
+    "utterance": "I bring documents today, please. Where I leave?",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "fast_talker",
+    "script_id": "call-0337",
+    "utterance": "I'm coming by to drop off paperwork in like ten minutes who do I give it to is there a front desk?",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "soft_voice",
+    "script_id": "call-0338",
+    "utterance": "I have documents to drop off -- where would I bring them?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "interrupting_caller",
+    "script_id": "call-0339",
+    "utterance": "Documents -- where -- where do I drop these off?",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "cooperative_brief",
+    "script_id": "call-0340",
+    "utterance": "Where can I drop off some paperwork?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "nervous_first_time",
+    "script_id": "call-0341",
+    "utterance": "I -- I have some papers I was told to bring in -- can I just drop them off?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "returning_client",
+    "script_id": "call-0342",
+    "utterance": "I'm dropping off the signed retainer this afternoon, who should I leave it with?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "frustrated_billing",
+    "script_id": "call-0343",
+    "utterance": "Where should I leave these documents? I don't want to mail them.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "calm_professional",
+    "script_id": "call-0344",
+    "utterance": "I have a packet of documents to deliver -- when is the front desk staffed?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0345",
+    "utterance": "I have some papers to bring you. Where do I leave them?",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "esl_speaker",
+    "script_id": "call-0346",
+    "utterance": "I bring documents today, please. Where I leave?",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "fast_talker",
+    "script_id": "call-0347",
+    "utterance": "I'm coming by to drop off paperwork in like ten minutes who do I give it to is there a front desk?",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "soft_voice",
+    "script_id": "call-0348",
+    "utterance": "I have documents to drop off -- where would I bring them?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "interrupting_caller",
+    "script_id": "call-0349",
+    "utterance": "Documents -- where -- where do I drop these off?",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "document_dropoff_request",
+    "persona": "cooperative_brief",
+    "script_id": "call-0350",
+    "utterance": "Where can I drop off some paperwork?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "nervous_first_time",
+    "script_id": "call-0351",
+    "utterance": "I -- I'm sorry, I had a thing come up -- can I move my appointment?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "returning_client",
+    "script_id": "call-0352",
+    "utterance": "Need to reschedule Thursday's meeting -- something at work came up.",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "frustrated_billing",
+    "script_id": "call-0353",
+    "utterance": "I have to move my appointment again, sorry.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "calm_professional",
+    "script_id": "call-0354",
+    "utterance": "Could we reschedule the Thursday consultation to early next week?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0355",
+    "utterance": "I need to change my appointment. I have a doctor's visit.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "esl_speaker",
+    "script_id": "call-0356",
+    "utterance": "I cannot come to appointment Thursday, please change.",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "fast_talker",
+    "script_id": "call-0357",
+    "utterance": "Hey I gotta reschedule my appointment for tomorrow can we push it to next week sometime in the afternoon?",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "soft_voice",
+    "script_id": "call-0358",
+    "utterance": "Could we move my appointment to a different day?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "interrupting_caller",
+    "script_id": "call-0359",
+    "utterance": "Reschedule -- I need to -- change the time.",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "cooperative_brief",
+    "script_id": "call-0360",
+    "utterance": "I need to reschedule my appointment.",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "nervous_first_time",
+    "script_id": "call-0361",
+    "utterance": "I -- I'm sorry, I had a thing come up -- can I move my appointment?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "returning_client",
+    "script_id": "call-0362",
+    "utterance": "Need to reschedule Thursday's meeting -- something at work came up.",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "frustrated_billing",
+    "script_id": "call-0363",
+    "utterance": "I have to move my appointment again, sorry.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "calm_professional",
+    "script_id": "call-0364",
+    "utterance": "Could we reschedule the Thursday consultation to early next week?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0365",
+    "utterance": "I need to change my appointment. I have a doctor's visit.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "esl_speaker",
+    "script_id": "call-0366",
+    "utterance": "I cannot come to appointment Thursday, please change.",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "fast_talker",
+    "script_id": "call-0367",
+    "utterance": "Hey I gotta reschedule my appointment for tomorrow can we push it to next week sometime in the afternoon?",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "soft_voice",
+    "script_id": "call-0368",
+    "utterance": "Could we move my appointment to a different day?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "interrupting_caller",
+    "script_id": "call-0369",
+    "utterance": "Reschedule -- I need to -- change the time.",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "cooperative_brief",
+    "script_id": "call-0370",
+    "utterance": "I need to reschedule my appointment.",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "nervous_first_time",
+    "script_id": "call-0371",
+    "utterance": "I -- I'm sorry, I had a thing come up -- can I move my appointment?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "returning_client",
+    "script_id": "call-0372",
+    "utterance": "Need to reschedule Thursday's meeting -- something at work came up.",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "frustrated_billing",
+    "script_id": "call-0373",
+    "utterance": "I have to move my appointment again, sorry.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "calm_professional",
+    "script_id": "call-0374",
+    "utterance": "Could we reschedule the Thursday consultation to early next week?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0375",
+    "utterance": "I need to change my appointment. I have a doctor's visit.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "esl_speaker",
+    "script_id": "call-0376",
+    "utterance": "I cannot come to appointment Thursday, please change.",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "fast_talker",
+    "script_id": "call-0377",
+    "utterance": "Hey I gotta reschedule my appointment for tomorrow can we push it to next week sometime in the afternoon?",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "soft_voice",
+    "script_id": "call-0378",
+    "utterance": "Could we move my appointment to a different day?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "interrupting_caller",
+    "script_id": "call-0379",
+    "utterance": "Reschedule -- I need to -- change the time.",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "cooperative_brief",
+    "script_id": "call-0380",
+    "utterance": "I need to reschedule my appointment.",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "nervous_first_time",
+    "script_id": "call-0381",
+    "utterance": "I -- I'm sorry, I had a thing come up -- can I move my appointment?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "returning_client",
+    "script_id": "call-0382",
+    "utterance": "Need to reschedule Thursday's meeting -- something at work came up.",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "frustrated_billing",
+    "script_id": "call-0383",
+    "utterance": "I have to move my appointment again, sorry.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "calm_professional",
+    "script_id": "call-0384",
+    "utterance": "Could we reschedule the Thursday consultation to early next week?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0385",
+    "utterance": "I need to change my appointment. I have a doctor's visit.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "esl_speaker",
+    "script_id": "call-0386",
+    "utterance": "I cannot come to appointment Thursday, please change.",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "fast_talker",
+    "script_id": "call-0387",
+    "utterance": "Hey I gotta reschedule my appointment for tomorrow can we push it to next week sometime in the afternoon?",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "soft_voice",
+    "script_id": "call-0388",
+    "utterance": "Could we move my appointment to a different day?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "interrupting_caller",
+    "script_id": "call-0389",
+    "utterance": "Reschedule -- I need to -- change the time.",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "cooperative_brief",
+    "script_id": "call-0390",
+    "utterance": "I need to reschedule my appointment.",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "nervous_first_time",
+    "script_id": "call-0391",
+    "utterance": "I -- I'm sorry, I had a thing come up -- can I move my appointment?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "returning_client",
+    "script_id": "call-0392",
+    "utterance": "Need to reschedule Thursday's meeting -- something at work came up.",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "frustrated_billing",
+    "script_id": "call-0393",
+    "utterance": "I have to move my appointment again, sorry.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "calm_professional",
+    "script_id": "call-0394",
+    "utterance": "Could we reschedule the Thursday consultation to early next week?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0395",
+    "utterance": "I need to change my appointment. I have a doctor's visit.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "esl_speaker",
+    "script_id": "call-0396",
+    "utterance": "I cannot come to appointment Thursday, please change.",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "fast_talker",
+    "script_id": "call-0397",
+    "utterance": "Hey I gotta reschedule my appointment for tomorrow can we push it to next week sometime in the afternoon?",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "soft_voice",
+    "script_id": "call-0398",
+    "utterance": "Could we move my appointment to a different day?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "interrupting_caller",
+    "script_id": "call-0399",
+    "utterance": "Reschedule -- I need to -- change the time.",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "appointment_reschedule",
+    "persona": "cooperative_brief",
+    "script_id": "call-0400",
+    "utterance": "I need to reschedule my appointment.",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "nervous_first_time",
+    "script_id": "call-0401",
+    "utterance": "Could -- could someone call me back? I have a question I'd rather not leave on a message.",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "returning_client",
+    "script_id": "call-0402",
+    "utterance": "Just need a callback when she's free, no rush.",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "frustrated_billing",
+    "script_id": "call-0403",
+    "utterance": "I need a call back today -- this can't wait until next week.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "calm_professional",
+    "script_id": "call-0404",
+    "utterance": "Could I request a callback at the attorney's earliest convenience?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0405",
+    "utterance": "Can someone call me back later? I have a question.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "esl_speaker",
+    "script_id": "call-0406",
+    "utterance": "Please, can the attorney call me back today?",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "fast_talker",
+    "script_id": "call-0407",
+    "utterance": "Need a callback when she gets a chance can be later today or tomorrow either works for me.",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "soft_voice",
+    "script_id": "call-0408",
+    "utterance": "Could I ask for a callback when there's a moment?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "interrupting_caller",
+    "script_id": "call-0409",
+    "utterance": "Have him call me -- back -- soon as he can.",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "cooperative_brief",
+    "script_id": "call-0410",
+    "utterance": "Could the attorney call me back today?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "nervous_first_time",
+    "script_id": "call-0411",
+    "utterance": "Could -- could someone call me back? I have a question I'd rather not leave on a message.",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "returning_client",
+    "script_id": "call-0412",
+    "utterance": "Just need a callback when she's free, no rush.",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "frustrated_billing",
+    "script_id": "call-0413",
+    "utterance": "I need a call back today -- this can't wait until next week.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "calm_professional",
+    "script_id": "call-0414",
+    "utterance": "Could I request a callback at the attorney's earliest convenience?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0415",
+    "utterance": "Can someone call me back later? I have a question.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "esl_speaker",
+    "script_id": "call-0416",
+    "utterance": "Please, can the attorney call me back today?",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "fast_talker",
+    "script_id": "call-0417",
+    "utterance": "Need a callback when she gets a chance can be later today or tomorrow either works for me.",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "soft_voice",
+    "script_id": "call-0418",
+    "utterance": "Could I ask for a callback when there's a moment?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "interrupting_caller",
+    "script_id": "call-0419",
+    "utterance": "Have him call me -- back -- soon as he can.",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "cooperative_brief",
+    "script_id": "call-0420",
+    "utterance": "Could the attorney call me back today?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "nervous_first_time",
+    "script_id": "call-0421",
+    "utterance": "Could -- could someone call me back? I have a question I'd rather not leave on a message.",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "returning_client",
+    "script_id": "call-0422",
+    "utterance": "Just need a callback when she's free, no rush.",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "frustrated_billing",
+    "script_id": "call-0423",
+    "utterance": "I need a call back today -- this can't wait until next week.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "calm_professional",
+    "script_id": "call-0424",
+    "utterance": "Could I request a callback at the attorney's earliest convenience?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0425",
+    "utterance": "Can someone call me back later? I have a question.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "esl_speaker",
+    "script_id": "call-0426",
+    "utterance": "Please, can the attorney call me back today?",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "fast_talker",
+    "script_id": "call-0427",
+    "utterance": "Need a callback when she gets a chance can be later today or tomorrow either works for me.",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "soft_voice",
+    "script_id": "call-0428",
+    "utterance": "Could I ask for a callback when there's a moment?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "interrupting_caller",
+    "script_id": "call-0429",
+    "utterance": "Have him call me -- back -- soon as he can.",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "cooperative_brief",
+    "script_id": "call-0430",
+    "utterance": "Could the attorney call me back today?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "nervous_first_time",
+    "script_id": "call-0431",
+    "utterance": "Could -- could someone call me back? I have a question I'd rather not leave on a message.",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "returning_client",
+    "script_id": "call-0432",
+    "utterance": "Just need a callback when she's free, no rush.",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "frustrated_billing",
+    "script_id": "call-0433",
+    "utterance": "I need a call back today -- this can't wait until next week.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "calm_professional",
+    "script_id": "call-0434",
+    "utterance": "Could I request a callback at the attorney's earliest convenience?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0435",
+    "utterance": "Can someone call me back later? I have a question.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "esl_speaker",
+    "script_id": "call-0436",
+    "utterance": "Please, can the attorney call me back today?",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "fast_talker",
+    "script_id": "call-0437",
+    "utterance": "Need a callback when she gets a chance can be later today or tomorrow either works for me.",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "soft_voice",
+    "script_id": "call-0438",
+    "utterance": "Could I ask for a callback when there's a moment?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "interrupting_caller",
+    "script_id": "call-0439",
+    "utterance": "Have him call me -- back -- soon as he can.",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "cooperative_brief",
+    "script_id": "call-0440",
+    "utterance": "Could the attorney call me back today?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "nervous_first_time",
+    "script_id": "call-0441",
+    "utterance": "Could -- could someone call me back? I have a question I'd rather not leave on a message.",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "returning_client",
+    "script_id": "call-0442",
+    "utterance": "Just need a callback when she's free, no rush.",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "frustrated_billing",
+    "script_id": "call-0443",
+    "utterance": "I need a call back today -- this can't wait until next week.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "calm_professional",
+    "script_id": "call-0444",
+    "utterance": "Could I request a callback at the attorney's earliest convenience?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0445",
+    "utterance": "Can someone call me back later? I have a question.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "esl_speaker",
+    "script_id": "call-0446",
+    "utterance": "Please, can the attorney call me back today?",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "fast_talker",
+    "script_id": "call-0447",
+    "utterance": "Need a callback when she gets a chance can be later today or tomorrow either works for me.",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "soft_voice",
+    "script_id": "call-0448",
+    "utterance": "Could I ask for a callback when there's a moment?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "interrupting_caller",
+    "script_id": "call-0449",
+    "utterance": "Have him call me -- back -- soon as he can.",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "attorney_callback_request",
+    "persona": "cooperative_brief",
+    "script_id": "call-0450",
+    "utterance": "Could the attorney call me back today?",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "nervous_first_time",
+    "script_id": "call-0451",
+    "utterance": "I -- I don't think the assistant can help me with this -- can I speak to someone higher up?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "returning_client",
+    "script_id": "call-0452",
+    "utterance": "I need to escalate this -- can I get a partner on the line?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "frustrated_billing",
+    "script_id": "call-0453",
+    "utterance": "I want to speak to whoever is in charge. Now please.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "calm_professional",
+    "script_id": "call-0454",
+    "utterance": "I'd like to escalate this matter -- could you put me through to a senior attorney?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0455",
+    "utterance": "I want to speak with someone in charge please.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "esl_speaker",
+    "script_id": "call-0456",
+    "utterance": "I want to speak with manager or senior, please.",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "fast_talker",
+    "script_id": "call-0457",
+    "utterance": "I really need to speak with somebody in charge this is the third time I've called and gotten nowhere.",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "soft_voice",
+    "script_id": "call-0458",
+    "utterance": "Could I speak with someone more senior, please?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "interrupting_caller",
+    "script_id": "call-0459",
+    "utterance": "Manager -- supervisor -- whoever's in charge -- please.",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "neutral",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "cooperative_brief",
+    "script_id": "call-0460",
+    "utterance": "I'd like to speak with a supervisor.",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "nervous_first_time",
+    "script_id": "call-0461",
+    "utterance": "I -- I don't think the assistant can help me with this -- can I speak to someone higher up?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "returning_client",
+    "script_id": "call-0462",
+    "utterance": "I need to escalate this -- can I get a partner on the line?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "frustrated_billing",
+    "script_id": "call-0463",
+    "utterance": "I want to speak to whoever is in charge. Now please.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "calm_professional",
+    "script_id": "call-0464",
+    "utterance": "I'd like to escalate this matter -- could you put me through to a senior attorney?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0465",
+    "utterance": "I want to speak with someone in charge please.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "esl_speaker",
+    "script_id": "call-0466",
+    "utterance": "I want to speak with manager or senior, please.",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "fast_talker",
+    "script_id": "call-0467",
+    "utterance": "I really need to speak with somebody in charge this is the third time I've called and gotten nowhere.",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "soft_voice",
+    "script_id": "call-0468",
+    "utterance": "Could I speak with someone more senior, please?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "interrupting_caller",
+    "script_id": "call-0469",
+    "utterance": "Manager -- supervisor -- whoever's in charge -- please.",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "mild_emotional",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "cooperative_brief",
+    "script_id": "call-0470",
+    "utterance": "I'd like to speak with a supervisor.",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "nervous_first_time",
+    "script_id": "call-0471",
+    "utterance": "I -- I don't think the assistant can help me with this -- can I speak to someone higher up?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "returning_client",
+    "script_id": "call-0472",
+    "utterance": "I need to escalate this -- can I get a partner on the line?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "frustrated_billing",
+    "script_id": "call-0473",
+    "utterance": "I want to speak to whoever is in charge. Now please.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "calm_professional",
+    "script_id": "call-0474",
+    "utterance": "I'd like to escalate this matter -- could you put me through to a senior attorney?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0475",
+    "utterance": "I want to speak with someone in charge please.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "esl_speaker",
+    "script_id": "call-0476",
+    "utterance": "I want to speak with manager or senior, please.",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "fast_talker",
+    "script_id": "call-0477",
+    "utterance": "I really need to speak with somebody in charge this is the third time I've called and gotten nowhere.",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "soft_voice",
+    "script_id": "call-0478",
+    "utterance": "Could I speak with someone more senior, please?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "interrupting_caller",
+    "script_id": "call-0479",
+    "utterance": "Manager -- supervisor -- whoever's in charge -- please.",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "accent_strong",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "cooperative_brief",
+    "script_id": "call-0480",
+    "utterance": "I'd like to speak with a supervisor.",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "nervous_first_time",
+    "script_id": "call-0481",
+    "utterance": "I -- I don't think the assistant can help me with this -- can I speak to someone higher up?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "returning_client",
+    "script_id": "call-0482",
+    "utterance": "I need to escalate this -- can I get a partner on the line?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "frustrated_billing",
+    "script_id": "call-0483",
+    "utterance": "I want to speak to whoever is in charge. Now please.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "calm_professional",
+    "script_id": "call-0484",
+    "utterance": "I'd like to escalate this matter -- could you put me through to a senior attorney?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0485",
+    "utterance": "I want to speak with someone in charge please.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "esl_speaker",
+    "script_id": "call-0486",
+    "utterance": "I want to speak with manager or senior, please.",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "fast_talker",
+    "script_id": "call-0487",
+    "utterance": "I really need to speak with somebody in charge this is the third time I've called and gotten nowhere.",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "soft_voice",
+    "script_id": "call-0488",
+    "utterance": "Could I speak with someone more senior, please?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "interrupting_caller",
+    "script_id": "call-0489",
+    "utterance": "Manager -- supervisor -- whoever's in charge -- please.",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "background_noise",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "cooperative_brief",
+    "script_id": "call-0490",
+    "utterance": "I'd like to speak with a supervisor.",
+    "voice_seed": "af_river"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "nervous_first_time",
+    "script_id": "call-0491",
+    "utterance": "I -- I don't think the assistant can help me with this -- can I speak to someone higher up?",
+    "voice_seed": "af_heart"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "returning_client",
+    "script_id": "call-0492",
+    "utterance": "I need to escalate this -- can I get a partner on the line?",
+    "voice_seed": "af_alloy"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "frustrated_billing",
+    "script_id": "call-0493",
+    "utterance": "I want to speak to whoever is in charge. Now please.",
+    "voice_seed": "am_adam"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "calm_professional",
+    "script_id": "call-0494",
+    "utterance": "I'd like to escalate this matter -- could you put me through to a senior attorney?",
+    "voice_seed": "af_bella"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "elderly_hard_of_hearing",
+    "script_id": "call-0495",
+    "utterance": "I want to speak with someone in charge please.",
+    "voice_seed": "am_michael"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "esl_speaker",
+    "script_id": "call-0496",
+    "utterance": "I want to speak with manager or senior, please.",
+    "voice_seed": "af_nicole"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "fast_talker",
+    "script_id": "call-0497",
+    "utterance": "I really need to speak with somebody in charge this is the third time I've called and gotten nowhere.",
+    "voice_seed": "am_eric"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "soft_voice",
+    "script_id": "call-0498",
+    "utterance": "Could I speak with someone more senior, please?",
+    "voice_seed": "af_sky"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "interrupting_caller",
+    "script_id": "call-0499",
+    "utterance": "Manager -- supervisor -- whoever's in charge -- please.",
+    "voice_seed": "am_liam"
+  },
+  {
+    "adversity_level": "urgent_distressed",
+    "duration_target_s": 5.0,
+    "intent": "escalation_request",
+    "persona": "cooperative_brief",
+    "script_id": "call-0500",
+    "utterance": "I'd like to speak with a supervisor.",
+    "voice_seed": "af_river"
+  }
+]

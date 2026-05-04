@@ -34,10 +34,17 @@ def main() -> int:
                 return 1
             listed = {row["path"] for row in reader}
 
+    # Skip any audio that lives inside a virtualenv (e.g.
+    # assets/render_env/.venv/ ships scipy/torch test-fixture WAVs we don't own).
+    # Plan 04 introduced the asset-rendering venv under assets/render_env/ per
+    # Pitfall 1 isolation; that venv's site-packages are not project assets.
+    def _in_venv(p: pathlib.Path) -> bool:
+        return any(part == ".venv" or part == "site-packages" for part in p.parts)
+
     found = {
         str(p)
         for p in (ROOT / "assets").rglob("*")
-        if p.is_file() and p.suffix.lower() in AUDIO_EXTS
+        if p.is_file() and p.suffix.lower() in AUDIO_EXTS and not _in_venv(p)
     }
     unlisted = found - listed
     if unlisted:

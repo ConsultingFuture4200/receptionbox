@@ -1,0 +1,19 @@
+[project]
+name = "rbox-render"
+version = "0.1.0"
+description = "Asset-rendering venv (GTX 1070 / sm_61). Separate from harness venv (Pitfall 1)."
+requires-python = ">=3.11,<3.12"
+dependencies = [
+    # Pin torch <=2.5 to keep sm_61 (Pascal GTX 1070) wheel availability -- A3 in RESEARCH.md.
+    "torch<=2.5.1",
+    "kokoro>=0.5",
+    "soundfile>=0.12",
+    "numpy<2.0",  # numpy 2.x can break older torch wheels
+    "scipy>=1.13",
+    "pyyaml>=6.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+]

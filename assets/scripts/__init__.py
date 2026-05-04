@@ -1,1 +1,1 @@
-# Dialogue script templates (Plan 04 fills).
+# Dialogue scripts authored by templates.py (ASSETS-01).
