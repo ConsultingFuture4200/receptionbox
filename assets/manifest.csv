@@ -1,0 +1,2 @@
+asset_id,corpus,path,sha256,license,source,created_utc,generator_script,generator_seed,kokoro_revision,intent,adversity_level,persona,duration_s,sample_rate
+reference_prompt,corpus_meta,assets/reference_prompt.md,41a9b8342d33402d87464dbea3a6d6b4f28e26a17d03c662bada244130638e11,internal,assets/reference_prompt.md,2026-05-04T21:52:13+00:00,manual,,,,,,,
