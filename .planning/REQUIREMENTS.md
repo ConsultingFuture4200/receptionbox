@@ -137,17 +137,80 @@ Explicitly excluded. Documented to prevent scope creep.
 
 ## Traceability
 
-Empty initially — populated by `gsd-roadmapper` during ROADMAP.md creation.
+Populated by `gsd-roadmapper` after ROADMAP.md creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| (To be filled by roadmapper) | | |
+| INFRA-01 | Phase 1 | Pending |
+| INFRA-02 | Phase 1 | Pending |
+| INFRA-03 | Phase 1 | Pending |
+| INFRA-04 | Phase 1 | Pending |
+| INFRA-05 | Phase 1 | Pending |
+| INFRA-06 | Phase 1 | Pending |
+| ASSETS-01 | Phase 1 | Pending |
+| ASSETS-02 | Phase 1 | Pending |
+| ASSETS-03 | Phase 1 | Pending |
+| ASSETS-04 | Phase 1 | Pending |
+| ASSETS-05 | Phase 1 | Pending |
+| ASSETS-06 | Phase 1 | Pending |
+| ASSETS-07 | Phase 1 | Pending |
+| ASSETS-08 | Phase 1 | Pending |
+| HARNESS-01 | Phase 1 | Pending |
+| HARNESS-02 | Phase 2 | Pending |
+| HARNESS-03 | Phase 3 | Pending |
+| HARNESS-04 | Phase 1 | Pending |
+| HARNESS-05 | Phase 2 | Pending |
+| HARNESS-06 | Phase 2 | Pending |
+| CLOUD-01 | Phase 1 | Pending |
+| CLOUD-02 | Phase 1 | Pending |
+| CLOUD-03 | Phase 1 | Pending |
+| CLOUD-04 | Phase 2 | Pending |
+| CLOUD-05 | Phase 2 | Pending |
+| CLOUD-06 | Phase 2 | Pending |
+| PREFLIGHT-01 | Phase 2 | Pending |
+| PREFLIGHT-02 | Phase 2 | Pending |
+| PREFLIGHT-03 | Phase 2 | Pending |
+| GATE-G1 | Phase 3 | Pending |
+| GATE-G2 | Phase 3 | Pending |
+| GATE-G3 | Phase 3 | Pending |
+| GATE-G5 | Phase 3 | Pending |
+| GATE-G7 | Phase 3 | Pending |
+| GATE-CHATTERBOX-D1 | Phase 3 | Pending |
+| AUDIT-01 | Phase 3 | Pending |
+| AUDIT-02 | Phase 3 | Pending |
+| AUDIT-03 | Phase 3 | Pending |
+| DERATE-01 | Phase 1 | Pending |
+| DERATE-02 | Phase 4 | Pending |
+| DERATE-03 | Phase 4 | Pending |
+| DERATE-04 | Phase 4 | Pending |
+| DERATE-05 | Phase 4 | Pending |
+| REPORT-01 | Phase 4 | Pending |
+| REPORT-02 | Phase 4 | Pending |
+| REPORT-03 | Phase 4 | Pending |
+| REPORT-04 | Phase 4 | Pending |
+| REPORT-05 | Phase 4 | Pending |
+| REPORT-06 | Phase 4 | Pending |
+| REPORT-07 | Phase 4 | Pending |
+| REPRO-01 | Phase 1 | Pending |
+| REPRO-02 | Phase 1 | Pending |
+| REPRO-03 | Phase 2 | Pending |
+| REPRO-04 | Phase 4 | Pending |
+| REPRO-05 | Phase 4 | Pending |
+| DECISION-NC-R14 | Phase 1 | Pending |
+| DECISION-NC-R12 | Phase 4 | Pending |
+| DECISION-DOCS | Phase 1 | Pending |
 
 **Coverage:**
-- v1 requirements: 50 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 50 ⚠️ (resolved by roadmapper)
+- v1 requirements: 58 total
+- Mapped to phases: 58
+- Unmapped: 0 (full coverage)
+
+**Per-phase distribution:**
+- Phase 1 (Foundation): 24 requirements
+- Phase 2 (CUDA Pre-flight): 10 requirements
+- Phase 3 (ROCm Validation): 10 requirements
+- Phase 4 (Synthesis & Gate Decision): 14 requirements
 
 ---
 *Requirements defined: 2026-05-04*
-*Last updated: 2026-05-04 after initial definition*
+*Last updated: 2026-05-04 after roadmap creation (traceability populated)*
