@@ -1,0 +1,277 @@
+[
+  {
+    "edge_case_kinds": [
+      "numbers",
+      "money_format",
+      "time_format",
+      "proper_nouns",
+      "abbreviations"
+    ],
+    "notes": "Numerics + uncommon name + 24-hour time",
+    "pair_id": "tts-0001",
+    "text": "Schedule a 30-minute consultation for $250 with Mr. Petrenko at 14:30 on October 12th."
+  },
+  {
+    "edge_case_kinds": [
+      "numbers_spelled_out",
+      "money_format"
+    ],
+    "notes": "Spelled-out numerics",
+    "pair_id": "tts-0002",
+    "text": "The retainer is two thousand five hundred dollars, payable in three installments."
+  },
+  {
+    "edge_case_kinds": [
+      "legal_terminology",
+      "proper_nouns",
+      "weekday"
+    ],
+    "notes": "Statutory cite without real number; weekday",
+    "pair_id": "tts-0003",
+    "text": "Filed under Civil Procedure section 425.16, the anti-SLAPP motion is due Tuesday."
+  },
+  {
+    "edge_case_kinds": [
+      "phone_number",
+      "time_format",
+      "timezone"
+    ],
+    "notes": "Faux phone number; AM/PM; timezone",
+    "pair_id": "tts-0004",
+    "text": "Please call back at 555-0142 between 9 a.m. and 5 p.m. Pacific."
+  },
+  {
+    "edge_case_kinds": [
+      "legal_terminology",
+      "date_format"
+    ],
+    "notes": "Latin legal phrase; ordinal date",
+    "pair_id": "tts-0005",
+    "text": "Confirm receipt of the subpoena duces tecum by November 3rd."
+  },
+  {
+    "edge_case_kinds": [
+      "address",
+      "proper_nouns",
+      "alphanumeric"
+    ],
+    "notes": "Address with alphanumeric suite",
+    "pair_id": "tts-0006",
+    "text": "The address is 1842 Esperanza Boulevard, Suite 7B, in Pasadena."
+  },
+  {
+    "edge_case_kinds": [
+      "weekday",
+      "time_format",
+      "ordinal"
+    ],
+    "notes": "Weekday + AM/PM",
+    "pair_id": "tts-0007",
+    "text": "Court is set for Wednesday at 10:15 a.m. in courtroom 4."
+  },
+  {
+    "edge_case_kinds": [
+      "proper_nouns_difficult",
+      "abbreviations"
+    ],
+    "notes": "Hard-to-pronounce surname; quarter abbreviation",
+    "pair_id": "tts-0008",
+    "text": "Attorney Wojciechowska is unavailable until Q1 of next year."
+  },
+  {
+    "edge_case_kinds": [
+      "form_numbers",
+      "alphanumeric"
+    ],
+    "notes": "Tax-form alphanumerics",
+    "pair_id": "tts-0009",
+    "text": "Please bring two copies of the W-2, the 1099-MISC, and the 1040."
+  },
+  {
+    "edge_case_kinds": [
+      "ordinal",
+      "informal_time"
+    ],
+    "notes": "Ordinal + colloquial time",
+    "pair_id": "tts-0010",
+    "text": "The deposition is scheduled for the 22nd at half past three."
+  },
+  {
+    "edge_case_kinds": [
+      "proper_nouns_difficult",
+      "time_format",
+      "hyphenated_names"
+    ],
+    "notes": "Compound surname + AM/PM",
+    "pair_id": "tts-0011",
+    "text": "Mr. and Mrs. Nguyen-Vasquez confirmed their 4 p.m. appointment."
+  },
+  {
+    "edge_case_kinds": [
+      "money_format_complex"
+    ],
+    "notes": "Money with cents",
+    "pair_id": "tts-0012",
+    "text": "The settlement offer is $137,250.50."
+  },
+  {
+    "edge_case_kinds": [
+      "weekday",
+      "ordinal",
+      "idiom"
+    ],
+    "notes": "Common phrase; ordinal date",
+    "pair_id": "tts-0013",
+    "text": "File the brief by the close of business on Friday the 13th."
+  },
+  {
+    "edge_case_kinds": [
+      "legal_alphanumeric"
+    ],
+    "notes": "Statute-style nested numbering",
+    "pair_id": "tts-0014",
+    "text": "Subparagraph (b)(3)(ii) of the lease addresses noise complaints."
+  },
+  {
+    "edge_case_kinds": [
+      "date_range",
+      "month"
+    ],
+    "notes": "Date range across days of same month",
+    "pair_id": "tts-0015",
+    "text": "She'll be in trial from June 4th through June 17th."
+  },
+  {
+    "edge_case_kinds": [
+      "spaced_digits",
+      "literal_quoted"
+    ],
+    "notes": "Spaced numeric + quoted token",
+    "pair_id": "tts-0016",
+    "text": "Confirm the Zoom ID 873 4519 0226 and passcode is 'rocketship'."
+  },
+  {
+    "edge_case_kinds": [
+      "iso_date"
+    ],
+    "notes": "ISO date format",
+    "pair_id": "tts-0017",
+    "text": "The 2026-05-04 hearing was continued to 2026-08-19."
+  },
+  {
+    "edge_case_kinds": [
+      "file_extension",
+      "domain_word"
+    ],
+    "notes": "File extension + 'at our domain'",
+    "pair_id": "tts-0018",
+    "text": "Please send the .docx to intake at our domain."
+  },
+  {
+    "edge_case_kinds": [
+      "score_format",
+      "legal_terminology"
+    ],
+    "notes": "Vote count style",
+    "pair_id": "tts-0019",
+    "text": "The judgment was upheld 5 to 2 by the appellate panel."
+  },
+  {
+    "edge_case_kinds": [
+      "latin_phrase",
+      "legal_terminology"
+    ],
+    "notes": "Multiple Latin phrases",
+    "pair_id": "tts-0020",
+    "text": "Pro se litigants must file in forma pauperis if requesting fee waivers."
+  },
+  {
+    "edge_case_kinds": [
+      "percent",
+      "date"
+    ],
+    "notes": "Decimal percent + ordinal",
+    "pair_id": "tts-0021",
+    "text": "The premiums increased 12.5% year over year, effective January 1st."
+  },
+  {
+    "edge_case_kinds": [
+      "alphanumeric",
+      "spatial"
+    ],
+    "notes": "Alphanumerics + spatial",
+    "pair_id": "tts-0022",
+    "text": "Park in lot C, level 2, near elevators 3 and 4."
+  },
+  {
+    "edge_case_kinds": [
+      "abbreviations",
+      "abbreviation_eod"
+    ],
+    "notes": "EOD; NDA",
+    "pair_id": "tts-0023",
+    "text": "Email the redline of the NDA back by EOD tomorrow."
+  },
+  {
+    "edge_case_kinds": [
+      "proper_nouns_difficult",
+      "hyphenated_names"
+    ],
+    "notes": "Difficult compound surname",
+    "pair_id": "tts-0024",
+    "text": "Mr. McAllister-Quinones is in conflicts review."
+  },
+  {
+    "edge_case_kinds": [
+      "informal_date",
+      "idiom"
+    ],
+    "notes": "Vague date phrase",
+    "pair_id": "tts-0025",
+    "text": "The check arrives on or about the third of the month."
+  },
+  {
+    "edge_case_kinds": [
+      "case_caption_generic",
+      "geographic"
+    ],
+    "notes": "Generic case-caption pattern",
+    "pair_id": "tts-0026",
+    "text": "She authored Smith v. State, decided in the Eastern District last year."
+  },
+  {
+    "edge_case_kinds": [
+      "spelled_money",
+      "spelled_numbers"
+    ],
+    "notes": "Fully spelled money",
+    "pair_id": "tts-0027",
+    "text": "Twenty-seven thousand four hundred fifty dollars and zero cents."
+  },
+  {
+    "edge_case_kinds": [
+      "time_format",
+      "noon_keyword"
+    ],
+    "notes": "Time + 'noon' keyword",
+    "pair_id": "tts-0028",
+    "text": "Reschedule from 11:45 to noon on the same day."
+  },
+  {
+    "edge_case_kinds": [
+      "legal_terminology"
+    ],
+    "notes": "Two legal terms back-to-back",
+    "pair_id": "tts-0029",
+    "text": "The complaint cites breach of fiduciary duty and tortious interference."
+  },
+  {
+    "edge_case_kinds": [
+      "abbreviations_directional",
+      "proper_nouns"
+    ],
+    "notes": "Directional abbreviations",
+    "pair_id": "tts-0030",
+    "text": "Please confirm whether the address is 1 N. Broadway or 1 South Broadway."
+  }
+]

@@ -10,6 +10,8 @@ certifi==2026.4.22
     # via
     #   httpcore
     #   httpx
+cffi==2.0.0
+    # via soundfile
 cfgv==3.5.0
     # via pre-commit
 click==8.3.3
@@ -88,6 +90,7 @@ numpy==2.4.4
     #   pandas
     #   pyloudnorm
     #   scipy
+    #   soundfile
 packaging==26.2
     # via
     #   huggingface-hub
@@ -106,6 +109,8 @@ platformdirs==4.9.6
 pluggy==1.6.0
     # via pytest
 pre-commit==4.6.0
+pycparser==3.0 ; implementation_name != 'PyPy'
+    # via cffi
 pydantic==2.13.3
     # via
     #   pydantic-settings
@@ -153,6 +158,8 @@ shellingham==1.5.4
     # via typer
 six==1.17.0
     # via python-dateutil
+soundfile==0.13.1
+    # via rbox
 tqdm==4.67.3
     # via huggingface-hub
 typer==0.25.1

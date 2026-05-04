@@ -17,6 +17,7 @@ dependencies = [
     "matplotlib>=3.7",
     "scipy>=1.13",
     "pyloudnorm>=0.1",
+    "soundfile>=0.12",
 ]
 
 [dependency-groups]
