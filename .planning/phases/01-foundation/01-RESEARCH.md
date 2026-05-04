@@ -1077,36 +1077,42 @@ check:              # CI gate: lint + test + manifest enforcement
 | A8 | The synthesis report's "soft pass with caveats" language for G3 is acceptable to UMB Group / Eric | D-03, DECISION-NC-R14 | Low — DR-28 explicitly permits soft-pass framing; CONTEXT.md confirms this. Risk only if operator rejects the framing later |
 | A9 | The reference prompt placeholder structure (`{firm_name}`, `{practice_area}`) is permissive enough to surface UPL escapes per Pitfall 7 | D-07 | Medium — Pitfall 7 says "generic prompt is more conservative than production"; D-07 specifically authors a *permissive* generic prompt to mitigate, but the gap can never be fully closed pre-firm-customization. Phase 1 caveat (D-08) covers this |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Strict interpretation of `requirements.lock` (INFRA-02 wording)?**
    - What we know: `uv.lock` is canonical for uv project mode; the wording "requirements.lock" predates project mode adoption.
    - What's unclear: Whether the operator wants both files or just `uv.lock`.
+   - RESOLVED: Ship `uv.lock` (canonical) + `make export-requirements` target that emits `requirements.lock` in pip-compat format on demand. Surface as planner clarification before Wave 0 starts.
    - Recommendation: Ship `uv.lock` (canonical) + `make export-requirements` target that emits `requirements.lock` in pip-compat format on demand. Surface as planner clarification before Wave 0 starts.
 
 2. **DR-31 sharing policy — should Claude draft to operator review, or operator-author?**
    - What we know: CONTEXT.md "Claude's Discretion" section says "Claude drafts `docs/decisions/dr-31-sharing-policy.md` based on PRD §13 NC-R14 + Pitfall 10." Stance is locked (methodology + prediction range only pre-SOW; two-tier when numbers travel).
    - What's unclear: Whether operator reviews/edits before Phase 1 closes or simply accepts.
+   - RESOLVED: Plan ships the v0.1.0 draft early in the wave; operator review is an explicit Phase 1 task (1 hour); v0.1.1 if any edits emerge. Phase 1 cannot close until operator signs off (per ROADMAP success criterion 3).
    - Recommendation: Plan ships the v0.1.0 draft early in the wave; operator review is an explicit Phase 1 task (1 hour); v0.1.1 if any edits emerge. Phase 1 cannot close until operator signs off (per ROADMAP success criterion 3).
 
 3. **Asset-rendering venv lockfile?**
    - What we know: Two venvs (harness + asset-rendering); harness uses `uv.lock`.
    - What's unclear: Should asset-rendering venv also have a committed lockfile, or is it ephemeral?
+   - RESOLVED: **Commit `assets/render_env/uv.lock`**. Reproducibility argues for it (REPRO-01/02 spirit); the cost is one extra lockfile.
    - Recommendation: **Commit `assets/render_env/uv.lock`**. Reproducibility argues for it (REPRO-01/02 spirit); the cost is one extra lockfile.
 
 4. **Should `models.lock.yaml` contain SHA-256 of safetensors / GGUF / ONNX file artifacts, or only HF commit revision SHA?**
    - What we know: REPRO-02 says "pins every HF model by `revision=<commit_sha>`." Pitfall 9 says "SHA-256 of the safetensors / GGUF / ONNX file recorded."
    - What's unclear: Whether commit-SHA pinning alone is enough, or per-file SHA-256 is also required.
+   - RESOLVED: **Both.** `models.lock.yaml` records `repo_id`, `revision: <commit_sha>` (HF level), and `files: [{filename, sha256}]` (file level). HF's ETag-based caching uses git-sha1 / sha256 already, so we're recording what's on disk. Pitfall 9's belt-and-suspenders is cheap.
    - Recommendation: **Both.** `models.lock.yaml` records `repo_id`, `revision: <commit_sha>` (HF level), and `files: [{filename, sha256}]` (file level). HF's ETag-based caching uses git-sha1 / sha256 already, so we're recording what's on disk. Pitfall 9's belt-and-suspenders is cheap.
 
 5. **Substrate ABC `Grammar` type definition?**
    - What we know: D-09 says `grammar: Grammar | None`. Use is xgrammar.
    - What's unclear: Whether `Grammar` is a `pydantic.BaseModel`, a `str` (JSON schema), a `dict`, or a thin wrapper.
+   - RESOLVED: Phase 1 ships `Grammar = str | dict[str, Any]` (type alias). xgrammar accepts JSON Schema strings; no need to invent a richer type until Phase 3 actually wires it.
    - Recommendation: Phase 1 ships `Grammar = str | dict[str, Any]` (type alias). xgrammar accepts JSON Schema strings; no need to invent a richer type until Phase 3 actually wires it.
 
 6. **Whether Phase 1 also drafts a lightweight DR-31 *internal* memo (for Eric / Dustin) vs the formal external-facing decision document?**
    - What we know: D-13 says drop companion docs; DECISION-NC-R14 says "explicit policy recorded in `docs/decisions/dr-31-sharing-policy.md`."
    - What's unclear: Whether one document serves both audiences.
+   - RESOLVED: One document, structured as: §1 Decision (operator-facing), §2 External-sharing rules (firm-facing rationale), §3 Caveats. Avoids two-document drift.
    - Recommendation: One document, structured as: §1 Decision (operator-facing), §2 External-sharing rules (firm-facing rationale), §3 Caveats. Avoids two-document drift.
 
 ## Environment Availability

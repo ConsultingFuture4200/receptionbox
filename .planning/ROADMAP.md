@@ -24,10 +24,16 @@ Phase 0 is a one-week, $150-ceiling cloud benchmark harness that produces derate
 **Success Criteria** (what must be TRUE):
   1. All 5 evaluation corpora (500-call, 200 G.711, hesitation, 200 UPL + 50 benign control, 30 TTS pair) are SHA-pinned in `assets/manifest.csv` with provenance line per asset, and gate runners refuse assets not listed
   2. Cost ledger refuses cloud provisioning when `budget_remaining - projected_cost*1.5 < 0`, verified by a dry-run unit test against synthetic budget data
-  3. NC-R14 sharing-policy resolution is recorded in `docs/decisions/dr-31-sharing-policy.md` and operator has dropped parent thUMBox PRDs (technical + business v2.1), discovery addendum v0.2, hardware-pivot addendum v0.1, feasibility memo v0.3, and virtual benchmark plan v0.1 into `docs/`
+  3. NC-R14 sharing-policy resolution is recorded in `docs/decisions/dr-31-sharing-policy.v0.1.0.md` and operator has dropped parent thUMBox PRDs (technical + business v2.1), discovery addendum v0.2, hardware-pivot addendum v0.1, feasibility memo v0.3, and virtual benchmark plan v0.1 into `docs/`
   4. Substrate ABC, result schema (pydantic + `schema_version`), Makefile single-command targets, uv lockfile, image/model lockfiles, and `derating/strix_model.py` skeleton all type-check and pass unit tests on synthetic data
   5. RunPod and TensorWave accounts are provisioned with provider-level $75 caps each, `cost-watch.py` daemon polls billing APIs every 5 minutes, and dual cost-cap rails are demonstrably wired
-**Plans**: TBD
+**Plans**: 5 plans
+Plans:
+- [ ] 01-01-PLAN.md — Repo skeleton + uv project + Makefile + pre-commit + config-as-code (INFRA-01..05)
+- [ ] 01-02-PLAN.md — Substrate ABC + GateResult + cost ledger + derating skeleton + lockfiles (INFRA-06, HARNESS-01, HARNESS-04, DERATE-01, REPRO-01, REPRO-02)
+- [ ] 01-03-PLAN.md — Reference prompt + UPL probes + benign control + TTS A/B text pairs + G.711 transcoder (ASSETS-04..08)
+- [ ] 01-04-PLAN.md — Local Kokoro audio rendering: 500-call corpus + 200 G.711 stratified subset + hesitation set (ASSETS-01..03)
+- [ ] 01-05-PLAN.md — Cost-watch daemon + provider adapters + orchestration skeletons + DR-31 + companion docs (CLOUD-01..03, DECISION-NC-R14, DECISION-DOCS)
 
 ### Phase 2: CUDA Pre-flight
 **Goal**: End-to-end pipeline (LiveKit Agents → vLLM → faster-whisper → Chatterbox/Kokoro) assembles and runs once on RunPod H100 CUDA substrate, with substrate + orchestration + cost ledger + result store all proven against real spend before any MI300X provisioning.
@@ -70,7 +76,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/TBD | Not started | - |
+| 1. Foundation | 0/5 | Not started | - |
 | 2. CUDA Pre-flight | 0/TBD | Not started | - |
 | 3. ROCm Validation | 0/TBD | Not started | - |
 | 4. Synthesis & Gate Decision | 0/TBD | Not started | - |
