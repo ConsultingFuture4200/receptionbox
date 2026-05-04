@@ -18,6 +18,7 @@ dependencies = [
     "scipy>=1.13",
     "pyloudnorm>=0.1",
     "soundfile>=0.12",
+    "runpod>=1.7",
 ]
 
 [dependency-groups]
