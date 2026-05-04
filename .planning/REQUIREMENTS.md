@@ -14,7 +14,7 @@ Requirements for the Phase 0 deliverable set. Each maps to roadmap phases.
 - [x] **INFRA-03**: `Makefile` exposes single-command targets: `make assets`, `make smoke`, `make g1`, `make g2`, `make g3`, `make g5`, `make g7`, `make report`, `make canary`
 - [x] **INFRA-04**: Config-as-code under `config/` — `models.yaml`, `substrates.yaml`, `gates.yaml`, `budget.yaml` with schema validation on load
 - [x] **INFRA-05**: `pre-commit` enforces `ruff format` + `ruff check` + assertion that no real-audio files exist outside `assets/manifest`
-- [ ] **INFRA-06**: Cost ledger is a SQLite-backed module (`cost/ledger.py`) that gates every cloud provisioning call — provisioning refused if `budget_remaining - projected_cost*1.5 < 0`
+- [x] **INFRA-06**: Cost ledger is a SQLite-backed module (`cost/ledger.py`) that gates every cloud provisioning call — provisioning refused if `budget_remaining - projected_cost*1.5 < 0`
 
 ### Evaluation Asset Curation
 
@@ -29,10 +29,10 @@ Requirements for the Phase 0 deliverable set. Each maps to roadmap phases.
 
 ### Substrate Abstraction & Harness
 
-- [ ] **HARNESS-01**: `substrate/__init__.py` defines `Substrate` ABC with `load_stt`, `load_llm`, `load_tts`, `transcribe`, `generate`, `synthesize`, `env_fingerprint` methods; gate runners may not import torch/onnxruntime directly
+- [x] **HARNESS-01**: `substrate/__init__.py` defines `Substrate` ABC with `load_stt`, `load_llm`, `load_tts`, `transcribe`, `generate`, `synthesize`, `env_fingerprint` methods; gate runners may not import torch/onnxruntime directly
 - [ ] **HARNESS-02**: `substrate/cuda.py` implements the ABC for RunPod H100 (vLLM 0.10+ CUDA wheel, faster-whisper INT8, Chatterbox-Turbo CUDA, Kokoro CUDA, LiveKit Agents 1.x)
 - [ ] **HARNESS-03**: `substrate/rocm.py` implements the ABC for TensorWave/Vultr MI300X (vLLM ROCm wheel, faster-whisper INT8 ROCm, devnen Chatterbox-TTS-Server, moritzchow Kokoro-FastAPI-ROCm, LiveKit Agents 1.x)
-- [ ] **HARNESS-04**: Result schema is pydantic-validated with `schema_version` field; results stored as JSONL + Parquet + SQLite index in `results/`
+- [x] **HARNESS-04**: Result schema is pydantic-validated with `schema_version` field; results stored as JSONL + Parquet + SQLite index in `results/`
 - [ ] **HARNESS-05**: Each gate run emits an `env.json` sidecar (substrate fingerprint, model SHAs, image digests, git commit, asset manifest hash, timestamps)
 - [ ] **HARNESS-06**: Gate runners under `gates/g{1,2,3,5,7}/runner.py` are substrate-agnostic and standalone-invokable via `make gN`
 
@@ -68,7 +68,7 @@ Requirements for the Phase 0 deliverable set. Each maps to roadmap phases.
 
 ### Derating & Methodology
 
-- [ ] **DERATE-01**: `derating/strix_model.py` implements per-stage roofline derating with arithmetic-intensity classification (STT compute-bound INT8; LLM TTFT bandwidth-bound; LLM decode bandwidth-bound; TTS first-audio compute-bound); unit-tested on synthetic data
+- [x] **DERATE-01**: `derating/strix_model.py` implements per-stage roofline derating with arithmetic-intensity classification (STT compute-bound INT8; LLM TTFT bandwidth-bound; LLM decode bandwidth-bound; TTS first-audio compute-bound); unit-tested on synthetic data
 - [ ] **DERATE-02**: 80% confidence bands derived via bootstrap (`scipy.stats.bootstrap`) on per-stage measurements + LPDDR5X-vs-HBM3 regime-change uncertainty term
 - [ ] **DERATE-03**: Cross-substrate consistency check — H100→MI300X projection within 25%; failures flagged in synthesis as methodology warning
 - [ ] **DERATE-04**: Q4_K_M ↔ AWQ-Int4 substitution validity characterized — WER and TTFT measured on both quantizations on H100; substitution-error term added to confidence band
@@ -86,8 +86,8 @@ Requirements for the Phase 0 deliverable set. Each maps to roadmap phases.
 
 ### Reproducibility
 
-- [ ] **REPRO-01**: `bench/images.lock.yaml` pins every Docker image by digest (RunPod NGC pytorch, ROCm vllm, ROCm pytorch)
-- [ ] **REPRO-02**: `bench/models.lock.yaml` pins every HF model by `revision=<commit_sha>` (Whisper, Qwen3-4B, Chatterbox, Kokoro)
+- [x] **REPRO-01**: `bench/images.lock.yaml` pins every Docker image by digest (RunPod NGC pytorch, ROCm vllm, ROCm pytorch)
+- [x] **REPRO-02**: `bench/models.lock.yaml` pins every HF model by `revision=<commit_sha>` (Whisper, Qwen3-4B, Chatterbox, Kokoro)
 - [ ] **REPRO-03**: Every result row records (image_digest, model_sha, asset_manifest_sha, git_commit, run_id, timestamp_utc)
 - [ ] **REPRO-04**: End-of-week canary re-run executes a single G1 5-call run and confirms results within tolerance of the original measurement (Pitfall-11 guard)
 - [ ] **REPRO-05**: Reproducibility manifest sealed in `docs/repro-manifest-v1.0.md` at end of synthesis; references all locks, audits, and verifies canary status
@@ -146,7 +146,7 @@ Populated by `gsd-roadmapper` after ROADMAP.md creation.
 | INFRA-03 | Phase 1 | Complete |
 | INFRA-04 | Phase 1 | Complete |
 | INFRA-05 | Phase 1 | Complete |
-| INFRA-06 | Phase 1 | Pending |
+| INFRA-06 | Phase 1 | Complete |
 | ASSETS-01 | Phase 1 | Pending |
 | ASSETS-02 | Phase 1 | Pending |
 | ASSETS-03 | Phase 1 | Pending |
@@ -155,10 +155,10 @@ Populated by `gsd-roadmapper` after ROADMAP.md creation.
 | ASSETS-06 | Phase 1 | Pending |
 | ASSETS-07 | Phase 1 | Pending |
 | ASSETS-08 | Phase 1 | Pending |
-| HARNESS-01 | Phase 1 | Pending |
+| HARNESS-01 | Phase 1 | Complete |
 | HARNESS-02 | Phase 2 | Pending |
 | HARNESS-03 | Phase 3 | Pending |
-| HARNESS-04 | Phase 1 | Pending |
+| HARNESS-04 | Phase 1 | Complete |
 | HARNESS-05 | Phase 2 | Pending |
 | HARNESS-06 | Phase 2 | Pending |
 | CLOUD-01 | Phase 1 | Pending |
@@ -179,7 +179,7 @@ Populated by `gsd-roadmapper` after ROADMAP.md creation.
 | AUDIT-01 | Phase 3 | Pending |
 | AUDIT-02 | Phase 3 | Pending |
 | AUDIT-03 | Phase 3 | Pending |
-| DERATE-01 | Phase 1 | Pending |
+| DERATE-01 | Phase 1 | Complete |
 | DERATE-02 | Phase 4 | Pending |
 | DERATE-03 | Phase 4 | Pending |
 | DERATE-04 | Phase 4 | Pending |
@@ -191,8 +191,8 @@ Populated by `gsd-roadmapper` after ROADMAP.md creation.
 | REPORT-05 | Phase 4 | Pending |
 | REPORT-06 | Phase 4 | Pending |
 | REPORT-07 | Phase 4 | Pending |
-| REPRO-01 | Phase 1 | Pending |
-| REPRO-02 | Phase 1 | Pending |
+| REPRO-01 | Phase 1 | Complete |
+| REPRO-02 | Phase 1 | Complete |
 | REPRO-03 | Phase 2 | Pending |
 | REPRO-04 | Phase 4 | Pending |
 | REPRO-05 | Phase 4 | Pending |
