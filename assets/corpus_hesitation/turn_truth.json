@@ -1,0 +1,302 @@
+{
+  "hes-0001": {
+    "ground_truth_turn_end_ms": 4600,
+    "hesitation_kind": "filler_words",
+    "text": "Um, I just wanted to ask about, uh, scheduling a consultation.",
+    "voice_seed": "af_heart"
+  },
+  "hes-0002": {
+    "ground_truth_turn_end_ms": 3775,
+    "hesitation_kind": "filler_words",
+    "text": "So, like, I had a question about, you know, my contract.",
+    "voice_seed": "af_alloy"
+  },
+  "hes-0003": {
+    "ground_truth_turn_end_ms": 4025,
+    "hesitation_kind": "false_start",
+    "text": "I -- I think I need to talk to someone about a, a billing issue.",
+    "voice_seed": "am_adam"
+  },
+  "hes-0004": {
+    "ground_truth_turn_end_ms": 2650,
+    "hesitation_kind": "stutter",
+    "text": "Could -- could I -- speak to an attorney please?",
+    "voice_seed": "af_bella"
+  },
+  "hes-0005": {
+    "ground_truth_turn_end_ms": 4950,
+    "hesitation_kind": "mid_sentence_pause",
+    "text": "I have a question about ... [pause] ... my appointment time.",
+    "voice_seed": "am_michael"
+  },
+  "hes-0006": {
+    "ground_truth_turn_end_ms": 7100,
+    "hesitation_kind": "filler_words",
+    "text": "Yeah, hi, I'm calling about, um, the paperwork I dropped off last week.",
+    "voice_seed": "af_nicole"
+  },
+  "hes-0007": {
+    "ground_truth_turn_end_ms": 3400,
+    "hesitation_kind": "stutter",
+    "text": "Just wanted to -- to confirm -- the time for tomorrow.",
+    "voice_seed": "am_eric"
+  },
+  "hes-0008": {
+    "ground_truth_turn_end_ms": 4325,
+    "hesitation_kind": "false_start",
+    "text": "Hi, I -- never mind, let me start over. I need to reschedule.",
+    "voice_seed": "af_sky"
+  },
+  "hes-0009": {
+    "ground_truth_turn_end_ms": 4825,
+    "hesitation_kind": "mid_sentence_pause",
+    "text": "Could you tell me ... [pause] ... what time you close today?",
+    "voice_seed": "am_liam"
+  },
+  "hes-0010": {
+    "ground_truth_turn_end_ms": 2300,
+    "hesitation_kind": "filler_words",
+    "text": "Um, hello? Is anyone there?",
+    "voice_seed": "af_river"
+  },
+  "hes-0011": {
+    "ground_truth_turn_end_ms": 4000,
+    "hesitation_kind": "filler_words",
+    "text": "So I was wondering, uh, like, is the office open Saturdays?",
+    "voice_seed": "af_heart"
+  },
+  "hes-0012": {
+    "ground_truth_turn_end_ms": 3875,
+    "hesitation_kind": "false_start",
+    "text": "I have a -- I have an appointment -- on Thursday I think?",
+    "voice_seed": "af_alloy"
+  },
+  "hes-0013": {
+    "ground_truth_turn_end_ms": 3425,
+    "hesitation_kind": "stutter",
+    "text": "Hi, this is, this is Pat calling about my case.",
+    "voice_seed": "am_adam"
+  },
+  "hes-0014": {
+    "ground_truth_turn_end_ms": 4725,
+    "hesitation_kind": "mid_sentence_pause",
+    "text": "Could I get -- [pause] -- a status update on my matter?",
+    "voice_seed": "af_bella"
+  },
+  "hes-0015": {
+    "ground_truth_turn_end_ms": 3625,
+    "hesitation_kind": "false_start",
+    "text": "Um, can I -- can I drop something off later today?",
+    "voice_seed": "am_michael"
+  },
+  "hes-0016": {
+    "ground_truth_turn_end_ms": 5925,
+    "hesitation_kind": "filler_words",
+    "text": "Hey, like, I was hoping to, uh, talk to someone about fees.",
+    "voice_seed": "af_nicole"
+  },
+  "hes-0017": {
+    "ground_truth_turn_end_ms": 3750,
+    "hesitation_kind": "stutter",
+    "text": "So -- so my question is -- when does the consultation start?",
+    "voice_seed": "am_eric"
+  },
+  "hes-0018": {
+    "ground_truth_turn_end_ms": 3350,
+    "hesitation_kind": "filler_words",
+    "text": "Hi, I, I needed to ask about, hmm, parking.",
+    "voice_seed": "af_sky"
+  },
+  "hes-0019": {
+    "ground_truth_turn_end_ms": 4425,
+    "hesitation_kind": "mid_sentence_pause",
+    "text": "Could you ... [pause] ... transfer me to billing please?",
+    "voice_seed": "am_liam"
+  },
+  "hes-0020": {
+    "ground_truth_turn_end_ms": 2525,
+    "hesitation_kind": "stutter",
+    "text": "I -- I have -- a paperwork question.",
+    "voice_seed": "af_river"
+  },
+  "hes-0021": {
+    "ground_truth_turn_end_ms": 3550,
+    "hesitation_kind": "filler_words",
+    "text": "Like, is there a way to, you know, get my documents back?",
+    "voice_seed": "af_heart"
+  },
+  "hes-0022": {
+    "ground_truth_turn_end_ms": 4050,
+    "hesitation_kind": "stutter",
+    "text": "Um, hello, I, I'm here for my 3 p.m. appointment.",
+    "voice_seed": "af_alloy"
+  },
+  "hes-0023": {
+    "ground_truth_turn_end_ms": 2875,
+    "hesitation_kind": "stutter",
+    "text": "Could I -- could I please -- speak with an attorney?",
+    "voice_seed": "am_adam"
+  },
+  "hes-0024": {
+    "ground_truth_turn_end_ms": 3350,
+    "hesitation_kind": "false_start",
+    "text": "Hi, I had a -- a question -- about my retainer.",
+    "voice_seed": "af_bella"
+  },
+  "hes-0025": {
+    "ground_truth_turn_end_ms": 5475,
+    "hesitation_kind": "mid_sentence_pause",
+    "text": "So I called yesterday and ... [pause] ... I wanted to follow up.",
+    "voice_seed": "am_michael"
+  },
+  "hes-0026": {
+    "ground_truth_turn_end_ms": 4150,
+    "hesitation_kind": "false_start",
+    "text": "Yeah, hi -- never mind -- can you transfer me?",
+    "voice_seed": "af_nicole"
+  },
+  "hes-0027": {
+    "ground_truth_turn_end_ms": 3175,
+    "hesitation_kind": "filler_words",
+    "text": "Um, what time is, uh, the firm open until today?",
+    "voice_seed": "am_eric"
+  },
+  "hes-0028": {
+    "ground_truth_turn_end_ms": 3225,
+    "hesitation_kind": "stutter",
+    "text": "Could you -- could you please -- check on something for me?",
+    "voice_seed": "af_sky"
+  },
+  "hes-0029": {
+    "ground_truth_turn_end_ms": 2900,
+    "hesitation_kind": "stutter",
+    "text": "I -- I'd like to schedule -- a consultation.",
+    "voice_seed": "am_liam"
+  },
+  "hes-0030": {
+    "ground_truth_turn_end_ms": 4200,
+    "hesitation_kind": "mid_sentence_pause",
+    "text": "Hi I have a quick -- [pause] -- a quick question.",
+    "voice_seed": "af_river"
+  },
+  "hes-0031": {
+    "ground_truth_turn_end_ms": 3050,
+    "hesitation_kind": "filler_words",
+    "text": "Like, is there, uh, paperwork I should bring?",
+    "voice_seed": "af_heart"
+  },
+  "hes-0032": {
+    "ground_truth_turn_end_ms": 3925,
+    "hesitation_kind": "filler_words",
+    "text": "So, um, I was hoping to, like, get a callback today.",
+    "voice_seed": "af_alloy"
+  },
+  "hes-0033": {
+    "ground_truth_turn_end_ms": 2975,
+    "hesitation_kind": "stutter",
+    "text": "I -- I called earlier -- and didn't get -- through.",
+    "voice_seed": "am_adam"
+  },
+  "hes-0034": {
+    "ground_truth_turn_end_ms": 3050,
+    "hesitation_kind": "stutter",
+    "text": "Um, hello, can I, can I leave a message?",
+    "voice_seed": "af_bella"
+  },
+  "hes-0035": {
+    "ground_truth_turn_end_ms": 4500,
+    "hesitation_kind": "mid_sentence_pause",
+    "text": "Could you ... [pause] ... let me know about parking?",
+    "voice_seed": "am_michael"
+  },
+  "hes-0036": {
+    "ground_truth_turn_end_ms": 4200,
+    "hesitation_kind": "false_start",
+    "text": "Hi, I had -- I had a meeting -- yesterday I think?",
+    "voice_seed": "af_nicole"
+  },
+  "hes-0037": {
+    "ground_truth_turn_end_ms": 3100,
+    "hesitation_kind": "stutter",
+    "text": "So like, is the -- the office -- open right now?",
+    "voice_seed": "am_eric"
+  },
+  "hes-0038": {
+    "ground_truth_turn_end_ms": 3050,
+    "hesitation_kind": "filler_words",
+    "text": "Um, just wondering, uh, about hours.",
+    "voice_seed": "af_sky"
+  },
+  "hes-0039": {
+    "ground_truth_turn_end_ms": 2675,
+    "hesitation_kind": "stutter",
+    "text": "Could -- could -- I get -- an attorney callback?",
+    "voice_seed": "am_liam"
+  },
+  "hes-0040": {
+    "ground_truth_turn_end_ms": 3275,
+    "hesitation_kind": "filler_words",
+    "text": "Hi, this is for, you know, the contract review thing.",
+    "voice_seed": "af_river"
+  },
+  "hes-0041": {
+    "ground_truth_turn_end_ms": 2600,
+    "hesitation_kind": "false_start",
+    "text": "I -- I -- never mind. I'll call back.",
+    "voice_seed": "af_heart"
+  },
+  "hes-0042": {
+    "ground_truth_turn_end_ms": 3325,
+    "hesitation_kind": "filler_words",
+    "text": "Like, where do I, uh, drop off paperwork?",
+    "voice_seed": "af_alloy"
+  },
+  "hes-0043": {
+    "ground_truth_turn_end_ms": 4425,
+    "hesitation_kind": "mid_sentence_pause",
+    "text": "Could you ... [pause] ... transfer me to the front desk?",
+    "voice_seed": "am_adam"
+  },
+  "hes-0044": {
+    "ground_truth_turn_end_ms": 3850,
+    "hesitation_kind": "stutter",
+    "text": "Um, hi, I -- I had a question -- about scheduling.",
+    "voice_seed": "af_bella"
+  },
+  "hes-0045": {
+    "ground_truth_turn_end_ms": 3650,
+    "hesitation_kind": "stutter",
+    "text": "So is there -- is there a way -- to confirm the time?",
+    "voice_seed": "am_michael"
+  },
+  "hes-0046": {
+    "ground_truth_turn_end_ms": 5400,
+    "hesitation_kind": "filler_words",
+    "text": "Hi, I, I'm following up on, uh, an email I sent.",
+    "voice_seed": "af_nicole"
+  },
+  "hes-0047": {
+    "ground_truth_turn_end_ms": 2375,
+    "hesitation_kind": "stutter",
+    "text": "Could -- I -- speak with -- a paralegal?",
+    "voice_seed": "am_eric"
+  },
+  "hes-0048": {
+    "ground_truth_turn_end_ms": 4050,
+    "hesitation_kind": "filler_words",
+    "text": "Um, just wanted to, uh, see if -- if you got my message.",
+    "voice_seed": "af_sky"
+  },
+  "hes-0049": {
+    "ground_truth_turn_end_ms": 3050,
+    "hesitation_kind": "false_start",
+    "text": "I -- I had -- a couple questions -- about fees.",
+    "voice_seed": "am_liam"
+  },
+  "hes-0050": {
+    "ground_truth_turn_end_ms": 2875,
+    "hesitation_kind": "filler_words",
+    "text": "So like, what's the, uh, address again?",
+    "voice_seed": "af_river"
+  }
+}
