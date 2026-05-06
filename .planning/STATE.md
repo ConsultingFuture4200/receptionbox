@@ -92,11 +92,11 @@ None yet.
 
 ### Blockers/Concerns
 
-- **NC-R14 (sharing Phase 0 with firm):** open. Resolution gates Phase 1 completion. Defensive default = methodology + prediction range only, no raw cloud numbers. Record in `docs/decisions/dr-31-sharing-policy.md`.
-- **Companion documents not yet in repo:** operator must drop parent thUMBox PRDs (technical + business v2.1), discovery addendum v0.2, hardware-pivot addendum v0.1, feasibility memo v0.3, virtual benchmark plan v0.1 into `docs/` before Phase 1 completion. Phase 4 memo-v0.4 update has no v0.3 baseline otherwise.
+- **NC-R14 (sharing Phase 0 with firm):** RESOLVED 2026-05-06 — DR-31 v0.1.0 approved.
+- **Companion documents:** RESOLVED 2026-05-06 — all 6 present in `docs/` (commit e16d86e).
+- **CLOUD-02 (TensorWave provisioning):** PARTIAL — $75 deposited; sales access pending response. RunPod (CLOUD-01) and Vultr (CLOUD-02 backup) fully provisioned and adapter-verified. Cost-watch loop polls all 3 cleanly; TensorWave WARNING is by-design (Pitfall C). Unblocks Phase 2 (CUDA pre-flight on RunPod H100); blocks G1/G2/G3/G5/G7 MI300X measurement runs unless operator falls back to Vultr.
 - **gfx942 → gfx1151 kernel gap:** dominant residual technical risk. Phase 3 must produce op-by-op kernel-coverage audit; Phase 4 widens confidence bands for "unknown" ops.
 - **Phase 3 research recommended:** Chatterbox-Turbo ROCm install on TensorWave MI300X is highest-risk surface (devnen issues #192/#445 unresolved). Consider `/gsd-research-phase` before Phase 3 begins.
-- Plan 01-05 has 2 OPEN human-action checkpoints: (A) operator deposits $75 each into RunPod/TensorWave/Vultr (auto-recharge OFF + API keys); (B) operator drops 6 companion docs into docs/ + approves DR-31 v0.1.0. See docs/OPERATOR-CHECKLIST-PHASE-01.md. CLOUD-01/02/03 + DECISION-NC-R14 + DECISION-DOCS marked partial-pending-operator until both close.
 
 ## Session Continuity
 

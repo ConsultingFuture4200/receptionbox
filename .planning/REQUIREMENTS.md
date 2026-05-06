@@ -38,9 +38,9 @@ Requirements for the Phase 0 deliverable set. Each maps to roadmap phases.
 
 ### Cloud Orchestration & Cost Control
 
-- [ ] **CLOUD-01**: RunPod account provisioned with provider-level $75 cap; `runpodctl` CLI configured; ephemeral H100 Secure Cloud spin-up scripted in `orchestration/runpod_h100.py`
+- [x] **CLOUD-01**: RunPod account provisioned with provider-level $75 cap; `runpodctl` CLI configured; ephemeral H100 Secure Cloud spin-up scripted in `orchestration/runpod_h100.py`
 - [ ] **CLOUD-02**: TensorWave (primary) and Vultr (backup) accounts provisioned with provider-level $75 caps; `orchestration/tensorwave_mi300x.py` + `orchestration/vultr_mi300x.py` scripted
-- [ ] **CLOUD-03**: `cost-watch.py` daemon runs locally during cloud sessions, polls provider billing APIs every 5 minutes, hard-stops instances if projected daily spend would breach budget
+- [x] **CLOUD-03**: `cost-watch.py` daemon runs locally during cloud sessions, polls provider billing APIs every 5 minutes, hard-stops instances if projected daily spend would breach budget
 - [ ] **CLOUD-04**: In-instance watchdog terminates the GPU pod after `max_minutes` (per-gate config); rsync result-pull on shutdown trigger
 - [ ] **CLOUD-05**: Persistent model cache (HF revision-pinned) on cloud volume to avoid re-downloads across pods; bandwidth cost included in projection
 - [ ] **CLOUD-06**: Pre-teardown cloud-storage audit verifies no real-audio or PII files survived the session (Pitfall 5 mitigation)
@@ -94,9 +94,9 @@ Requirements for the Phase 0 deliverable set. Each maps to roadmap phases.
 
 ### Decision Resolutions (PRD NCs)
 
-- [ ] **DECISION-NC-R14**: NC-R14 (sharing Phase 0 with firm) resolved with explicit policy recorded in `docs/decisions/dr-31-sharing-policy.md`; defensive default = methodology + prediction range only, no raw cloud numbers; resolution gates Phase 1 completion
+- [x] **DECISION-NC-R14**: NC-R14 (sharing Phase 0 with firm) resolved with explicit policy recorded in `docs/decisions/dr-31-sharing-policy.md`; defensive default = methodology + prediction range only, no raw cloud numbers; resolution gates Phase 1 completion
 - [ ] **DECISION-NC-R12**: NC-R12 (recording-disclosure preamble authority) noted in synthesis "What we did not measure" — Phase 1 work, not Phase 0
-- [ ] **DECISION-DOCS**: Operator drops parent thUMBox PRDs (technical + business v2.1), discovery addendum v0.2, hardware-pivot addendum v0.1, feasibility memo v0.3, virtual benchmark plan v0.1 into `docs/` before Phase 1 (Foundation) completion
+- [x] **DECISION-DOCS**: Operator drops parent thUMBox PRDs (technical + business v2.1), discovery addendum v0.2, hardware-pivot addendum v0.1, feasibility memo v0.3, virtual benchmark plan v0.1 into `docs/` before Phase 1 (Foundation) completion
 
 ## v2 Requirements
 
