@@ -41,9 +41,38 @@ assets:
 	$(MAKE) assets-render
 	$(MAKE) assets-g711
 
-# Phase 2/3 placeholders — fail explicitly so operator knows they're not implemented
-smoke g1 g2 g3 g5 g7:
-	@echo "Gate $@ ships in Phase 2/3; not yet implemented." >&2
+# Phase 2 gate runners (HARNESS-06 / Plan 02-02). Endpoint URLs read from
+# env with localhost defaults; override by exporting before make invocation.
+VLLM_URL ?= http://127.0.0.1:8000
+VLLM_MODEL ?= Qwen/Qwen3-4B
+WHISPER_DIR ?= /models/distil_whisper_large_v3_int8
+CHATTERBOX_URL ?= http://127.0.0.1:8004
+KOKORO_URL ?= http://127.0.0.1:8005
+
+_RUNNER_FLAGS = \
+	--vllm-url=$(VLLM_URL) \
+	--vllm-model=$(VLLM_MODEL) \
+	--whisper-dir=$(WHISPER_DIR) \
+	--chatterbox-url=$(CHATTERBOX_URL) \
+	--kokoro-url=$(KOKORO_URL)
+
+smoke:
+	uv run python -m gates.g1.runner --gate=smoke --n-calls=5 --corpus=corpus_500 $(_RUNNER_FLAGS)
+
+g1:
+	uv run python -m gates.g1.runner --gate=g1 --strata=config/sanity_strata.yaml $(_RUNNER_FLAGS)
+
+g2:
+	uv run python -m gates.g2.runner --gate=g2 --strata=config/sanity_strata.yaml $(_RUNNER_FLAGS)
+
+g3:
+	uv run python -m gates.g3.runner --gate=g3 --strata=config/sanity_strata.yaml $(_RUNNER_FLAGS)
+
+g5:
+	uv run python -m gates.g5.runner --gate=g5 --strata=config/sanity_strata.yaml $(_RUNNER_FLAGS)
+
+g7:
+	@echo "Gate g7 deferred to MI300X (Phase 3) per PREFLIGHT-02." >&2
 	@exit 1
 
 # Phase 4 placeholders

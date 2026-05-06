@@ -18,8 +18,8 @@ import wave
 from collections.abc import AsyncIterator
 
 import pytest
-from gates._runner_base import GateRunner
 
+from gates._runner_base import GateRunner
 from harness.results import GateResult
 from substrate._stub import _StubSubstrate
 from substrate.types import Grammar, LLMChunk, STTChunk
@@ -564,7 +564,8 @@ def test_makefile_targets_invoke_correct_runner(target: str, expect: str) -> Non
     assert expect in combined, f"target={target}; expected `{expect}` in:\n{combined}"
 
 
-def test_makefile_g7_target_exits_one() -> None:
+def test_makefile_g7_target_exits_nonzero() -> None:
+    """make wraps recipe `exit 1` as its own code 2; assert non-zero + the deferral message."""
     r = subprocess.run(["make", "g7"], capture_output=True, text=True, check=False)
-    assert r.returncode == 1
+    assert r.returncode != 0, f"expected non-zero, got {r.returncode}"
     assert "deferred to MI300X" in (r.stdout + r.stderr)
