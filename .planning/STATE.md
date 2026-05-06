@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v0.4
 milestone_name: milestone
-status: verifying
-stopped_at: Plan 01-05 autonomous work complete; 2 human-action checkpoints OPEN (provider provisioning + companion docs drop) — see docs/OPERATOR-CHECKLIST-PHASE-01.md
-last_updated: "2026-05-04T23:12:04.058Z"
-last_activity: 2026-05-04
+status: executing
+stopped_at: "Plan 02-01 complete: HARNESS-02 substrate/cuda.py + LiveKit rig shipped; 24 new tests passing; ready for Plan 02-02 (gate runners)"
+last_updated: "2026-05-06T16:33:06.626Z"
+last_activity: 2026-05-06
 progress:
   total_phases: 4
   completed_phases: 1
-  total_plans: 5
-  completed_plans: 5
-  percent: 100
+  total_plans: 9
+  completed_plans: 6
+  percent: 67
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-04)
 
 **Core value:** Produce trustworthy go/no-go evidence on receptionBOX feasibility — derated Strix Halo predictions for latency/WER/turn-detection/UPL/TTS — before any sales commitment is made to the firm.
-**Current focus:** Phase 01 — foundation
+**Current focus:** Phase 02 — cuda-pre-flight
 
 ## Current Position
 
-Phase: 01 (foundation) — EXECUTING
-Plan: 5 of 5
-Status: Phase complete — ready for verification
-Last activity: 2026-05-04
+Phase: 02 (cuda-pre-flight) — EXECUTING
+Plan: 2 of 4
+Status: Ready to execute
+Last activity: 2026-05-06
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -57,6 +57,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01 P03 | 0.15 | 3 tasks | 18 files |
 | Phase 01 P04 | 0.83 | 3 tasks | 760 files |
 | Phase 01 P05 | 0.2 | 2 tasks | 15 files |
+| Phase 02 P01 | 0.4 | 3 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -85,6 +86,10 @@ Decisions are logged in PROJECT.md Key Decisions table. Recent:
 - [Phase 01]: Provider asymmetry made explicit per Pitfalls B/C: Vultr full /v2/billing/pending-charges API; RunPod SDK get_pods (cap = 5 prepaid + auto-recharge OFF, NOT a programmatic API); TensorWave stub-with-warning (billing API undocumented)
 - [Phase 01]: AST-asserted ordering enforces authorize_spend MUST be the first call in every orchestration provision() — Phase 2/3 contributors cannot bypass the cost-ledger gate without breaking the test
 - [Phase 01]: Adapters MUST NOT raise — log WARNING and return (0.0, 0.0) on every error path (network, missing env, JSON, 4xx) so the 5-min watch loop is uninterruptible
+- [Phase 02]: [Phase 02-01]: Adapters expose health() returning bool; load_* uses health() check (not exception) for graceful degradation
+- [Phase 02]: [Phase 02-01]: DR-27 TTS fallback wired in CUDASubstrate.synthesize() — Chatterbox health=False routes to Kokoro with WARNING log
+- [Phase 02]: [Phase 02-01]: LiveKit pipeline ships shim path (SimpleNamespace) — unit tests + workstation dev never need livekit-agents installed; structural parity with real AgentSession surface
+- [Phase 02]: [Phase 02-01]: Cuda stack moved to [project.optional-dependencies] cuda group — workstation uv sync clean, pod uses uv sync --extra cuda
 
 ### Pending Todos
 
@@ -100,6 +105,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-04T23:11:59.711Z
-Stopped at: Plan 01-05 autonomous work complete; 2 human-action checkpoints OPEN (provider provisioning + companion docs drop) — see docs/OPERATOR-CHECKLIST-PHASE-01.md
+Last session: 2026-05-06T16:32:55.529Z
+Stopped at: Plan 02-01 complete: HARNESS-02 substrate/cuda.py + LiveKit rig shipped; 24 new tests passing; ready for Plan 02-02 (gate runners)
 Resume file: None
