@@ -29,6 +29,9 @@ __all__ = [
     "VoiceRef",
 ]
 
+# CUDASubstrate is re-exported lazily via `from substrate.cuda import CUDASubstrate`
+# (avoids importing the adapters subpackage on every `import substrate`).
+
 
 class Substrate(ABC):
     """Cloud-GPU substrate for receptionBOX Phase 0 benchmarking."""
