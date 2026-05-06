@@ -39,7 +39,12 @@ def init_runpod_ledger(monkeypatch, tmp_path):
 def test_runpod_provision_authorizes_within_budget(init_runpod_ledger) -> None:
     from orchestration import runpod_h100
 
-    auth = runpod_h100.provision(gate="smoke", projected_cost=10.0)
+    # Phase 2 changed the return type to ProvisionResult; the cost-ledger
+    # Authorization is now reachable via .authorization. The AST ordering
+    # contract (authorize_spend FIRST in provision()) is preserved — see
+    # test_orchestration_modules_call_authorize_spend_first below.
+    result = runpod_h100.provision(gate="smoke", projected_cost=10.0)
+    auth = result.authorization
     assert auth.provider == "runpod"
     assert auth.gate == "smoke"
 
