@@ -363,3 +363,180 @@ async def test_faster_whisper_engine_transcribe_logs_and_yields_nothing_on_failu
         out.append(chunk)
 
     assert out == []
+
+
+# ---------------------------------------------------------------------------
+# CUDASubstrate (composes the 4 adapters per D-14)
+# ---------------------------------------------------------------------------
+
+
+def _new_substrate(**overrides: Any):
+    from substrate.cuda import CUDASubstrate
+
+    kwargs = dict(
+        vllm_url="http://fake-vllm:8000",
+        vllm_model="qwen3-4b",
+        whisper_model_dir="/nonexistent/whisper",
+        chatterbox_url="http://fake-chatterbox:8001",
+        kokoro_url="http://fake-kokoro:8002",
+    )
+    kwargs.update(overrides)
+    return CUDASubstrate(**kwargs)
+
+
+def test_cuda_substrate_implements_abc() -> None:
+    from substrate.cuda import CUDASubstrate
+
+    from substrate import Substrate
+
+    assert issubclass(CUDASubstrate, Substrate)
+    sub = _new_substrate()
+    # All abstract methods bound and callable.
+    for attr in ("load_stt", "load_llm", "load_tts", "transcribe", "generate", "synthesize"):
+        assert callable(getattr(sub, attr))
+
+
+@pytest.mark.asyncio
+async def test_cuda_substrate_load_llm_logs_warning_on_health_fail(
+    monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+) -> None:
+    from substrate.adapters import VLLMClient
+
+    caplog.set_level(logging.WARNING)
+
+    async def fake_health(self):
+        return False
+
+    monkeypatch.setattr(VLLMClient, "health", fake_health, raising=True)
+
+    sub = _new_substrate()
+    # Must not raise.
+    await sub.load_llm()
+    assert sub._loaded["llm"] is False
+    assert any(
+        "llm" in rec.message.lower() or "vllm" in rec.message.lower() for rec in caplog.records
+    )
+
+
+@pytest.mark.asyncio
+async def test_cuda_substrate_transcribe_delegates_to_engine(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from substrate.adapters import FasterWhisperEngine
+    from substrate.types import STTChunk
+
+    async def fake_transcribe(self, audio, *, sample_rate):
+        yield STTChunk(text="alpha", is_final=False, start_ms=0.0, end_ms=500.0)
+        yield STTChunk(text="alpha bravo", is_final=True, start_ms=0.0, end_ms=1000.0)
+
+    monkeypatch.setattr(FasterWhisperEngine, "transcribe", fake_transcribe, raising=True)
+
+    sub = _new_substrate()
+
+    async def audio() -> AsyncIterator[bytes]:
+        yield b"\x00" * 320
+
+    out = []
+    async for chunk in sub.transcribe(audio(), sample_rate=16000):
+        out.append(chunk)
+
+    assert len(out) == 2
+    assert out[-1].text == "alpha bravo"
+    assert out[-1].is_final is True
+
+
+@pytest.mark.asyncio
+async def test_cuda_substrate_generate_delegates_to_vllm(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from substrate.adapters import VLLMClient
+    from substrate.types import LLMChunk
+
+    async def fake_generate(self, prompt, *, grammar=None, max_tokens):
+        yield LLMChunk(text="ok", finish_reason=None)
+        yield LLMChunk(text="", finish_reason="stop")
+
+    monkeypatch.setattr(VLLMClient, "generate", fake_generate, raising=True)
+
+    sub = _new_substrate()
+    out = []
+    async for chunk in sub.generate("hi", max_tokens=8):
+        out.append(chunk)
+
+    assert len(out) == 2
+    assert out[-1].finish_reason == "stop"
+
+
+@pytest.mark.asyncio
+async def test_cuda_substrate_synthesize_falls_back_to_kokoro_when_chatterbox_unhealthy(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from substrate.adapters import ChatterboxClient, KokoroClient
+
+    async def chatterbox_health(self):
+        return False
+
+    async def kokoro_health(self):
+        return True
+
+    async def chatterbox_synth(self, text, voice):
+        yield b"CHATTERBOX"
+
+    async def kokoro_synth(self, text, voice):
+        yield b"KOKORO"
+
+    monkeypatch.setattr(ChatterboxClient, "health", chatterbox_health, raising=True)
+    monkeypatch.setattr(KokoroClient, "health", kokoro_health, raising=True)
+    monkeypatch.setattr(ChatterboxClient, "synthesize", chatterbox_synth, raising=True)
+    monkeypatch.setattr(KokoroClient, "synthesize", kokoro_synth, raising=True)
+
+    sub = _new_substrate()
+    out = []
+    async for chunk in sub.synthesize("hello", voice=None):
+        out.append(chunk)
+
+    assert out == [b"KOKORO"]
+
+
+def test_cuda_substrate_env_fingerprint_populated() -> None:
+    from substrate.types import EnvFingerprint
+
+    sub = _new_substrate()
+    fp = sub.env_fingerprint()
+    assert isinstance(fp, EnvFingerprint)
+    assert fp.substrate == "cuda"
+    assert fp.image_digest  # may be "pending" — non-empty string
+    # 4 models per bench/models.lock.yaml
+    assert len(fp.model_shas) == 4
+    expected_models = {
+        "distil_whisper_large_v3_int8",
+        "qwen3_4b_awq_int4",
+        "chatterbox_turbo",
+        "kokoro_82m",
+    }
+    assert set(fp.model_shas.keys()) == expected_models
+    assert fp.timestamp_utc  # ISO string
+
+
+def test_cuda_substrate_module_importable_without_gpu(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """CUDASubstrate module + class instantiation must not require torch / vllm / faster_whisper."""
+    monkeypatch.setitem(sys.modules, "torch", None)
+    monkeypatch.setitem(sys.modules, "vllm", None)
+    monkeypatch.setitem(sys.modules, "faster_whisper", None)
+
+    for mod in list(sys.modules):
+        if mod.startswith("substrate.cuda") or mod.startswith("substrate.adapters"):
+            sys.modules.pop(mod)
+
+    from substrate.cuda import CUDASubstrate
+
+    sub = CUDASubstrate(
+        vllm_url="http://x:1",
+        vllm_model="qwen",
+        whisper_model_dir="/nope",
+        chatterbox_url="http://x:2",
+        kokoro_url="http://x:3",
+    )
+    assert sub is not None
