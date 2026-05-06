@@ -1,7 +1,7 @@
 # DR-31: Phase 0 Sharing Policy
 
 **File version:** v0.1.0
-**Status:** Draft / awaiting operator approval
+**Status:** Approved 2026-05-06
 **Decided by:** Claude drafted (per CONTEXT.md "Claude's Discretion" mandate); operator approves
 **Decision date:** 2026-05-04
 **Resolves:** NC-R14 (PRD §13)
