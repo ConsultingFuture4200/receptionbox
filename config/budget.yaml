@@ -33,3 +33,18 @@ gates:
   canary:
     projected_cost_per_run_usd: 1.0
     expected_runs: 1
+
+# Phase 2 (CUDA pre-flight) operational config (D-18, D-20).
+# - max_minutes_per_gate drives the in-instance watchdog (CLOUD-04, D-16);
+#   sum is capped at 100 minutes per pre-flight session ($14 budget at
+#   $2.69/hr SXM).
+# - cache_bootstrap_one_time_usd is the network-volume storage amortization
+#   line item for the one-time HF model pull (D-19/D-20).
+phase2:
+  max_minutes_per_gate:
+    smoke: 30
+    g1: 30
+    g2: 15
+    g3: 10
+    g5: 15
+  cache_bootstrap_one_time_usd: 0.50
