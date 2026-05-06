@@ -44,7 +44,12 @@ Plans:
   2. Sanity runs of G1, G2, G3, G5 on H100 produce non-degenerate baseline numbers with substrate fingerprint = `cuda` recorded for downstream cross-substrate consistency check
   3. In-instance watchdog terminates the H100 pod after `max_minutes`, rsync result-pull fires on shutdown, and pre-teardown cloud-storage audit confirms no PII or real-audio files survived the session
   4. Persistent HF model cache on cloud volume eliminates re-downloads across pods, and every result row records `(image_digest, model_sha, asset_manifest_sha, git_commit, run_id, timestamp_utc)`
-**Plans**: TBD
+**Plans**: 4 plans
+Plans:
+- [ ] 02-01-PLAN.md — substrate/cuda.py composing 4 backend adapters + LiveKit AgentSession pipeline rig (HARNESS-02)
+- [ ] 02-02-PLAN.md — Substrate-agnostic gate runners g1/g2/g3/g5 + GateRunner base + env.json sidecar (HARNESS-05, HARNESS-06, REPRO-03)
+- [ ] 02-03-PLAN.md — Pod entrypoint + watchdog + HF cache bootstrap + pre-teardown audit + real RunPod provisioning (CLOUD-04, CLOUD-05, CLOUD-06)
+- [ ] 02-04-PLAN.md — Stratification config + pre-flight driver + operator checklist + real-spend smoke/sanity checkpoint (PREFLIGHT-01, PREFLIGHT-02, PREFLIGHT-03)
 
 ### Phase 3: ROCm Validation
 **Goal**: TensorWave MI300X produces measurement-grade data for G1, G2, G3, G5, G7 against pinned corpora at concurrencies N=1/2/4 with per-stage decomposition, plus the three load-bearing audits (Chatterbox Day-1 kill-switch, co-residency stack-load, gfx1151 op coverage) that prevent the dominant Phase 0 → Phase 2 false-pass paths.
@@ -77,6 +82,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 0/5 | Not started | - |
-| 2. CUDA Pre-flight | 0/TBD | Not started | - |
+| 2. CUDA Pre-flight | 0/4 | Not started | - |
 | 3. ROCm Validation | 0/TBD | Not started | - |
 | 4. Synthesis & Gate Decision | 0/TBD | Not started | - |
