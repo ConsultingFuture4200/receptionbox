@@ -87,7 +87,7 @@ Requirements for the Phase 0 deliverable set. Each maps to roadmap phases.
 ### Reproducibility
 
 - [x] **REPRO-01**: `bench/images.lock.yaml` pins every Docker image by digest (RunPod NGC pytorch, ROCm vllm, ROCm pytorch)
-- [x] **REPRO-02**: `bench/models.lock.yaml` pins every HF model by `revision=<commit_sha>` (Whisper, Qwen3-4B, Chatterbox, Kokoro)
+- [x] **REPRO-02**: `bench/models.lock.yaml` pins every HF model by `revision=<commit_sha>` (Whisper, Qwen3-4B, Chatterbox, Kokoro). Schema enforced in Phase 1 (lockfile shape + pydantic validation); data populated in Plan 02-05 (real commit SHAs + per-file SHA-256). Future audits MUST distinguish schema-enforced from data-populated requirements.
 - [x] **REPRO-03**: Every result row records (image_digest, model_sha, asset_manifest_sha, git_commit, run_id, timestamp_utc)
 - [ ] **REPRO-04**: End-of-week canary re-run executes a single G1 5-call run and confirms results within tolerance of the original measurement (Pitfall-11 guard)
 - [ ] **REPRO-05**: Reproducibility manifest sealed in `docs/repro-manifest-v1.0.md` at end of synthesis; references all locks, audits, and verifies canary status
@@ -192,7 +192,7 @@ Populated by `gsd-roadmapper` after ROADMAP.md creation.
 | REPORT-06 | Phase 4 | Pending |
 | REPORT-07 | Phase 4 | Pending |
 | REPRO-01 | Phase 1 | Complete |
-| REPRO-02 | Phase 1 | Complete |
+| REPRO-02 | Phase 1 (schema) + Phase 2-05 (data) | Complete |
 | REPRO-03 | Phase 2 | Complete |
 | REPRO-04 | Phase 4 | Pending |
 | REPRO-05 | Phase 4 | Pending |

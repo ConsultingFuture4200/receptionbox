@@ -4,34 +4,182 @@
 # revision = "pending" until first fetch; tools/fetch_models.py resolves it.
 
 models:
-  - name: distil_whisper_large_v3_int8
-    repo_id: Systran/faster-distil-whisper-large-v3
-    revision: pending
-    files:
-      - filename: model.bin
-        sha256: pending
-      - filename: config.json
-        sha256: pending
-      - filename: tokenizer.json
-        sha256: pending
-      - filename: vocabulary.json
-        sha256: pending
-    notes: "CTranslate2 INT8 build; consumed by faster-whisper in Phase 2/3 substrates."
-
-  - name: qwen3_4b_awq_int4
-    repo_id: Qwen/Qwen3-4B
-    revision: pending
-    files: []  # populated when AWQ-Int4 quantized variant is selected on H100/MI300X
-    notes: "AWQ-Int4 cloud equivalent of Strix Halo Q4_K_M; substitution-error per DERATE-04."
-
-  - name: chatterbox_turbo
-    repo_id: ResembleAI/chatterbox
-    revision: pending
-    files: []
-    notes: "Chatterbox-Turbo 350M; ROCm path via devnen/Chatterbox-TTS-Server (DR-27 risk)."
-
-  - name: kokoro_82m
-    repo_id: hexgrad/Kokoro-82M
-    revision: pending
-    files: []
-    notes: "TTS fallback per DR-27; rendered locally on GTX 1070 for Phase 1 ASSETS-01."
+- name: distil_whisper_large_v3_int8
+  repo_id: Systran/faster-distil-whisper-large-v3
+  revision: c3058b475261292e64a0412df1d2681c06260fab
+  files:
+  - filename: model.bin
+    sha256: b79368e19b6623813609431a6e5ee309a71506701ebc49fd7820e692dec7c5f5
+  - filename: config.json
+    sha256: 90c55f775cc4e0bb17293d0bf12f96557a486f20dea886fabd8e6075a3588b21
+  - filename: tokenizer.json
+    sha256: 6d8cbd7cd0d8d5815e478dac67b85a26bbe77c1f5e0c6d76d1ce2abc0e5f21ca
+  - filename: vocabulary.json
+    sha256: c69260f2ab26d659b7c398f9a2b2b48ed0df16c3b47d7326782fd9cba71690c1
+  notes: CTranslate2 INT8 build; consumed by faster-whisper in Phase 2/3 substrates.
+- name: qwen3_4b_awq_int4
+  repo_id: Qwen/Qwen3-4B
+  revision: 1cfa9a7208912126459214e8b04321603b3df60c
+  files:
+  - filename: config.json
+    sha256: 8ba006f74fecfaaeb392872a60f4a480e7ec9860153d2e1b769ec81f9a147f8a
+  - filename: generation_config.json
+    sha256: 2325da0f15bb848e018c5ae071b7943332e9f871d6b60e2ed22ca97d4cb993d2
+  - filename: model-00001-of-00003.safetensors
+    sha256: 328a91d3122359d5547f9d79521205bc0a46e1f79a792dfe650e99fc2d651223
+  - filename: model-00002-of-00003.safetensors
+    sha256: 6cd087b316306a68c562436b5492edbcf6e16c6dba3a1308279caa5a58e21ca5
+  - filename: model-00003-of-00003.safetensors
+    sha256: e4bf436957184f4eeb86a80e9db394503f1f56446b2e6b7edeac5b81470f4ca1
+  - filename: tokenizer.json
+    sha256: aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4
+  - filename: tokenizer_config.json
+    sha256: d5d09f07b48c3086c508b30d1c9114bd1189145b74e982a265350c923acd8101
+  - filename: vocab.json
+    sha256: ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910
+  notes: AWQ-Int4 cloud equivalent of Strix Halo Q4_K_M; substitution-error per DERATE-04.
+- name: chatterbox_turbo
+  repo_id: ResembleAI/chatterbox
+  revision: ef85ce7bef2f3f1a74d0d837d379d2fcb68203cd
+  files:
+  - filename: conds.pt
+    sha256: 6552d70568833628ba019c6b03459e77fe71ca197d5c560cef9411bee9d87f4e
+  - filename: s3gen.pt
+    sha256: 9b9ff07e60b20c136e2b1b3d7563a24604e8d2c4c267888d1ee929dd0151d2a3
+  - filename: s3gen.safetensors
+    sha256: 2b78103c654207393955e4900aac14a12de8ef25f4b09424f1ef91941f161d4e
+  - filename: t3_23lang.safetensors
+    sha256: 5b2194350053f9fc01544e614d923f1e5c8cd785ba596acc142d3d1d8614908c
+  - filename: t3_cfg.pt
+    sha256: 0b2dd5439fe7e94f379561419847a45bf2c79d0e8ea751c6bbe947ce337789cc
+  - filename: t3_cfg.safetensors
+    sha256: 914cb1696f47527fe8852ca8f1fe1fa63cb34f76f9c715e84e067b744dd0da81
+  - filename: t3_mtl23ls_v2.safetensors
+    sha256: b1237586127ce98e7800a68e49938eb5092846862aabcb6e17b2fda7889a6c75
+  - filename: t3_mtl23ls_v3.safetensors
+    sha256: 5abca8321ede76f8e61f1cc0d19aea6c946b28871017ce8726f8a69203f05953
+  - filename: tokenizer.json
+    sha256: d71e3a44eabb1784df9a68e9f95b251ecbf1a7af6a9f50835856b2ca9d8c14a5
+  - filename: ve.pt
+    sha256: 4b16d836bc598509860f6fa068165a8bb5e9ac84f05582dfcf278a5a372879f1
+  - filename: ve.safetensors
+    sha256: f0921cab452fa278bc25cd23ffd59d36f816d7dc5181dd1bef9751a7fb61f63c
+  notes: Chatterbox-Turbo 350M; ROCm path via devnen/Chatterbox-TTS-Server (DR-27
+    risk).
+- name: kokoro_82m
+  repo_id: hexgrad/Kokoro-82M
+  revision: f3ff3571791e39611d31c381e3a41a3af07b4987
+  files:
+  - filename: config.json
+    sha256: 5abb01e2403b072bf03d04fde160443e209d7a0dad49a423be15196b9b43c17f
+  - filename: kokoro-v1_0.pth
+    sha256: 496dba118d1a58f5f3db2efc88dbdc216e0483fc89fe6e47ee1f2c53f18ad1e4
+  - filename: voices/af_alloy.pt
+    sha256: 6d877149dd8b348fbad12e5845b7e43d975390e9f3b68a811d1d86168bef5aa3
+  - filename: voices/af_aoede.pt
+    sha256: c03bd1a4c3716c2d8eaa3d50022f62d5c31cfbd6e15933a00b17fefe13841cc4
+  - filename: voices/af_bella.pt
+    sha256: 8cb64e02fcc8de0327a8e13817e49c76c945ecf0052ceac97d3081480e8e48d6
+  - filename: voices/af_heart.pt
+    sha256: 0ab5709b8ffab19bfd849cd11d98f75b60af7733253ad0d67b12382a102cb4ff
+  - filename: voices/af_jessica.pt
+    sha256: cdfdccb8cc975aa34ee6b89642963b0064237675de0e41a30ae64cc958dd4e87
+  - filename: voices/af_kore.pt
+    sha256: 8bfbc512321c3db49dff984ac675fa5ac7eaed5a96cc31104d3a9080e179d69d
+  - filename: voices/af_nicole.pt
+    sha256: c5561808bcf5250fe8c5f5de32caf2d94f27e57e95befdb098c5c85991d4c5da
+  - filename: voices/af_nova.pt
+    sha256: e0233676ddc21908c37a1f102f6b88a59e4e5c1bd764983616eb9eda629dbcd2
+  - filename: voices/af_river.pt
+    sha256: e149459bd9c084416b74756b9bd3418256a8b839088abb07d463730c369dab8f
+  - filename: voices/af_sarah.pt
+    sha256: 49bd364ea3be9eb3e9685e8f9a15448c4883112a7c0ff7ab139fa4088b08cef9
+  - filename: voices/af_sky.pt
+    sha256: c799548aed06e0cb0d655a85a01b48e7f10484d71663f9a3045a5b9362e8512c
+  - filename: voices/am_adam.pt
+    sha256: ced7e284aba12472891be1da3ab34db84cc05cc02b5889535796dbf2d8b0cb34
+  - filename: voices/am_echo.pt
+    sha256: 8bcfdc852bc985fb45c396c561e571ffb9183930071f962f1b50df5c97b161e8
+  - filename: voices/am_eric.pt
+    sha256: ada66f0eefff34ec921b1d7474d7ac8bec00cd863c170f1c534916e9b8212aae
+  - filename: voices/am_fenrir.pt
+    sha256: 98e507eca1db08230ae3b6232d59c10aec9630022d19accac4f5d12fcec3c37a
+  - filename: voices/am_liam.pt
+    sha256: c82550757ddb31308b97f30040dda8c2d609a9e2de6135848d0a948368138518
+  - filename: voices/am_michael.pt
+    sha256: 9a443b79a4b22489a5b0ab7c651a0bcd1a30bef675c28333f06971abbd47bd37
+  - filename: voices/am_onyx.pt
+    sha256: e8452be16cd0f6da7b4579eaf7b1e4506e92524882053d86d72b96b9a7fed584
+  - filename: voices/am_puck.pt
+    sha256: dd1d8973f4ce4b7d8ae407c77a435f485dabc052081b80ea75c4f30b84f36223
+  - filename: voices/am_santa.pt
+    sha256: 7f2f7582fa2b1f160e90aafe6d0b442a685e773608b6667e545d743b073e97a7
+  - filename: voices/bf_alice.pt
+    sha256: d292651b6af6c0d81705c2580dcb4463fccc0ff7b8d618a471dbb4e45655b3f3
+  - filename: voices/bf_emma.pt
+    sha256: d0a423deabf4a52b4f49318c51742c54e21bb89bbbe9a12141e7758ddb5da701
+  - filename: voices/bf_isabella.pt
+    sha256: cdd4c37003805104d1d08fb1e05855c8fb2c68de24ca6e71f264a30aaa59eefd
+  - filename: voices/bf_lily.pt
+    sha256: 6e09c2e481e2d53004d7e5ae7d3a325369e130a6f45c35a6002de75084be9285
+  - filename: voices/bm_daniel.pt
+    sha256: fc3fce4e9c12ed4dbc8fa9680cfe51ee190a96444ce7c3ad647549a30823fc5d
+  - filename: voices/bm_fable.pt
+    sha256: d44935f3135257a9064df99f007fc1342ff1aa767552b4a4fa4c3b2e6e59079c
+  - filename: voices/bm_george.pt
+    sha256: f1bc812213dc59774769e5c80004b13eeb79bd78130b11b2d7f934542dab811b
+  - filename: voices/bm_lewis.pt
+    sha256: b5204750dcba01029d2ac9cec17aec3b20a6d64073c579d694a23cb40effbd0e
+  - filename: voices/ef_dora.pt
+    sha256: d9d69b0f8a2b87a345f269d89639f89dfbd1a6c9da0c498ae36dd34afcf35530
+  - filename: voices/em_alex.pt
+    sha256: 5eac53f767c3f31a081918ba531969aea850bed18fe56419b804d642c6973431
+  - filename: voices/em_santa.pt
+    sha256: aa8620cb96cec705823efca0d956a63e158e09ad41aca934d354b7f0778f63cb
+  - filename: voices/ff_siwis.pt
+    sha256: 8073bf2d2c4b9543a90f2f0fd2144de4ed157e2d4b79ddeb0d5123066171fbc9
+  - filename: voices/hf_alpha.pt
+    sha256: 06906fe05746d13a79c5c01e21fd7233b05027221a933c9ada650f5aafc8f044
+  - filename: voices/hf_beta.pt
+    sha256: 63c0a1a6272e98d43f4511bba40e30dd9c8ceaf5f39af869509b9f51a71c503e
+  - filename: voices/hm_omega.pt
+    sha256: b55f02a8e8483fffe0afa566e7d22ed8013acf47ad4f6bbee2795a840155703e
+  - filename: voices/hm_psi.pt
+    sha256: 2f0f055cea4f1083f4ef127ece48d71606347f6557dbb961c0ca5740a2da485b
+  - filename: voices/if_sara.pt
+    sha256: 6c0b253b955fe32f1a1a86006aebe83d050ea95afd0e7be15182f087deedbf55
+  - filename: voices/im_nicola.pt
+    sha256: 234ed06648649f9bd874b37508ea17560b9c993ef85b4ddb3e3a71e062bd2c12
+  - filename: voices/jf_alpha.pt
+    sha256: 1bf4c9dc69e45ee46183b071f4db766349aac5592acbcfeaf051018048a5d787
+  - filename: voices/jf_gongitsune.pt
+    sha256: 1b171917f18f351e65f2bf9657700cd6bfec4e65589c297525b9cf3c20105770
+  - filename: voices/jf_nezumi.pt
+    sha256: d83f007a7f01783b77014561a7d493d327a0210e143440e91c9b697590d27661
+  - filename: voices/jf_tebukuro.pt
+    sha256: 0d6917904438aec85f73a6fa1f7ac2be6481aae47c697834936930a91796c576
+  - filename: voices/jm_kumo.pt
+    sha256: 98340afd68b1cee84fe0cd95528cfa6d4b39e416aa75a9df64049d52c8b55896
+  - filename: voices/pf_dora.pt
+    sha256: 07e4ff987c5d5a8c3995efd15cc4f0db7c4c15e881b198d8ab7f67ecf51f5eb7
+  - filename: voices/pm_alex.pt
+    sha256: cf0ba8c573c2480fc54123683a35cf1e2ae130428e441eb91f9149bdb188a526
+  - filename: voices/pm_santa.pt
+    sha256: d42103169c5c872abbafb9129133af7e942bb9d272c3cc3b95c203e7d7198c29
+  - filename: voices/zf_xiaobei.pt
+    sha256: 9b76be63dab4f4f96962030acc0126a9aee9728608fbbe115e2b58a2bd504df6
+  - filename: voices/zf_xiaoni.pt
+    sha256: 95b49f169bf1640f4f43c25e13daa39f7b98d15d00823e83ef5c14b3ced59e49
+  - filename: voices/zf_xiaoxiao.pt
+    sha256: cfaf6f2ded1ee56f1ff94fcd2b0e6cdf32e5b794bdc05b44e7439d44aef5887c
+  - filename: voices/zf_xiaoyi.pt
+    sha256: b5235dbaeef85a4c613bf78af9a88ff63c25bac5f26ba77e36186d8b7ebf05e2
+  - filename: voices/zm_yunjian.pt
+    sha256: 76cbf8bad35901d011d9628a2fdceb7b4f1f127e7a3269cb393b3941eb7fc417
+  - filename: voices/zm_yunxi.pt
+    sha256: dbe6e1ce7c3dbaf2f5667432947b638b1c6831ccbe154c4610dbcc44f431e27b
+  - filename: voices/zm_yunxia.pt
+    sha256: bb2b03b08e84d64e1214440ce3b624987fac177f2eeb5bab8571799a3d980acd
+  - filename: voices/zm_yunyang.pt
+    sha256: 5238ac22e0c7f8b6cdd2eddd6e444b8a700b73c4674d9a047d59a94ff96379a2
+  notes: TTS fallback per DR-27; rendered locally on GTX 1070 for Phase 1 ASSETS-01.

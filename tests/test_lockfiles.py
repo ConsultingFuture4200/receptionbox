@@ -89,6 +89,29 @@ def test_models_lock_revision_format() -> None:
             )
 
 
+def test_models_lockfile_has_no_pending_markers() -> None:
+    """02-VERIFICATION.md GAP-3 closure: real REPRO-02 satisfaction.
+
+    After Plan 02-05 Task 1 ran tools.resolve_lockfile_shas against the
+    lockfile, every model has a real 40-char commit SHA and every file has
+    a real 64-char SHA-256. This test fails LOUD if a future change resets
+    an entry to `pending`.
+    """
+    raw = yaml.safe_load((ROOT / "bench" / "models.lock.yaml").read_text())
+    for m in raw["models"]:
+        assert m["revision"] != "pending", f"{m['name']}: revision still pending"
+        assert re.match(r"^[a-f0-9]{40}$", m["revision"]), (
+            f"{m['name']}: revision is not 40-char hex SHA: {m['revision']!r}"
+        )
+        files = m.get("files") or []
+        assert files, f"{m['name']}: files list is empty"
+        for f in files:
+            assert f["sha256"] != "pending", f"{m['name']}/{f['filename']}: sha256 still pending"
+            assert re.match(r"^[a-f0-9]{64}$", f["sha256"]), (
+                f"{m['name']}/{f['filename']}: sha256 not 64-char hex"
+            )
+
+
 def test_fetch_models_module_imports() -> None:
     """tools/fetch_models.py must import cleanly (proves huggingface_hub installed)."""
     import importlib
