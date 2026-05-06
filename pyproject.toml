@@ -21,6 +21,22 @@ dependencies = [
     "runpod>=1.7",
 ]
 
+[project.optional-dependencies]
+# Phase 2 CUDA stack — installed on the RunPod H100 pod, NOT on the operator
+# workstation. The harness imports succeed without these packages because
+# heavy imports (vllm, faster_whisper, livekit) are deferred inside method
+# bodies.
+cuda = [
+    "vllm>=0.10.0,<0.11.0",
+    "faster-whisper>=1.0,<2.0",
+    "livekit-agents>=1.0,<2.0",
+    "livekit-plugins-silero",
+    "livekit-plugins-turn-detector",
+    "httpx[http2]>=0.27",
+    "numpy>=1.26,<3.0",
+    "xgrammar>=0.1",
+]
+
 [dependency-groups]
 dev = [
     "pytest>=8.0",
