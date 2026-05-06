@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v0.4
 milestone_name: milestone
 status: executing
-stopped_at: "Plan 02-03 complete: CLOUD-04/05/06 cleanup posture trio + real RunPod provisioning shipped; 41 new tests; 205 passing; Phase 1 AST lock-in preserved; ready for Plan 02-04 (sanity strata)"
-last_updated: "2026-05-06T17:03:03.437Z"
+stopped_at: "Plan 02-04 PARTIAL (3/4): build_strata + run_preflight + OPERATOR-CHECKLIST shipped (224 tests passing); Task 4 (real H100 spend) BLOCKED on bench/models.lock.yaml pending revisions + manual runpodctl bootstrap step — routed to /gsd-plan-phase 02 --gaps"
+last_updated: "2026-05-06T17:30:00.000Z"
 last_activity: 2026-05-06
 progress:
   total_phases: 4
@@ -60,6 +60,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02 P01 | 0.4 | 3 tasks | 9 files |
 | Phase 02 P02 | 0.5 | 5 tasks | 14 files |
 | Phase 02 P03 | 0.5 | 4 tasks | 11 files |
+| Phase 02 P04 | 0.4 | 3/4 tasks (PARTIAL) | 6 files |
 
 ## Accumulated Context
 
@@ -100,6 +101,7 @@ Decisions are logged in PROJECT.md Key Decisions table. Recent:
 - [Phase 02]: [Phase 02-03]: provision() return type changed from Authorization to ProvisionResult dataclass (authorization, pod_id, pod_url, image_ref, gpu_type, started_utc); Authorization reachable via .authorization for ledger-contract test
 - [Phase 02]: [Phase 02-03]: provision() dry-runs when RUNPOD_API_KEY unset — ledger row still committed so operator sees the spend, but no SDK call; pod_id='dry-run' returned
 - [Phase 02]: [Phase 02-03]: pod entrypoint _shutdown() is idempotent via _SHUTDOWN_DONE guard — trap on TERM/INT and post-wait normal exit can both fire it without double-running audit + rsync
+- [Phase 02]: [Phase 02-04 PARTIAL]: Tasks 1-3 done (build_strata, run_preflight, OPERATOR-CHECKLIST; commits 1c7e70d, 8cc35e3, 097f95e, ba2c1a4, bd5e6eb). Task 4 (real H100 smoke + sanity) NOT executed — blocked on two upstream gaps surfaced during operator bootstrap dry-run: (a) bench/models.lock.yaml has all 4 entries at revision: pending — both tools/cache_bootstrap.py and tools/fetch_models.py skip pending entries, so a bootstrap pod would be a no-op; (b) tools/run_preflight.py --mode bootstrap defers to operator-side runpodctl with no automation. $0 spent on RunPod this session. Operator chose path C: route to /gsd-plan-phase 02 --gaps for a follow-up plan that resolves the 4 SHAs and auto-provisions the bootstrap pod via the SDK before any real spend.
 
 ### Pending Todos
 
@@ -115,6 +117,7 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-06T17:03:03.432Z
-Stopped at: Plan 02-03 complete: CLOUD-04/05/06 cleanup posture trio + real RunPod provisioning shipped; 41 new tests; 205 passing; Phase 1 AST lock-in preserved; ready for Plan 02-04 (sanity strata)
+Last session: 2026-05-06T17:30:00.000Z
+Stopped at: Plan 02-04 PARTIAL — Task 4 (real H100 spend) blocked on lockfile pending-revision gap + missing bootstrap-pod automation. Operator approved path C; routed to /gsd-plan-phase 02 --gaps.
 Resume file: None
+Next action: /gsd-plan-phase 02 --gaps
