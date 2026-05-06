@@ -212,6 +212,7 @@ def test_run_preflight_bootstrap_default_gpu_when_env_unset(
     monkeypatch.setenv("RUNPOD_API_KEY", "fake-but-set")
     monkeypatch.setenv("RUNPOD_NETWORK_VOLUME_ID", "vol-xyz")
     monkeypatch.delenv("BOOTSTRAP_GPU_TYPE", raising=False)
+    monkeypatch.delenv("RUNPOD_GPU_TYPE", raising=False)
 
     async def _exit_now(pod_id, *, timeout_s):
         return "EXITED"
@@ -225,6 +226,95 @@ def test_run_preflight_bootstrap_default_gpu_when_env_unset(
     rc = run_preflight.main(["--mode", "bootstrap"])
     assert rc == 0
     assert create_calls[0]["gpu_type_id"] == "NVIDIA H100 PCIe"
+
+
+def _install_fake_runpod(monkeypatch: pytest.MonkeyPatch) -> list[dict]:
+    """Test helper: install a fake runpod SDK and return the create_pod call list."""
+    import sys
+    import types
+
+    fake = types.ModuleType("runpod")
+    fake.api_key = None  # type: ignore[attr-defined]
+    calls: list[dict] = []
+    fake.create_pod = lambda **kw: calls.append(kw) or {"id": "p", "podHostId": "h"}  # type: ignore[attr-defined]
+    fake.terminate_pod = lambda *_a, **_k: None  # type: ignore[attr-defined]
+    fake.get_pods = lambda: []  # type: ignore[attr-defined]
+    monkeypatch.setitem(sys.modules, "runpod", fake)
+
+    async def _exit_now(pod_id, *, timeout_s):
+        return "EXITED"
+
+    async def _spend():
+        return 0.10
+
+    monkeypatch.setattr(run_preflight, "_wait_for_pod_exit", _exit_now)
+    monkeypatch.setattr(run_preflight, "_final_spend", _spend)
+    return calls
+
+
+def test_run_preflight_bootstrap_falls_back_to_runpod_gpu_type(
+    _repo_results_dir: pathlib.Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """When BOOTSTRAP_GPU_TYPE is unset but RUNPOD_GPU_TYPE is set, bootstrap
+    uses RUNPOD_GPU_TYPE — one env var configures everything.
+    """
+    calls = _install_fake_runpod(monkeypatch)
+    monkeypatch.setenv("RUNPOD_API_KEY", "fake-but-set")
+    monkeypatch.setenv("RUNPOD_NETWORK_VOLUME_ID", "vol-xyz")
+    monkeypatch.setenv("RUNPOD_GPU_TYPE", "NVIDIA H100 SXM")
+    monkeypatch.delenv("BOOTSTRAP_GPU_TYPE", raising=False)
+
+    rc = run_preflight.main(["--mode", "bootstrap"])
+    assert rc == 0
+    assert calls[0]["gpu_type_id"] == "NVIDIA H100 SXM"
+
+
+def test_run_preflight_bootstrap_specific_override_wins(
+    _repo_results_dir: pathlib.Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """BOOTSTRAP_GPU_TYPE wins over RUNPOD_GPU_TYPE so operators can route
+    bootstrap to a cheap SKU while smoke/sanity stay on H100.
+    """
+    calls = _install_fake_runpod(monkeypatch)
+    monkeypatch.setenv("RUNPOD_API_KEY", "fake-but-set")
+    monkeypatch.setenv("RUNPOD_NETWORK_VOLUME_ID", "vol-xyz")
+    monkeypatch.setenv("RUNPOD_GPU_TYPE", "NVIDIA H100 SXM")
+    monkeypatch.setenv("BOOTSTRAP_GPU_TYPE", "NVIDIA RTX A4000")
+
+    rc = run_preflight.main(["--mode", "bootstrap"])
+    assert rc == 0
+    assert calls[0]["gpu_type_id"] == "NVIDIA RTX A4000"
+
+
+def test_run_preflight_smoke_honors_runpod_gpu_type(
+    _repo_results_dir: pathlib.Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """RUNPOD_GPU_TYPE applies to gate runs (smoke/sanity), not just bootstrap.
+    Critical when H100 PCIe is out of stock but H100 SXM is available.
+    """
+    calls = _install_fake_runpod(monkeypatch)
+    monkeypatch.setenv("RUNPOD_API_KEY", "fake-but-set")
+    monkeypatch.setenv("RUNPOD_NETWORK_VOLUME_ID", "vol-xyz")
+    monkeypatch.setenv("RUNPOD_GPU_TYPE", "NVIDIA H100 SXM")
+
+    rc = run_preflight.main(["--mode", "smoke"])
+    assert rc == 0
+    assert calls[0]["gpu_type_id"] == "NVIDIA H100 SXM"
+
+
+def test_run_preflight_smoke_default_gpu_when_env_unset(
+    _repo_results_dir: pathlib.Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Without RUNPOD_GPU_TYPE, smoke falls back to provision()'s default."""
+    calls = _install_fake_runpod(monkeypatch)
+    monkeypatch.setenv("RUNPOD_API_KEY", "fake-but-set")
+    monkeypatch.setenv("RUNPOD_NETWORK_VOLUME_ID", "vol-xyz")
+    monkeypatch.delenv("RUNPOD_GPU_TYPE", raising=False)
+    monkeypatch.delenv("BOOTSTRAP_GPU_TYPE", raising=False)
+
+    rc = run_preflight.main(["--mode", "smoke"])
+    assert rc == 0
+    assert calls[0]["gpu_type_id"] == "NVIDIA H100 PCIe"
 
 
 def test_run_preflight_does_not_call_runpod_create_pod_directly() -> None:

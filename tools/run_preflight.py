@@ -180,15 +180,19 @@ async def _run_gate(
     """Provision one pod for `gate`, wait for it to exit, return verdict dict."""
     projected = _project_cost(max_minutes)
     started = time.time()
+    gate_gpu_type = os.environ.get("RUNPOD_GPU_TYPE")
+    provision_kwargs: dict = {
+        "gate": gate,
+        "projected_cost": projected,
+        "max_minutes": max_minutes,
+        "network_volume_id": network_volume_id,
+        "ssh_pubkey": ssh_pubkey,
+        "operator_host": operator_host,
+    }
+    if gate_gpu_type:
+        provision_kwargs["gpu_type"] = gate_gpu_type
     try:
-        result: ProvisionResult = provision(
-            gate=gate,
-            projected_cost=projected,
-            max_minutes=max_minutes,
-            network_volume_id=network_volume_id,
-            ssh_pubkey=ssh_pubkey,
-            operator_host=operator_host,
-        )
+        result: ProvisionResult = provision(**provision_kwargs)
     except RunPodProvisionError as e:
         return {"gate": gate, "status": "provision_error", "error": str(e)}
 
@@ -248,7 +252,13 @@ async def _run(mode: str) -> int:
         # stub with this SDK-driven path.
         bootstrap_max_min = int(per.get("bootstrap", 15))
         bootstrap_cost = float(cfg["phase2"].get("cache_bootstrap_one_time_usd", 0.67))
-        bootstrap_gpu_type = os.environ.get("BOOTSTRAP_GPU_TYPE")
+        # BOOTSTRAP_GPU_TYPE wins over RUNPOD_GPU_TYPE so operators can route
+        # bootstrap (no GPU compute, just HF downloads) to a cheaper SKU while
+        # smoke/sanity stay on H100. Both env vars optional; provision()'s
+        # NVIDIA H100 PCIe default applies when neither is set.
+        bootstrap_gpu_type = os.environ.get("BOOTSTRAP_GPU_TYPE") or os.environ.get(
+            "RUNPOD_GPU_TYPE"
+        )
         started = time.time()
         provision_kwargs: dict = {
             "gate": "bootstrap",
