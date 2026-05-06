@@ -88,6 +88,11 @@ def provision(
             "MAX_MINUTES": str(max_minutes) if max_minutes else "30",
             "RUN_ID_PREFIX": gate,
         }
+        if gate == "bootstrap":
+            # Plan 02-05 Task 2: pod_entrypoint.sh reads BOOTSTRAP_MODE=1 and
+            # short-circuits to `python -m tools.cache_bootstrap` instead of
+            # running a gate runner.
+            env["BOOTSTRAP_MODE"] = "1"
         if ssh_pubkey:
             env["SSH_PUBKEY"] = ssh_pubkey
         if operator_host:

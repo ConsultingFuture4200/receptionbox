@@ -240,17 +240,62 @@ async def _run(mode: str) -> int:
     }
 
     if mode == "bootstrap":
-        if not os.environ.get("RUNPOD_API_KEY"):
-            logger.info("[preflight] DRY RUN bootstrap; would call cache_bootstrap.py")
-            session["gates"].append({"gate": "bootstrap", "status": "dry-run"})
-        else:
-            logger.info(
-                "[preflight] bootstrap real-spend mode requires operator-side runpodctl "
-                "invocation; see docs/OPERATOR-CHECKLIST-PHASE-02.md"
+        # Bootstrap pod: small profile, mounts /models, entrypoint reads
+        # BOOTSTRAP_MODE=1 and runs `python -m tools.cache_bootstrap`. Same
+        # cost-ledger gate as smoke/sanity (Hard Constraint #1: provision()
+        # calls authorize_spend FIRST). Plan 02-05 Task 2 closes
+        # 02-VERIFICATION GAP-3 secondary by replacing the prior manual-CLI
+        # stub with this SDK-driven path.
+        bootstrap_max_min = int(per.get("bootstrap", 15))
+        bootstrap_cost = float(cfg["phase2"].get("cache_bootstrap_one_time_usd", 0.67))
+        started = time.time()
+        try:
+            result: ProvisionResult = provision(
+                gate="bootstrap",
+                projected_cost=bootstrap_cost,
+                max_minutes=bootstrap_max_min,
+                network_volume_id=network_volume_id,
+                ssh_pubkey=ssh_pubkey,
+                operator_host=operator_host,
             )
-            session["gates"].append({"gate": "bootstrap", "status": "operator-action"})
+        except RunPodProvisionError as e:
+            session["gates"].append(
+                {"gate": "bootstrap", "status": "provision_error", "error": str(e)}
+            )
+            _write_session(session, results_dir)
+            return 1
+        if result.pod_id == "dry-run":
+            logger.info("[preflight] DRY RUN bootstrap; ledger row committed")
+            session["gates"].append(
+                {
+                    "gate": "bootstrap",
+                    "status": "dry-run",
+                    "pod_id": "dry-run",
+                    "auth_id": result.authorization.id,
+                    "projected_cost_usd": bootstrap_cost,
+                }
+            )
+            _write_session(session, results_dir)
+            return 0
+        final_state = await _wait_for_pod_exit(
+            result.pod_id, timeout_s=bootstrap_max_min * 60 + 300
+        )
+        wall_clock_s = time.time() - started
+        final_spend = await _final_spend()
+        session["gates"].append(
+            {
+                "gate": "bootstrap",
+                "status": final_state,
+                "wall_clock_s": wall_clock_s,
+                "final_spend_usd": final_spend,
+                "pod_id": result.pod_id,
+                "auth_id": result.authorization.id,
+                "projected_cost_usd": bootstrap_cost,
+            }
+        )
         _write_session(session, results_dir)
-        return 0
+        terminal = {"EXITED", "GONE", "TERMINATED", "STOPPED"}
+        return 0 if final_state in terminal else 1
 
     gates = ["smoke"] if mode == "smoke" else ["g1", "g2", "g3", "g5"]
     for g in gates:
@@ -275,7 +320,7 @@ async def _run(mode: str) -> int:
     _write_session(session, results_dir)
     print(json.dumps(session, indent=2, default=str))
 
-    terminal = {"EXITED", "GONE", "TERMINATED", "STOPPED", "dry-run", "operator-action"}
+    terminal = {"EXITED", "GONE", "TERMINATED", "STOPPED", "dry-run"}
     any_fail = any(g.get("status") not in terminal for g in session["gates"])
     return 1 if any_fail else 0
 

@@ -53,7 +53,9 @@ export RUNPOD_NETWORK_VOLUME_ID=...
 uv run python -m tools.run_preflight --mode bootstrap
 ```
 
-This creates a small bootstrap pod that runs `tools/cache_bootstrap.py`, populating `/models/{repo_safe}/{revision}/` for all 4 HF models (`bench/models.lock.yaml`). The pod self-terminates when bootstrap exits.
+This calls `orchestration.runpod_h100.provision(gate="bootstrap", ...)` (cost-ledger gated, same as smoke/sanity) which spins a bootstrap pod with `BOOTSTRAP_MODE=1`. The pod entrypoint reads that env var and runs `python -m tools.cache_bootstrap --target /models --lockfile bench/models.lock.yaml`, populating `/models/{repo_safe}/{revision}/` for all 4 HF models. The pod self-terminates when bootstrap exits (no SSH/rsync needed for bootstrap — there are no result files to pull). Projected cost: $0.67 ceiling (15 min × $2.69/hr); typical actual: $0.50.
+
+Closed gap: prior to Plan 02-05, this step deferred to operator-side `runpodctl pod create` because (a) `bench/models.lock.yaml` had `revision: pending` for all 4 entries and (b) `--mode bootstrap` returned an `operator-action` stub instead of provisioning. Plan 02-05 resolved real commit SHAs + per-file SHA-256 in the lockfile AND replaced the operator-action stub with the SDK call. Phase 2 is now fully reproducible from `~/RBOX` per CLAUDE.md §Constraints.
 
 Step 2 — Smoke (PREFLIGHT-01):
 

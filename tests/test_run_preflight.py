@@ -73,12 +73,104 @@ def test_run_preflight_sanity_dry_run_iterates_4_gates(_repo_results_dir: pathli
 def test_run_preflight_bootstrap_dry_run_logs_and_returns_zero(
     _repo_results_dir: pathlib.Path, caplog: pytest.LogCaptureFixture
 ) -> None:
+    """Plan 02-05 Task 2: dry-run bootstrap goes through provision()'s
+    dry-run path. Either log line is acceptable: the run_preflight wrapper
+    logs `"DRY RUN bootstrap"` and orchestration.runpod_h100.provision logs
+    `"DRY RUN — RUNPOD_API_KEY not set"`.
+    """
     import logging
 
     caplog.set_level(logging.INFO)
     rc = run_preflight.main(["--mode", "bootstrap"])
     assert rc == 0
-    assert any("DRY RUN bootstrap" in r.message for r in caplog.records)
+    messages = " ".join(r.message for r in caplog.records)
+    assert "DRY RUN bootstrap" in messages or "DRY RUN — RUNPOD_API_KEY" in messages
+    sessions = sorted((_repo_results_dir / "preflight").glob("*.json"))
+    sess = json.loads(sessions[-1].read_text())
+    assert sess["gates"][0]["gate"] == "bootstrap"
+    assert sess["gates"][0]["status"] == "dry-run"
+
+
+def test_run_preflight_bootstrap_real_spend_calls_provision(
+    _repo_results_dir: pathlib.Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Plan 02-05 Task 2: with RUNPOD_API_KEY set, --mode bootstrap calls
+    provision() (cost-ledger gated) instead of deferring to operator-side
+    runpodctl. Verifies BOOTSTRAP_MODE=1 + GATE=bootstrap env, /models
+    volume mount, and ledger row at projected_cost=0.67.
+    """
+    import sqlite3
+    import sys
+    import types
+
+    # Install fake runpod SDK.
+    fake = types.ModuleType("runpod")
+    fake.api_key = None  # type: ignore[attr-defined]
+    create_calls: list[dict] = []
+
+    def _create(**kwargs):
+        create_calls.append(kwargs)
+        return {"id": "fake-bootstrap-pod", "podHostId": "fake-host"}
+
+    fake.create_pod = _create  # type: ignore[attr-defined]
+    fake.terminate_pod = lambda *_a, **_k: None  # type: ignore[attr-defined]
+    fake.get_pods = lambda: []  # type: ignore[attr-defined]
+    monkeypatch.setitem(sys.modules, "runpod", fake)
+    monkeypatch.setenv("RUNPOD_API_KEY", "fake-but-set")
+    monkeypatch.setenv("RUNPOD_NETWORK_VOLUME_ID", "vol-xyz")
+
+    # Skip the wait + spend polls.
+    async def _exit_now(pod_id, *, timeout_s):
+        return "EXITED"
+
+    async def _spend():
+        return 0.45
+
+    monkeypatch.setattr(run_preflight, "_wait_for_pod_exit", _exit_now)
+    monkeypatch.setattr(run_preflight, "_final_spend", _spend)
+
+    rc = run_preflight.main(["--mode", "bootstrap"])
+    assert rc == 0
+    assert len(create_calls) == 1
+    kw = create_calls[0]
+    assert kw["env"]["BOOTSTRAP_MODE"] == "1"
+    assert kw["env"]["GATE"] == "bootstrap"
+    assert kw["network_volume_id"] == "vol-xyz"
+    assert kw["volume_mount_path"] == "/models"
+    assert kw["name"].startswith("rbox-bootstrap-")
+
+    # Session manifest must reflect real-spend status, not dry-run.
+    sessions = sorted((_repo_results_dir / "preflight").glob("*.json"))
+    sess = json.loads(sessions[-1].read_text())
+    assert sess["gates"][0]["status"] == "EXITED"
+    assert sess["gates"][0]["pod_id"] == "fake-bootstrap-pod"
+    assert sess["gates"][0]["final_spend_usd"] == 0.45
+    assert sess["gates"][0]["projected_cost_usd"] == 0.67
+
+    # And a ledger row exists for gate='bootstrap' at projected_cost=0.67.
+    conn = sqlite3.connect(pathlib.Path.cwd() / "cost" / "ledger.sqlite")
+    rows = conn.execute(
+        "SELECT projected_cost_usd FROM authorizations WHERE gate='bootstrap'"
+    ).fetchall()
+    conn.close()
+    assert rows, "no bootstrap authorization in ledger"
+    assert rows[-1][0] == 0.67
+
+
+def test_run_preflight_does_not_call_runpod_create_pod_directly() -> None:
+    """AST guard (Plan 02-05 Task 2): tools/run_preflight.py must NOT call
+    `runpod.create_pod` directly — every real-spend path goes through
+    `orchestration.runpod_h100.provision` so the cost-ledger gate is preserved.
+    """
+    import ast
+
+    repo_root = pathlib.Path(__file__).resolve().parents[1]
+    tree = ast.parse((repo_root / "tools" / "run_preflight.py").read_text())
+    bad = [n for n in ast.walk(tree) if isinstance(n, ast.Attribute) and n.attr == "create_pod"]
+    assert not bad, (
+        "run_preflight.py must NOT call runpod.create_pod directly; "
+        "go through orchestration.runpod_h100.provision"
+    )
 
 
 def test_validate_smoke_pass_path(tmp_path: pathlib.Path) -> None:

@@ -33,6 +33,24 @@ set -euo pipefail
 WORKSPACE="${WORKSPACE:-/workspace}"
 cd "$WORKSPACE"
 
+# Plan 02-05 Task 2: bootstrap mode short-circuits to cache_bootstrap, then
+# exits. No gate runner, no rsync, no audit chain — there are no result
+# files to pull. Same volume mount (/models) as smoke/sanity so the cache
+# survives across pods (D-19, D-21).
+if [[ "${BOOTSTRAP_MODE:-0}" = "1" ]]; then
+    echo "[entrypoint] BOOTSTRAP_MODE=1 — running cache_bootstrap and exiting"
+    if command -v uv >/dev/null 2>&1; then
+        uv run python -m tools.cache_bootstrap \
+            --target /models --lockfile bench/models.lock.yaml
+    else
+        python -m tools.cache_bootstrap \
+            --target /models --lockfile bench/models.lock.yaml
+    fi
+    _rc=$?
+    echo "[entrypoint] bootstrap exit=${_rc}"
+    exit "${_rc}"
+fi
+
 _setup_ssh() {
     if [[ -n "${SSH_PRIVATE_KEY:-}" ]]; then
         mkdir -p ~/.ssh
