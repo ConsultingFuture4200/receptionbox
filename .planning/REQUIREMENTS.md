@@ -33,8 +33,8 @@ Requirements for the Phase 0 deliverable set. Each maps to roadmap phases.
 - [x] **HARNESS-02**: `substrate/cuda.py` implements the ABC for RunPod H100 (vLLM 0.10+ CUDA wheel, faster-whisper INT8, Chatterbox-Turbo CUDA, Kokoro CUDA, LiveKit Agents 1.x)
 - [ ] **HARNESS-03**: `substrate/rocm.py` implements the ABC for TensorWave/Vultr MI300X (vLLM ROCm wheel, faster-whisper INT8 ROCm, devnen Chatterbox-TTS-Server, moritzchow Kokoro-FastAPI-ROCm, LiveKit Agents 1.x)
 - [x] **HARNESS-04**: Result schema is pydantic-validated with `schema_version` field; results stored as JSONL + Parquet + SQLite index in `results/`
-- [ ] **HARNESS-05**: Each gate run emits an `env.json` sidecar (substrate fingerprint, model SHAs, image digests, git commit, asset manifest hash, timestamps)
-- [ ] **HARNESS-06**: Gate runners under `gates/g{1,2,3,5,7}/runner.py` are substrate-agnostic and standalone-invokable via `make gN`
+- [x] **HARNESS-05**: Each gate run emits an `env.json` sidecar (substrate fingerprint, model SHAs, image digests, git commit, asset manifest hash, timestamps)
+- [x] **HARNESS-06**: Gate runners under `gates/g{1,2,3,5,7}/runner.py` are substrate-agnostic and standalone-invokable via `make gN`
 
 ### Cloud Orchestration & Cost Control
 
@@ -88,7 +88,7 @@ Requirements for the Phase 0 deliverable set. Each maps to roadmap phases.
 
 - [x] **REPRO-01**: `bench/images.lock.yaml` pins every Docker image by digest (RunPod NGC pytorch, ROCm vllm, ROCm pytorch)
 - [x] **REPRO-02**: `bench/models.lock.yaml` pins every HF model by `revision=<commit_sha>` (Whisper, Qwen3-4B, Chatterbox, Kokoro)
-- [ ] **REPRO-03**: Every result row records (image_digest, model_sha, asset_manifest_sha, git_commit, run_id, timestamp_utc)
+- [x] **REPRO-03**: Every result row records (image_digest, model_sha, asset_manifest_sha, git_commit, run_id, timestamp_utc)
 - [ ] **REPRO-04**: End-of-week canary re-run executes a single G1 5-call run and confirms results within tolerance of the original measurement (Pitfall-11 guard)
 - [ ] **REPRO-05**: Reproducibility manifest sealed in `docs/repro-manifest-v1.0.md` at end of synthesis; references all locks, audits, and verifies canary status
 
@@ -159,8 +159,8 @@ Populated by `gsd-roadmapper` after ROADMAP.md creation.
 | HARNESS-02 | Phase 2 | Complete |
 | HARNESS-03 | Phase 3 | Pending |
 | HARNESS-04 | Phase 1 | Complete |
-| HARNESS-05 | Phase 2 | Pending |
-| HARNESS-06 | Phase 2 | Pending |
+| HARNESS-05 | Phase 2 | Complete |
+| HARNESS-06 | Phase 2 | Complete |
 | CLOUD-01 | Phase 1 | Partial-pending-operator (skeleton + ledger gate shipped; awaits $75 deposit + API key) |
 | CLOUD-02 | Phase 1 | Partial-pending-operator (skeletons + adapters shipped; awaits TensorWave + Vultr $75 deposits) |
 | CLOUD-03 | Phase 1 | Partial-pending-operator (cost-watch daemon + 3 adapters shipped; awaits ledger bootstrap with funded caps) |
@@ -193,7 +193,7 @@ Populated by `gsd-roadmapper` after ROADMAP.md creation.
 | REPORT-07 | Phase 4 | Pending |
 | REPRO-01 | Phase 1 | Complete |
 | REPRO-02 | Phase 1 | Complete |
-| REPRO-03 | Phase 2 | Pending |
+| REPRO-03 | Phase 2 | Complete |
 | REPRO-04 | Phase 4 | Pending |
 | REPRO-05 | Phase 4 | Pending |
 | DECISION-NC-R14 | Phase 1 | Partial-pending-operator (DR-31 v0.1.0 drafted; awaits operator review/approval) |

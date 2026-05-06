@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v0.4
 milestone_name: milestone
 status: executing
-stopped_at: "Plan 02-01 complete: HARNESS-02 substrate/cuda.py + LiveKit rig shipped; 24 new tests passing; ready for Plan 02-02 (gate runners)"
-last_updated: "2026-05-06T16:33:06.626Z"
+stopped_at: "Plan 02-02 complete: HARNESS-06 substrate-agnostic gate runners + HARNESS-05 env.json sidecar shipped; 27 new tests; 164 passing; ready for Plan 02-03 (orchestration / pod entrypoint)"
+last_updated: "2026-05-06T16:48:10.504Z"
 last_activity: 2026-05-06
 progress:
   total_phases: 4
   completed_phases: 1
   total_plans: 9
-  completed_plans: 6
-  percent: 67
+  completed_plans: 7
+  percent: 78
 ---
 
 # Project State
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-05-04)
 ## Current Position
 
 Phase: 02 (cuda-pre-flight) — EXECUTING
-Plan: 2 of 4
+Plan: 3 of 4
 Status: Ready to execute
 Last activity: 2026-05-06
 
@@ -58,6 +58,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01 P04 | 0.83 | 3 tasks | 760 files |
 | Phase 01 P05 | 0.2 | 2 tasks | 15 files |
 | Phase 02 P01 | 0.4 | 3 tasks | 9 files |
+| Phase 02 P02 | 0.5 | 5 tasks | 14 files |
 
 ## Accumulated Context
 
@@ -90,6 +91,10 @@ Decisions are logged in PROJECT.md Key Decisions table. Recent:
 - [Phase 02]: [Phase 02-01]: DR-27 TTS fallback wired in CUDASubstrate.synthesize() — Chatterbox health=False routes to Kokoro with WARNING log
 - [Phase 02]: [Phase 02-01]: LiveKit pipeline ships shim path (SimpleNamespace) — unit tests + workstation dev never need livekit-agents installed; structural parity with real AgentSession surface
 - [Phase 02]: [Phase 02-01]: Cuda stack moved to [project.optional-dependencies] cuda group — workstation uv sync clean, pod uses uv sync --extra cuda
+- [Phase 02]: [Phase 02-02]: GateRunner base auto-populates the full REPRO-03 tuple via build_result(); pydantic GateResult validation makes missing fields impossible at write-time
+- [Phase 02]: [Phase 02-02]: G3 detected_endpoint_ms reads from last STT chunk's end_ms (substrate-agnostic); AgentSession on_user_speech_committed wiring deferred to Plan 02-03 / real-path validation
+- [Phase 02]: [Phase 02-02]: G5 probe shape adapter accepts both plan-spec (text/refusal_label) and on-disk probes.json (prompt/expected_label) field names; benign controls tagged control: True for distinct false-refusal accounting
+- [Phase 02]: [Phase 02-02]: make g7 stays explicitly deferred (PREFLIGHT-02 message + non-zero exit); test asserts non-zero rather than ==1 because make wraps recipe exit 1 as its own code 2
 
 ### Pending Todos
 
@@ -105,6 +110,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-06T16:32:55.529Z
-Stopped at: Plan 02-01 complete: HARNESS-02 substrate/cuda.py + LiveKit rig shipped; 24 new tests passing; ready for Plan 02-02 (gate runners)
+Last session: 2026-05-06T16:47:59.596Z
+Stopped at: Plan 02-02 complete: HARNESS-06 substrate-agnostic gate runners + HARNESS-05 env.json sidecar shipped; 27 new tests; 164 passing; ready for Plan 02-03 (orchestration / pod entrypoint)
 Resume file: None
