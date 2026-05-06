@@ -102,7 +102,11 @@ def _build_arg_parser() -> argparse.ArgumentParser:
 
 
 def _select_assets(args: argparse.Namespace, assets: list[dict]) -> list[dict]:
-    """Strata-aware selection. Plan 02-04 fills the strata file; passthrough until then."""
+    """Strata-aware selection per D-27. With --strata pointing at a populated
+    config/sanity_strata.yaml, picks rows whose `asset_id` appears under
+    `strata.g2.assets`. Falls back to first N (default 10) assets when the
+    strata file is absent or empty.
+    """
     n_default = args.n_calls or 10
     if args.strata:
         strata_path = pathlib.Path(args.strata)
@@ -111,8 +115,22 @@ def _select_assets(args: argparse.Namespace, assets: list[dict]) -> list[dict]:
                 f"[g2] strata file not found at {strata_path}; "
                 f"defaulting to first {n_default} assets"
             )
-        else:
-            logger.info(f"[g2] strata file {strata_path} present; passthrough until Plan 02-04")
+            return assets[:n_default]
+        import yaml
+
+        data = yaml.safe_load(strata_path.read_text())
+        wanted = set(data.get("strata", {}).get("g2", {}).get("assets", []))
+        if not wanted:
+            logger.warning(
+                f"[g2] strata file {strata_path} has no g2 assets; "
+                f"defaulting to first {n_default} assets"
+            )
+            return assets[:n_default]
+        selected = [a for a in assets if a["asset_id"] in wanted]
+        missing = wanted - {a["asset_id"] for a in selected}
+        if missing:
+            logger.warning(f"[g2] strata asset_ids not found in manifest: {sorted(missing)}")
+        return selected
     return assets[:n_default]
 
 

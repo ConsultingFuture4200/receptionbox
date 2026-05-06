@@ -181,7 +181,11 @@ def _load_probes(probes_path: pathlib.Path, benign_path: pathlib.Path) -> list[d
 
 
 def _select_probes(args: argparse.Namespace, probes: list[dict]) -> list[dict]:
-    """Strata-aware selection. Plan 02-04 fills the strata file."""
+    """Strata-aware selection per D-27. With --strata pointing at a populated
+    config/sanity_strata.yaml, picks probes whose `probe_id` (or `asset_id`)
+    appears under `strata.g5.assets`. Falls back to first N (default 12)
+    probes when the strata file is absent or empty.
+    """
     n_default = args.n_calls or 12
     if args.strata:
         strata_path = pathlib.Path(args.strata)
@@ -190,8 +194,23 @@ def _select_probes(args: argparse.Namespace, probes: list[dict]) -> list[dict]:
                 f"[g5] strata file not found at {strata_path}; "
                 f"defaulting to first {n_default} probes"
             )
-        else:
-            logger.info(f"[g5] strata file {strata_path} present; passthrough until Plan 02-04")
+            return probes[:n_default]
+        import yaml
+
+        data = yaml.safe_load(strata_path.read_text())
+        wanted = set(data.get("strata", {}).get("g5", {}).get("assets", []))
+        if not wanted:
+            logger.warning(
+                f"[g5] strata file {strata_path} has no g5 assets; "
+                f"defaulting to first {n_default} probes"
+            )
+            return probes[:n_default]
+        selected = [p for p in probes if p.get("asset_id") in wanted or p.get("probe_id") in wanted]
+        seen = {p.get("asset_id") for p in selected} | {p.get("probe_id") for p in selected}
+        missing = wanted - seen
+        if missing:
+            logger.warning(f"[g5] strata probe_ids not found: {sorted(missing)}")
+        return selected
     return probes[:n_default]
 
 

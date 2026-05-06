@@ -82,27 +82,42 @@ def load_assets(
 
 
 def _select_assets(args: argparse.Namespace, assets: list[dict]) -> list[dict]:
-    """Apply --gate / --strata / --n-calls selection rules.
+    """Apply --gate / --strata / --n-calls selection rules (D-27).
 
-    Plan 02-04 lands the strata file. Until then, log a warning and
-    default to the first N assets so the targets remain callable.
+    - smoke: first N assets (default 5).
+    - g1 sanity with --strata: filter manifest rows to the asset_ids listed
+      under `strata.g1.assets` in config/sanity_strata.yaml.
+    - g1 sanity without --strata or strata file missing: fall back to first
+      N assets and WARN.
     """
     if args.gate == "smoke":
         n = args.n_calls or 5
         return assets[:n]
-    # gate == "g1" (sanity)
+    n_default = args.n_calls or 10
     if args.strata:
         strata_path = pathlib.Path(args.strata)
         if not strata_path.exists():
             logger.warning(
                 f"[g1] strata file not found at {strata_path}; "
-                f"defaulting to first {args.n_calls or 10} assets"
+                f"defaulting to first {n_default} assets"
             )
-            return assets[: args.n_calls or 10]
-        # Plan 02-04 will populate the strata file; passthrough placeholder.
-        logger.info(f"[g1] strata file {strata_path} present; passthrough until Plan 02-04")
-        return assets[: args.n_calls or 10]
-    return assets[: args.n_calls or 10]
+            return assets[:n_default]
+        import yaml
+
+        data = yaml.safe_load(strata_path.read_text())
+        wanted = set(data.get("strata", {}).get("g1", {}).get("assets", []))
+        if not wanted:
+            logger.warning(
+                f"[g1] strata file {strata_path} has no g1 assets; "
+                f"defaulting to first {n_default} assets"
+            )
+            return assets[:n_default]
+        selected = [a for a in assets if a["asset_id"] in wanted]
+        missing = wanted - {a["asset_id"] for a in selected}
+        if missing:
+            logger.warning(f"[g1] strata asset_ids not found in manifest: {sorted(missing)}")
+        return selected
+    return assets[:n_default]
 
 
 def _build_arg_parser() -> argparse.ArgumentParser:

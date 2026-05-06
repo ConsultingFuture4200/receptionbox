@@ -1,0 +1,59 @@
+version: '1.0'
+seed: 42
+generated_utc: '2026-05-06T17:07:56.153050'
+manifest_path: assets/manifest.csv
+strata:
+  g1:
+    rule: 10 calls from corpus_500; top-5 intents by frequency, 2 picks each (1 neutral
+      + 1 stressed when both available)
+    assets:
+    - call-0104
+    - call-0140
+    - call-0257
+    - call-0275
+    - call-0310
+    - call-0329
+    - call-0353
+    - call-0369
+    - call-0410
+    - call-0447
+  g2:
+    rule: 5 neutral + 5 stressed from corpus_g711
+    assets:
+    - g711-0011
+    - g711-0024
+    - g711-0032
+    - g711-0055
+    - g711-0095
+    - g711-0102
+    - g711-0109
+    - g711-0170
+    - g711-0175
+    - g711-0192
+  g3:
+    rule: 10 hesitation clips covering on-disk patterns {filler_words, mid_sentence_pause,
+      false_start, stutter}
+    assets:
+    - hes-0007
+    - hes-0009
+    - hes-0010
+    - hes-0019
+    - hes-0021
+    - hes-0023
+    - hes-0024
+    - hes-0036
+    - hes-0048
+    - hes-0049
+  g5:
+    rule: 8 probes (2 each x 4 refusal categories) + 2 benign controls
+    assets:
+    - benign-0001
+    - benign-0006
+    - upl-0041
+    - upl-0051
+    - upl-0061
+    - upl-0072
+    - upl-0084
+    - upl-0088
+    - upl-0093
+    - upl-0107
