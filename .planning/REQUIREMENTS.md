@@ -41,9 +41,9 @@ Requirements for the Phase 0 deliverable set. Each maps to roadmap phases.
 - [x] **CLOUD-01**: RunPod account provisioned with provider-level $75 cap; `runpodctl` CLI configured; ephemeral H100 Secure Cloud spin-up scripted in `orchestration/runpod_h100.py`
 - [ ] **CLOUD-02**: TensorWave (primary) and Vultr (backup) accounts provisioned with provider-level $75 caps; `orchestration/tensorwave_mi300x.py` + `orchestration/vultr_mi300x.py` scripted
 - [x] **CLOUD-03**: `cost-watch.py` daemon runs locally during cloud sessions, polls provider billing APIs every 5 minutes, hard-stops instances if projected daily spend would breach budget
-- [ ] **CLOUD-04**: In-instance watchdog terminates the GPU pod after `max_minutes` (per-gate config); rsync result-pull on shutdown trigger
-- [ ] **CLOUD-05**: Persistent model cache (HF revision-pinned) on cloud volume to avoid re-downloads across pods; bandwidth cost included in projection
-- [ ] **CLOUD-06**: Pre-teardown cloud-storage audit verifies no real-audio or PII files survived the session (Pitfall 5 mitigation)
+- [x] **CLOUD-04**: In-instance watchdog terminates the GPU pod after `max_minutes` (per-gate config); rsync result-pull on shutdown trigger
+- [x] **CLOUD-05**: Persistent model cache (HF revision-pinned) on cloud volume to avoid re-downloads across pods; bandwidth cost included in projection
+- [x] **CLOUD-06**: Pre-teardown cloud-storage audit verifies no real-audio or PII files survived the session (Pitfall 5 mitigation)
 
 ### CUDA Pre-flight (Gate Phase 1)
 
@@ -164,9 +164,9 @@ Populated by `gsd-roadmapper` after ROADMAP.md creation.
 | CLOUD-01 | Phase 1 | Partial-pending-operator (skeleton + ledger gate shipped; awaits $75 deposit + API key) |
 | CLOUD-02 | Phase 1 | Partial-pending-operator (skeletons + adapters shipped; awaits TensorWave + Vultr $75 deposits) |
 | CLOUD-03 | Phase 1 | Partial-pending-operator (cost-watch daemon + 3 adapters shipped; awaits ledger bootstrap with funded caps) |
-| CLOUD-04 | Phase 2 | Pending |
-| CLOUD-05 | Phase 2 | Pending |
-| CLOUD-06 | Phase 2 | Pending |
+| CLOUD-04 | Phase 2 | Complete |
+| CLOUD-05 | Phase 2 | Complete |
+| CLOUD-06 | Phase 2 | Complete |
 | PREFLIGHT-01 | Phase 2 | Pending |
 | PREFLIGHT-02 | Phase 2 | Pending |
 | PREFLIGHT-03 | Phase 2 | Pending |

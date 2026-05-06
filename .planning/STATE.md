@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v0.4
 milestone_name: milestone
 status: executing
-stopped_at: "Plan 02-02 complete: HARNESS-06 substrate-agnostic gate runners + HARNESS-05 env.json sidecar shipped; 27 new tests; 164 passing; ready for Plan 02-03 (orchestration / pod entrypoint)"
-last_updated: "2026-05-06T16:48:10.504Z"
+stopped_at: "Plan 02-03 complete: CLOUD-04/05/06 cleanup posture trio + real RunPod provisioning shipped; 41 new tests; 205 passing; Phase 1 AST lock-in preserved; ready for Plan 02-04 (sanity strata)"
+last_updated: "2026-05-06T17:03:03.437Z"
 last_activity: 2026-05-06
 progress:
   total_phases: 4
   completed_phases: 1
   total_plans: 9
-  completed_plans: 7
-  percent: 78
+  completed_plans: 8
+  percent: 89
 ---
 
 # Project State
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-05-04)
 ## Current Position
 
 Phase: 02 (cuda-pre-flight) — EXECUTING
-Plan: 3 of 4
+Plan: 4 of 4
 Status: Ready to execute
 Last activity: 2026-05-06
 
@@ -59,6 +59,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01 P05 | 0.2 | 2 tasks | 15 files |
 | Phase 02 P01 | 0.4 | 3 tasks | 9 files |
 | Phase 02 P02 | 0.5 | 5 tasks | 14 files |
+| Phase 02 P03 | 0.5 | 4 tasks | 11 files |
 
 ## Accumulated Context
 
@@ -95,6 +96,10 @@ Decisions are logged in PROJECT.md Key Decisions table. Recent:
 - [Phase 02]: [Phase 02-02]: G3 detected_endpoint_ms reads from last STT chunk's end_ms (substrate-agnostic); AgentSession on_user_speech_committed wiring deferred to Plan 02-03 / real-path validation
 - [Phase 02]: [Phase 02-02]: G5 probe shape adapter accepts both plan-spec (text/refusal_label) and on-disk probes.json (prompt/expected_label) field names; benign controls tagged control: True for distinct false-refusal accounting
 - [Phase 02]: [Phase 02-02]: make g7 stays explicitly deferred (PREFLIGHT-02 message + non-zero exit); test asserts non-zero rather than ==1 because make wraps recipe exit 1 as its own code 2
+- [Phase 02]: [Phase 02-03]: Audit manifest scope = audio files only under assets/ (matches tools/check_asset_manifest.py); non-audio source artifacts under assets/ are committed code, not provenance-tracked audio
+- [Phase 02]: [Phase 02-03]: provision() return type changed from Authorization to ProvisionResult dataclass (authorization, pod_id, pod_url, image_ref, gpu_type, started_utc); Authorization reachable via .authorization for ledger-contract test
+- [Phase 02]: [Phase 02-03]: provision() dry-runs when RUNPOD_API_KEY unset — ledger row still committed so operator sees the spend, but no SDK call; pod_id='dry-run' returned
+- [Phase 02]: [Phase 02-03]: pod entrypoint _shutdown() is idempotent via _SHUTDOWN_DONE guard — trap on TERM/INT and post-wait normal exit can both fire it without double-running audit + rsync
 
 ### Pending Todos
 
@@ -110,6 +115,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-06T16:47:59.596Z
-Stopped at: Plan 02-02 complete: HARNESS-06 substrate-agnostic gate runners + HARNESS-05 env.json sidecar shipped; 27 new tests; 164 passing; ready for Plan 02-03 (orchestration / pod entrypoint)
+Last session: 2026-05-06T17:03:03.432Z
+Stopped at: Plan 02-03 complete: CLOUD-04/05/06 cleanup posture trio + real RunPod provisioning shipped; 41 new tests; 205 passing; Phase 1 AST lock-in preserved; ready for Plan 02-04 (sanity strata)
 Resume file: None

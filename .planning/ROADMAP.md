@@ -48,7 +48,7 @@ Plans:
 Plans:
 - [x] 02-01-PLAN.md — substrate/cuda.py composing 4 backend adapters + LiveKit AgentSession pipeline rig (HARNESS-02)
 - [x] 02-02-PLAN.md — Substrate-agnostic gate runners g1/g2/g3/g5 + GateRunner base + env.json sidecar (HARNESS-05, HARNESS-06, REPRO-03)
-- [ ] 02-03-PLAN.md — Pod entrypoint + watchdog + HF cache bootstrap + pre-teardown audit + real RunPod provisioning (CLOUD-04, CLOUD-05, CLOUD-06)
+- [x] 02-03-PLAN.md — Pod entrypoint + watchdog + HF cache bootstrap + pre-teardown audit + real RunPod provisioning (CLOUD-04, CLOUD-05, CLOUD-06)
 - [ ] 02-04-PLAN.md — Stratification config + pre-flight driver + operator checklist + real-spend smoke/sanity checkpoint (PREFLIGHT-01, PREFLIGHT-02, PREFLIGHT-03)
 
 ### Phase 3: ROCm Validation
