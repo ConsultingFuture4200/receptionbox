@@ -23,16 +23,21 @@ def _no_runpod_key(monkeypatch: pytest.MonkeyPatch) -> None:
 
 @pytest.fixture
 def _repo_results_dir(monkeypatch: pytest.MonkeyPatch, tmp_path: pathlib.Path) -> pathlib.Path:
-    """Run the driver inside a temp dir but with the real budget.yaml + ledger.
-
-    The driver reads config/budget.yaml from CWD; chdir to tmp + symlink the
-    config file to keep tests hermetic.
+    """Hermetic temp CWD with a copy of config/budget.yaml + an initialized
+    cost ledger. The driver reads `config/budget.yaml` and `cost/ledger.sqlite`
+    relative to CWD; chdir + bootstrap both inside tmp_path to keep the real
+    repo ledger untouched.
     """
     cfg_dir = tmp_path / "config"
     cfg_dir.mkdir()
     repo = pathlib.Path(__file__).resolve().parents[1]
     (cfg_dir / "budget.yaml").write_text((repo / "config" / "budget.yaml").read_text())
     monkeypatch.chdir(tmp_path)
+    # Initialize a $75 RunPod budget in the temp ledger so authorize_spend
+    # succeeds for projected costs <= $50.
+    from cost.ledger import initialize_provider
+
+    initialize_provider("runpod", 75.0)
     return tmp_path / "results"
 
 
