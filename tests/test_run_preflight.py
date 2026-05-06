@@ -157,6 +157,76 @@ def test_run_preflight_bootstrap_real_spend_calls_provision(
     assert rows[-1][0] == 0.67
 
 
+def test_run_preflight_bootstrap_honors_gpu_type_env_override(
+    _repo_results_dir: pathlib.Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Plan 02-05 §703 follow-up: BOOTSTRAP_GPU_TYPE env overrides the
+    default H100 PCIe so operators can route bootstrap to whichever GPU
+    has inventory. Bootstrap doesn't need an H100 — it's just HF
+    snapshot_download calls.
+    """
+    import sys
+    import types
+
+    fake = types.ModuleType("runpod")
+    fake.api_key = None  # type: ignore[attr-defined]
+    create_calls: list[dict] = []
+    fake.create_pod = lambda **kw: create_calls.append(kw) or {"id": "p", "podHostId": "h"}  # type: ignore[attr-defined]
+    fake.terminate_pod = lambda *_a, **_k: None  # type: ignore[attr-defined]
+    fake.get_pods = lambda: []  # type: ignore[attr-defined]
+    monkeypatch.setitem(sys.modules, "runpod", fake)
+    monkeypatch.setenv("RUNPOD_API_KEY", "fake-but-set")
+    monkeypatch.setenv("RUNPOD_NETWORK_VOLUME_ID", "vol-xyz")
+    monkeypatch.setenv("BOOTSTRAP_GPU_TYPE", "NVIDIA RTX A4000")
+
+    async def _exit_now(pod_id, *, timeout_s):
+        return "EXITED"
+
+    async def _spend():
+        return 0.10
+
+    monkeypatch.setattr(run_preflight, "_wait_for_pod_exit", _exit_now)
+    monkeypatch.setattr(run_preflight, "_final_spend", _spend)
+
+    rc = run_preflight.main(["--mode", "bootstrap"])
+    assert rc == 0
+    assert create_calls[0]["gpu_type_id"] == "NVIDIA RTX A4000"
+
+
+def test_run_preflight_bootstrap_default_gpu_when_env_unset(
+    _repo_results_dir: pathlib.Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Without BOOTSTRAP_GPU_TYPE, bootstrap falls back to provision()'s
+    default (NVIDIA H100 PCIe) — preserves prior behavior.
+    """
+    import sys
+    import types
+
+    fake = types.ModuleType("runpod")
+    fake.api_key = None  # type: ignore[attr-defined]
+    create_calls: list[dict] = []
+    fake.create_pod = lambda **kw: create_calls.append(kw) or {"id": "p", "podHostId": "h"}  # type: ignore[attr-defined]
+    fake.terminate_pod = lambda *_a, **_k: None  # type: ignore[attr-defined]
+    fake.get_pods = lambda: []  # type: ignore[attr-defined]
+    monkeypatch.setitem(sys.modules, "runpod", fake)
+    monkeypatch.setenv("RUNPOD_API_KEY", "fake-but-set")
+    monkeypatch.setenv("RUNPOD_NETWORK_VOLUME_ID", "vol-xyz")
+    monkeypatch.delenv("BOOTSTRAP_GPU_TYPE", raising=False)
+
+    async def _exit_now(pod_id, *, timeout_s):
+        return "EXITED"
+
+    async def _spend():
+        return 0.10
+
+    monkeypatch.setattr(run_preflight, "_wait_for_pod_exit", _exit_now)
+    monkeypatch.setattr(run_preflight, "_final_spend", _spend)
+
+    rc = run_preflight.main(["--mode", "bootstrap"])
+    assert rc == 0
+    assert create_calls[0]["gpu_type_id"] == "NVIDIA H100 PCIe"
+
+
 def test_run_preflight_does_not_call_runpod_create_pod_directly() -> None:
     """AST guard (Plan 02-05 Task 2): tools/run_preflight.py must NOT call
     `runpod.create_pod` directly — every real-spend path goes through

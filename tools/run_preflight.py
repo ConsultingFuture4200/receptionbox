@@ -248,16 +248,20 @@ async def _run(mode: str) -> int:
         # stub with this SDK-driven path.
         bootstrap_max_min = int(per.get("bootstrap", 15))
         bootstrap_cost = float(cfg["phase2"].get("cache_bootstrap_one_time_usd", 0.67))
+        bootstrap_gpu_type = os.environ.get("BOOTSTRAP_GPU_TYPE")
         started = time.time()
+        provision_kwargs: dict = {
+            "gate": "bootstrap",
+            "projected_cost": bootstrap_cost,
+            "max_minutes": bootstrap_max_min,
+            "network_volume_id": network_volume_id,
+            "ssh_pubkey": ssh_pubkey,
+            "operator_host": operator_host,
+        }
+        if bootstrap_gpu_type:
+            provision_kwargs["gpu_type"] = bootstrap_gpu_type
         try:
-            result: ProvisionResult = provision(
-                gate="bootstrap",
-                projected_cost=bootstrap_cost,
-                max_minutes=bootstrap_max_min,
-                network_volume_id=network_volume_id,
-                ssh_pubkey=ssh_pubkey,
-                operator_host=operator_host,
-            )
+            result: ProvisionResult = provision(**provision_kwargs)
         except RunPodProvisionError as e:
             session["gates"].append(
                 {"gate": "bootstrap", "status": "provision_error", "error": str(e)}
