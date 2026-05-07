@@ -1,0 +1,43 @@
+# Build context excludes for the RunPod pod image.
+
+# VCS / planning / docs — not needed at runtime.
+.git
+.gitignore
+.github
+.planning
+docs
+*.md
+!README.md
+
+# Heavy media. assets/manifest.csv and assets/scripts/ stay (referenced by
+# tools/audit_pod_state.py and on-pod corpus regeneration). The actual audio
+# corpora are 5+ GB and are regenerated on-pod from seeds; never bake them in.
+assets/corpus_500
+assets/corpus_g711
+assets/corpus_hesitation
+assets/render_env
+assets/__pycache__
+
+# Operator-only state.
+results
+secrets
+audit
+synthesis
+derating
+
+# Operator-side tests are not run on the pod.
+tests
+
+# Python cruft.
+**/__pycache__
+**/*.pyc
+**/*.pyo
+.venv
+.mypy_cache
+.pytest_cache
+.ruff_cache
+
+# Editor / OS noise.
+.idea
+.vscode
+.DS_Store

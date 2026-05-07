@@ -39,13 +39,13 @@ cd "$WORKSPACE"
 # survives across pods (D-19, D-21).
 if [[ "${BOOTSTRAP_MODE:-0}" = "1" ]]; then
     echo "[entrypoint] BOOTSTRAP_MODE=1 — running cache_bootstrap and exiting"
-    if command -v uv >/dev/null 2>&1; then
-        uv run python -m tools.cache_bootstrap \
-            --target /models --lockfile bench/models.lock.yaml
-    else
-        python -m tools.cache_bootstrap \
-            --target /models --lockfile bench/models.lock.yaml
-    fi
+    # The pod image installs deps into system Python via pip (Dockerfile).
+    # `uv run` would create a separate Python 3.11 venv (per pyproject
+    # requires-python) that does NOT inherit those deps — so always invoke
+    # the system `python` directly. Same applies to the gate-runner and
+    # cost-watch invocations below (plan 02-06).
+    python -m tools.cache_bootstrap \
+        --target /models --lockfile bench/models.lock.yaml
     _rc=$?
     echo "[entrypoint] bootstrap exit=${_rc}"
     exit "${_rc}"
@@ -68,11 +68,7 @@ _setup_ssh() {
 }
 
 _start_cost_watch() {
-    if command -v uv >/dev/null 2>&1; then
-        uv run python -m cost.watch --providers runpod --interval 300 &
-    else
-        python -m cost.watch --providers runpod --interval 300 &
-    fi
+    python -m cost.watch --providers runpod --interval 300 &
     COSTWATCH_PID=$!
     echo "[entrypoint] cost-watch pid=$COSTWATCH_PID"
 }
@@ -111,19 +107,11 @@ _shutdown() {
     AUDIT_LOG="${WORKSPACE}/results/${GATE}/$(date -u +%s).audit.json"
     mkdir -p "$(dirname "$AUDIT_LOG")"
     AUDIT_RC=0
-    if command -v uv >/dev/null 2>&1; then
-        uv run python tools/audit_pod_state.py \
-            --root "$WORKSPACE" \
-            --manifest assets/manifest.csv \
-            --results-dir results \
-            --audit-log "$AUDIT_LOG" || AUDIT_RC=$?
-    else
-        python tools/audit_pod_state.py \
-            --root "$WORKSPACE" \
-            --manifest assets/manifest.csv \
-            --results-dir results \
-            --audit-log "$AUDIT_LOG" || AUDIT_RC=$?
-    fi
+    python tools/audit_pod_state.py \
+        --root "$WORKSPACE" \
+        --manifest assets/manifest.csv \
+        --results-dir results \
+        --audit-log "$AUDIT_LOG" || AUDIT_RC=$?
     echo "[entrypoint] audit exit=$AUDIT_RC log=$AUDIT_LOG"
 
     # 3. Rsync. Audit pass → full results/. Audit fail → audit log only (D-23).
@@ -155,9 +143,9 @@ _start_watchdog
 # Exec the gate runner. D-24: smoke profile is g1.runner --n-calls=5 against
 # corpus_500. Sanity gates use config/sanity_strata.yaml (Plan 02-04).
 if [[ "$GATE" == "smoke" ]]; then
-    uv run python -m gates.g1.runner --gate=smoke --n-calls=5 --corpus=corpus_500 &
+    python -m gates.g1.runner --gate=smoke --n-calls=5 --corpus=corpus_500 &
 else
-    uv run python -m gates."$GATE".runner --gate="$GATE" --strata=config/sanity_strata.yaml &
+    python -m gates."$GATE".runner --gate="$GATE" --strata=config/sanity_strata.yaml &
 fi
 RUNNER_PID=$!
 echo "[entrypoint] runner pid=$RUNNER_PID gate=$GATE"

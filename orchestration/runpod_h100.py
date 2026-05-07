@@ -20,7 +20,19 @@ from cost.ledger import Authorization, authorize_spend
 
 logger = logging.getLogger(__name__)
 
-_DEFAULT_IMAGE = "vllm/vllm-openai:v0.10.0"
+# Pod image. MUST be the rbox-pod custom image whose ENTRYPOINT is
+# tools/pod_entrypoint.sh — the bare upstream vllm/vllm-openai image runs
+# its own OpenAI-server CMD and IGNORES BOOTSTRAP_MODE/GATE env vars,
+# leaving the pod RUNNING indefinitely (incident 2026-05-06, plan 02-06).
+#
+# Workflow: build with scripts/build_pod_image.sh, push, then paste the
+# resolved @sha256 digest below per CLAUDE.md §2.3 (digest pinning, not
+# tag pinning). The default sentinel below fails loudly at RunPod
+# create_pod time so a missed pin can't silently recur.
+_DEFAULT_IMAGE = (
+    "ghcr.io/consultingfuture4200/rbox-pod"
+    "@sha256:63a4de8ded15b93030d75fb377268ea540307f7e769dad6173334db52d2770ad"
+)
 _DEFAULT_GPU = "NVIDIA H100 PCIe"
 
 
