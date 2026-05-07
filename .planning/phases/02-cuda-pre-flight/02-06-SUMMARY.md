@@ -39,7 +39,7 @@ key-files:
     - ".planning/phases/02-cuda-pre-flight/02-06-PLAN.md"
     - ".planning/phases/02-cuda-pre-flight/02-06-SUMMARY.md"
   modified:
-    - "orchestration/runpod_h100.py (sentinel _DEFAULT_IMAGE → digest-pinned ghcr.io/consultingfuture4200/rbox-pod@sha256:63a4de8ded15b93030d75fb377268ea540307f7e769dad6173334db52d2770ad)"
+    - "orchestration/runpod_h100.py (sentinel _DEFAULT_IMAGE → digest-pinned ghcr.io/consultingfuture4200/rbox-pod@sha256:6dda7c895800... [v3]; v1=63a4de8ded... and v2=80b3747413... shipped sequentially during the same plan); RUNPOD_API_KEY also injected into bootstrap-pod env so the in-pod runpod SDK can call stop_pod for graceful self-termination"
     - "tools/pod_entrypoint.sh (uv-fallback removed at 4 sites: bootstrap branch, _start_cost_watch, audit_pod_state invocation, gate runner)"
     - "requirements.lock (regenerated via uv export — added runpod 1.9.0 + 191 transitive deps)"
     - "config/budget.yaml (phase2.max_minutes_per_gate.bootstrap 15 → 30; cache_bootstrap_one_time_usd 0.67 → 1.50 to absorb cold first-pull headroom)"
@@ -136,7 +136,7 @@ Excludes `assets/corpus_*` (5.7 GB regenerable from seeds via `tools/build_strat
 |---|-----------|--------|----------|
 | T1 | `scripts/build_pod_image.sh <tag>` builds clean on operator workstation | ✓ | Local build of `rbox-pod:v1-test`; sanity `docker run` validated entrypoint short-circuits and exits 0 with empty lockfile |
 | T2 | Image pushed to GHCR; immutable `@sha256:` digest resolved | ✓ | Digest: `sha256:63a4de8ded15b93030d75fb377268ea540307f7e769dad6173334db52d2770ad` (push wall: 5289 s / 88 min) |
-| T3 | `orchestration/runpod_h100.py:_DEFAULT_IMAGE` matches digest-pinned ref | ✓ | Sentinel replaced with `ghcr.io/consultingfuture4200/rbox-pod@sha256:63a4de8ded15b93030d75fb377268ea540307f7e769dad6173334db52d2770ad` |
+| T3 | `orchestration/runpod_h100.py:_DEFAULT_IMAGE` matches digest-pinned ref | ✓ | Final pin: `ghcr.io/consultingfuture4200/rbox-pod@sha256:6dda7c895800638b9cc781f46508e1194c81f908eb02338faec7b715c155d3e9` (v3 — adds Python-SDK self-stop). v1 (`63a4de8ded...`) and v2 (`80b3747413...`) shipped earlier in the same plan; the orchestration constant was bumped each time. v2 → v3 push was 5 sec wall thanks to GHCR per-layer cache. |
 | T4 | All 02-06 changes committed atomically + pushed to `origin/main` | ✓ | Commit `9efcc3c` (T1-T3 fix bundle); finalize commit (this file + budget bump) follows |
 | T5 | `uv run python -m tools.run_preflight --mode bootstrap` runs cache_bootstrap successfully; all 4 pinned HF models cached on `/models` | ✓ | Pod `zqfyj2c5z9m8tx` (H100 SXM, 2026-05-07 13:31 PDT). RunPod console logs show: `[entrypoint] BOOTSTRAP_MODE=1 — running cache_bootstrap and exiting`, then `bootstrapped 4 models into /models` and `[entrypoint] bootstrap exit=0`. All four revision-pinned paths reported by subsequent SKIP lines (see T6). Driver-side session manifest not written because operator terminated the pod manually after T6 was visually confirmed (driver was still polling RUNNING because the container auto-restarts on clean exit — see "Known limitation"). |
 | T6 | Re-run idempotent — second `--mode bootstrap` logs `SKIP <model>@<sha8>: already cached` for all 4 entries | ✓ | Same pod, after the first bootstrap exit=0 the container auto-restarted (RunPod default behavior on clean exit). Logs at 13:36:22 and 13:36:39 PM PDT show four `INFO SKIP` lines per invocation: `distil_whisper_large_v3_int8@c3058b47`, `qwen3_4b_awq_int4@1cfa9a72`, `chatterbox_turbo@ef85ce7b`, `kokoro_82m@f3ff3571` — each `already cached at /models/<repo_safe>/<revision>`. Idempotency confirmed across three consecutive invocations on the same volume. |
@@ -148,11 +148,32 @@ Excludes `assets/corpus_*` (5.7 GB regenerable from seeds via `tools/build_strat
 - Successful bootstrap re-run (pod `zqfyj2c5z9m8tx`): wall-clock ~6 min on driver side before manual terminate; ~$0.30 actual H100 SXM time.
 - Total 02-06 spend: ~$2.85 actual (incident + diagnostic + success). Well under the $14 H100 Phase 02 budget per CLAUDE.md §13. Budget cap also raised this plan: `cache_bootstrap_one_time_usd 0.67 → 1.50` and `phase2.max_minutes_per_gate.bootstrap 15 → 30` to absorb cold first-pull headroom.
 
-## Known Limitation (out of scope for 02-06)
+## Bootstrap Pod Self-Termination (shipped 2026-05-07 follow-up)
 
-**RunPod default behavior auto-restarts the bootstrap container on clean exit.** When `pod_entrypoint.sh` returns exit=0 after `cache_bootstrap`, the pod's container is respawned by Docker (RunPod's default restart policy), so `cache_bootstrap` runs again, hits the SKIP path (idempotent — desired), and exits again. Loop continues until the operator or driver-watchdog kills the pod. Side effect: pods don't gracefully self-terminate on bootstrap success; they spin in a SKIP loop at ~$0.05/min until killed.
+**Symptom on initial v1 image:** pod_entrypoint.sh exited 0 after cache_bootstrap, but RunPod's container-restart policy respawned the entrypoint, producing an idempotent SKIP loop at ~$0.05/min until the operator or driver-watchdog killed the pod.
 
-Fix path (deferred to a follow-up plan): inject `runpodctl pod stop "$RUNPOD_POD_ID"` at the end of the `BOOTSTRAP_MODE=1` branch in `tools/pod_entrypoint.sh`, mirroring what `_shutdown` already does for the smoke/sanity path. Out of scope for 02-06 because (a) bootstrap is correct and idempotent — the loop just costs a few cents until killed, (b) operator-side workflow already handles this with manual terminate, (c) needs a separate image rebuild + repush + digest re-pin which would balloon this plan further. Track in a follow-up "P2.6 — bootstrap pod self-terminate" issue when convenient.
+**Fix shipped (image v3, digest `sha256:6dda7c895800638b9cc781f46508e1194c81f908eb02338faec7b715c155d3e9`):**
+
+1. `tools/pod_entrypoint.sh` BOOTSTRAP_MODE branch now invokes `runpod.stop_pod($RUNPOD_POD_ID)` via the Python `runpod` SDK (already in the image's `requirements.lock`) immediately before `exit $rc`. First attempt used `runpodctl pod stop` — RunPod's CLI didn't pick up `RUNPOD_API_KEY` from env reliably (returned 403); the SDK call works.
+2. `orchestration/runpod_h100.py:provision()` injects `RUNPOD_API_KEY` into the container env *only when `gate == "bootstrap"`*. The key lives only in the running pod's process env — never in the image (image stays public on GHCR with no secrets).
+
+**Verified end-to-end on pod `e1tqfm0hcynvsu` (2026-05-07 13:55 PDT):**
+
+```json
+{
+  "auth_id": 23,
+  "final_spend_usd": 0.0,
+  "gate": "bootstrap",
+  "pod_id": "e1tqfm0hcynvsu",
+  "projected_cost_usd": 1.5,
+  "status": "EXITED",
+  "wall_clock_s": 64.22
+}
+```
+
+Driver `_wait_for_pod_exit` returned `"EXITED"` 64 seconds after provision (vs ~360s+ on v1 with the SKIP loop). Image was warm on the host from the v2 / v1 runs (same volume, same DC), so cache_bootstrap → all SKIPs → SDK self-stop → container exits → RunPod transitions pod state to EXITED instead of restarting. No operator intervention needed.
+
+**Out of scope (still):** ROCm sibling image for Phase 03; slim bootstrap-only image; Docker-level integration test for entrypoint reachability. Tracked separately if pain justifies.
 
 ## Self-Check
 

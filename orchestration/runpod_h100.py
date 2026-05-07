@@ -31,7 +31,7 @@ logger = logging.getLogger(__name__)
 # create_pod time so a missed pin can't silently recur.
 _DEFAULT_IMAGE = (
     "ghcr.io/consultingfuture4200/rbox-pod"
-    "@sha256:63a4de8ded15b93030d75fb377268ea540307f7e769dad6173334db52d2770ad"
+    "@sha256:6dda7c895800638b9cc781f46508e1194c81f908eb02338faec7b715c155d3e9"
 )
 _DEFAULT_GPU = "NVIDIA H100 PCIe"
 
@@ -105,6 +105,13 @@ def provision(
             # short-circuits to `python -m tools.cache_bootstrap` instead of
             # running a gate runner.
             env["BOOTSTRAP_MODE"] = "1"
+            # Plan 02-06 follow-up: pass the operator's API key so the pod
+            # can self-stop via `runpodctl pod stop $RUNPOD_POD_ID` after
+            # cache_bootstrap exits — otherwise RunPod's container-restart
+            # policy respawns the entrypoint into an idempotent SKIP loop.
+            # The key is per-pod env (NOT in the image), so the public GHCR
+            # image never carries the secret. Pod isolation contains the key.
+            env["RUNPOD_API_KEY"] = api_key
         if ssh_pubkey:
             env["SSH_PUBKEY"] = ssh_pubkey
         if operator_host:

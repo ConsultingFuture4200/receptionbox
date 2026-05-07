@@ -48,6 +48,24 @@ if [[ "${BOOTSTRAP_MODE:-0}" = "1" ]]; then
         --target /models --lockfile bench/models.lock.yaml
     _rc=$?
     echo "[entrypoint] bootstrap exit=${_rc}"
+    # Self-terminate the pod so RunPod's container-restart policy doesn't
+    # respawn the entrypoint into an idempotent SKIP loop after success
+    # (plan 02-06 known-limitation fix). The Python `runpod` SDK is
+    # installed in the image (requirements.lock); RUNPOD_API_KEY is
+    # injected by orchestration/runpod_h100.py:provision() only for the
+    # bootstrap gate. runpodctl exists in the image but doesn't read the
+    # env var reliably (returns 403). Best-effort: any failure here means
+    # the container exits cleanly, gets restarted by Docker into a SKIP
+    # loop, and the operator / driver-watchdog kills the pod conventionally.
+    if [[ -n "${RUNPOD_POD_ID:-}" && -n "${RUNPOD_API_KEY:-}" ]]; then
+        echo "[entrypoint] bootstrap done — stopping pod ${RUNPOD_POD_ID}"
+        python - <<PYEOF || true
+import os, runpod
+runpod.api_key = os.environ["RUNPOD_API_KEY"]
+runpod.stop_pod(os.environ["RUNPOD_POD_ID"])
+print("[entrypoint] runpod.stop_pod accepted")
+PYEOF
+    fi
     exit "${_rc}"
 fi
 
