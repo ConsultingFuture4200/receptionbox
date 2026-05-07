@@ -10,9 +10,11 @@ docs
 !README.md
 
 # Heavy media. assets/manifest.csv and assets/scripts/ stay (referenced by
-# tools/audit_pod_state.py and on-pod corpus regeneration). The actual audio
-# corpora are 5+ GB and are regenerated on-pod from seeds; never bake them in.
-assets/corpus_500
+# tools/audit_pod_state.py and on-pod corpus regeneration). corpus_500 IS
+# bundled (Plan 02-07) — needed for G1 smoke (5 calls). corpus_g711 and
+# corpus_hesitation are kept out until G2/G3 sanity needs them; render_env
+# is operator-side only (Pitfall 1 — torch<=2.5.1 isolation).
+# assets/corpus_500  (intentionally NOT excluded — see comment above)
 assets/corpus_g711
 assets/corpus_hesitation
 assets/render_env

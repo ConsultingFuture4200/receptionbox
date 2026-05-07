@@ -24,7 +24,12 @@ FROM vllm/vllm-openai:v0.10.0
 #   curl            — runpodctl install + general
 RUN apt-get update && apt-get install -y --no-install-recommends \
         rsync openssh-client ca-certificates curl \
+        git \
+        espeak-ng \
     && rm -rf /var/lib/apt/lists/*
+
+# espeak-ng: phonemizer fallback for Kokoro-FastAPI (CLAUDE.md §5.2 / Kokoro-FastAPI README).
+# git: needed by the Kokoro-FastAPI clone below + by pip when it falls back to git+ pins.
 
 # The base image ships python3 / python3.12 but no bare `python`.
 # pod_entrypoint.sh falls back to `python -m tools.cache_bootstrap` when `uv`
@@ -73,6 +78,28 @@ RUN pip install --no-cache-dir \
         "livekit-plugins-turn-detector" \
         "httpx[http2]>=0.27" \
         "xgrammar>=0.1"
+
+# Kokoro-FastAPI TTS server (CLAUDE.md §5.2 / DR-27 fallback path; Plan 02-07).
+#
+# Installed in an ISOLATED venv so its torch 2.8.0+cu129 dependency does not
+# upgrade the system torch 2.7.1+cu128 that vllm + faster-whisper rely on.
+# Server starts on port 8005 (NOT the upstream default 8880) so it matches
+# gates/g1/runner.py's --kokoro-url default.
+#
+# Plan 02-07 cuts Chatterbox-TTS-Server out of this image because it requires
+# Python 3.10 vs our base's 3.12 — substrate/cuda.py's DR-27 fallback routes
+# to Kokoro when Chatterbox health=False, which is acceptable for G1 smoke.
+# Chatterbox install gets a follow-up plan before G7 (TTS A/B) needs it.
+RUN git clone --depth 1 https://github.com/remsky/Kokoro-FastAPI.git /opt/kokoro-server \
+    && python -m venv /opt/kokoro-venv \
+    && /opt/kokoro-venv/bin/pip install --no-cache-dir --upgrade pip \
+    && /opt/kokoro-venv/bin/pip install --no-cache-dir \
+        --extra-index-url https://download.pytorch.org/whl/cu129 \
+        -e "/opt/kokoro-server[gpu]"
+
+# pod_entrypoint.sh symlinks /models/hexgrad__Kokoro-82M/<rev>/ into the
+# kokoro-server's expected MODEL_DIR (api/src/models/v1_0) at startup time so
+# we reuse the cache_bootstrap-cached weights instead of re-downloading.
 
 # Copy harness source. .dockerignore excludes results/, secrets/, .git, the
 # heavy assets/corpus_* trees, .planning/, tests/, docs/.

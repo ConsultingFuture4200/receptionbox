@@ -29,6 +29,37 @@ Required env vars (export before invoking the driver):
 - [ ] Confirm a 50 GB network volume exists in a region that hosts H100 PCIe (e.g., US-CA-2). Record its id as `RUNPOD_NETWORK_VOLUME_ID`.
 - [ ] On operator workstation: append the contents of `~/.ssh/rbox_phase2.pub` to `~/.ssh/authorized_keys` so the pod can rsync.
 
+### 2.1 Operator-host reachability (Plan 02-07 prerequisite)
+
+The pod's `_shutdown` rsync step targets `${OPERATOR_USER}@${OPERATOR_HOST}` over SSH. RunPod pods egress from the data center; your workstation must be reachable from there. Two paths:
+
+**Tailscale (recommended — no public-IP exposure):**
+- [ ] Install Tailscale on the workstation: `curl -fsSL https://tailscale.com/install.sh | sh && sudo tailscale up`
+- [ ] Install Tailscale on the pod: it's NOT in the rbox-pod image; instead set `OPERATOR_HOST=<tailscale-ip-of-workstation>` and use the [Tailscale on RunPod guide](https://tailscale.com/kb/1278/) to add the pod as an ephemeral node — OR fall back to the public-IP path below.
+- [ ] Test: from another machine, `ssh -i ~/.ssh/rbox_phase2 operator@<tailscale-ip> "echo ok"`.
+
+**Public IP / port forward:**
+- [ ] Confirm port 22 (or your sshd port) is open inbound: `sudo ufw status` and `sudo ss -tlnp | grep :22`.
+- [ ] Confirm `sshd` is running: `sudo systemctl status ssh`.
+- [ ] (Optional but recommended) restrict the new key in `authorized_keys` to RunPod egress CIDRs:
+  ```
+  from="*.runpod.io,*.runpod.net,...",no-port-forwarding,no-agent-forwarding,command="rsync ..." ssh-ed25519 AAAA... rbox_phase2
+  ```
+- [ ] Test from another machine: `ssh -i ~/.ssh/rbox_phase2 operator@<public-ip-or-hostname> "echo ok"`.
+
+If neither is set, smoke still proves the runner correctness BUT result data does not come back; D-25 sub-criteria (a) `5_rows`, (e) `env_sidecar`, (f) `audit_clean` will fail because `_validate_smoke` looks for `results/smoke/*.jsonl` locally.
+
+### 2.2 Image readiness (Plan 02-07)
+
+Smoke and sanity gates depend on the rbox-pod image v4+ which bakes:
+
+- vLLM + faster-whisper in system Python (already in v1+).
+- Kokoro-FastAPI in an isolated venv at `/opt/kokoro-venv/` (NEW in v4 — TTS server).
+- `assets/corpus_500/` audio files (NEW in v4 — smoke needs ≥5 calls).
+- `pod_entrypoint.sh` `_start_inference_services` that boots vLLM (port 8000) and Kokoro (port 8005), health-checks both, then runs the gate runner.
+
+Confirm `orchestration/runpod_h100.py:_DEFAULT_IMAGE` matches the v4+ digest before `--mode smoke`. Chatterbox is intentionally NOT in v4 (substrate/cuda.py's DR-27 fallback routes TTS to Kokoro when Chatterbox health=False); a follow-up plan adds Chatterbox before G7 (TTS A/B) needs it.
+
 ## 3. Per-gate spend ceilings (from `config/budget.yaml` `phase2` block)
 
 | Gate | max_minutes | Projected cost @ $2.69/hr |

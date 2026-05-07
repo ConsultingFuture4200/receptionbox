@@ -101,6 +101,91 @@ _start_watchdog() {
     echo "[entrypoint] watchdog pid=$WATCHDOG_PID timer=${MAX_MINUTES}m"
 }
 
+# Plan 02-07: start vLLM + Kokoro inference servers as background daemons,
+# then health-check both before letting the gate runner begin. Failure to
+# come healthy within the per-service budget kills the entrypoint so the
+# pod tears down rather than burning a half-broken stack.
+#
+# Chatterbox is intentionally NOT started in 02-07 — substrate/cuda.py's
+# DR-27 fallback (chatterbox.health=False → kokoro) is sufficient for G1
+# smoke. Chatterbox install lands in a follow-up plan before G7 (TTS A/B).
+_start_inference_services() {
+    # Resolve model paths from the cache_bootstrap index (.bootstrap_index.json).
+    # Never hardcode the revision SHA — read whatever the lockfile pinned.
+    local idx="/models/.bootstrap_index.json"
+    if [[ ! -f "$idx" ]]; then
+        echo "[entrypoint] FATAL /models/.bootstrap_index.json missing — bootstrap pod must run first"
+        exit 1
+    fi
+    QWEN_DIR="$(python -c "import json,sys;d=json.load(open('$idx'))['models']['qwen3_4b_awq_int4'];print('/models/'+d['repo_id'].replace('/','__')+'/'+d['revision'])")"
+    KOKORO_DIR="$(python -c "import json,sys;d=json.load(open('$idx'))['models']['kokoro_82m'];print('/models/'+d['repo_id'].replace('/','__')+'/'+d['revision'])")"
+    WHISPER_DIR="$(python -c "import json,sys;d=json.load(open('$idx'))['models']['distil_whisper_large_v3_int8'];print('/models/'+d['repo_id'].replace('/','__')+'/'+d['revision'])")"
+    echo "[entrypoint] resolved Qwen=${QWEN_DIR} Kokoro=${KOKORO_DIR} Whisper=${WHISPER_DIR}"
+
+    # Symlink the cached Kokoro weights into the location Kokoro-FastAPI expects.
+    # Kokoro-FastAPI's start-gpu.sh sets MODEL_DIR=src/models and reads
+    # api/src/models/v1_0/. Symlinking the cache_bootstrap revision dir there
+    # avoids a re-download on every pod start.
+    mkdir -p /opt/kokoro-server/api/src/models
+    ln -sfn "$KOKORO_DIR" /opt/kokoro-server/api/src/models/v1_0
+
+    # vLLM serve — the OpenAI-compatible endpoint gates/g1/runner.py talks to.
+    # Q4_K_M (cloud equivalent: AWQ-Int4 per CLAUDE.md §3.1) loaded via
+    # --quantization awq; xgrammar backend for grammar-constrained gen.
+    python -m vllm.entrypoints.openai.api_server \
+        --model "$QWEN_DIR" \
+        --served-model-name "Qwen/Qwen3-4B" \
+        --quantization awq \
+        --port 8000 \
+        --host 127.0.0.1 \
+        --max-model-len 4096 \
+        --guided-decoding-backend xgrammar \
+        > /tmp/vllm.log 2>&1 &
+    VLLM_PID=$!
+    echo "[entrypoint] vllm pid=$VLLM_PID port=8000 (log: /tmp/vllm.log)"
+
+    # Kokoro-FastAPI — TTS. Isolated venv so its torch 2.8.0+cu129 doesn't
+    # upgrade the system torch 2.7.1+cu128 used by vllm + faster-whisper.
+    # Port 8005 to match gates/g1/runner.py's --kokoro-url default.
+    (
+        cd /opt/kokoro-server
+        export USE_GPU=true USE_ONNX=false
+        export PYTHONPATH=/opt/kokoro-server:/opt/kokoro-server/api
+        export MODEL_DIR=src/models
+        export VOICES_DIR=src/voices/v1_0
+        /opt/kokoro-venv/bin/python -m uvicorn api.src.main:app \
+            --host 127.0.0.1 --port 8005 \
+            > /tmp/kokoro.log 2>&1
+    ) &
+    KOKORO_PID=$!
+    echo "[entrypoint] kokoro pid=$KOKORO_PID port=8005 (log: /tmp/kokoro.log)"
+
+    # Health-check loop: 90 sec budget per service. vLLM model load is the
+    # slow path (~30-60 sec for Qwen3-4B AWQ on H100). Kokoro is faster.
+    local deadline_vllm=$((SECONDS + 120))
+    local deadline_kokoro=$((SECONDS + 90))
+    local vllm_ok=0 kokoro_ok=0
+    while (( SECONDS < deadline_vllm || SECONDS < deadline_kokoro )); do
+        if (( ! vllm_ok )) && curl -sf -o /dev/null http://127.0.0.1:8000/v1/models 2>/dev/null; then
+            vllm_ok=1
+            echo "[entrypoint] vllm healthy at $((SECONDS))s"
+        fi
+        if (( ! kokoro_ok )) && curl -sf -o /dev/null http://127.0.0.1:8005/v1/audio/voices 2>/dev/null; then
+            kokoro_ok=1
+            echo "[entrypoint] kokoro healthy at $((SECONDS))s"
+        fi
+        if (( vllm_ok && kokoro_ok )); then
+            echo "[entrypoint] all services healthy"
+            return 0
+        fi
+        sleep 2
+    done
+    echo "[entrypoint] FATAL services not healthy in budget — vllm=${vllm_ok} kokoro=${kokoro_ok}"
+    echo "[entrypoint] --- vllm tail ---"; tail -50 /tmp/vllm.log 2>/dev/null
+    echo "[entrypoint] --- kokoro tail ---"; tail -50 /tmp/kokoro.log 2>/dev/null
+    exit 1
+}
+
 # Idempotency guard so the trap doesn't fire twice (TERM + normal exit).
 _SHUTDOWN_DONE=0
 
@@ -120,6 +205,12 @@ _shutdown() {
         done
         kill -KILL "$RUNNER_PID" 2>/dev/null || true
     fi
+
+    # 1b. Stop inference servers (Plan 02-07). Audit looks at results/, not at
+    # live processes, but leaving these running while we rsync is wasteful.
+    for svc_pid in "${VLLM_PID:-}" "${KOKORO_PID:-}"; do
+        [[ -n "$svc_pid" ]] && kill -TERM "$svc_pid" 2>/dev/null || true
+    done
 
     # 2. Pre-teardown audit (D-22 fail-loud).
     AUDIT_LOG="${WORKSPACE}/results/${GATE}/$(date -u +%s).audit.json"
@@ -157,6 +248,7 @@ ENTRY_PID=$$
 _setup_ssh
 _start_cost_watch
 _start_watchdog
+_start_inference_services
 
 # Exec the gate runner. D-24: smoke profile is g1.runner --n-calls=5 against
 # corpus_500. Sanity gates use config/sanity_strata.yaml (Plan 02-04).
