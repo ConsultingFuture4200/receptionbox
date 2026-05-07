@@ -47,7 +47,10 @@ phase2:
     g2: 15
     g3: 10
     g5: 15
-    bootstrap: 15  # Plan 02-05 Task 2: max wall-clock for the cache-pull pod.
-  # Plan 02-05 Task 2 bumped 0.50 -> 0.67 to match the real bootstrap pod
-  # ceiling: 15 min × $2.69/hr H100 SXM = $0.67. Typical actual ~ $0.50.
-  cache_bootstrap_one_time_usd: 0.67
+    bootstrap: 30  # Plan 02-06: bumped 15 -> 30 to absorb cold first-pull of
+                   # the 11 GB rbox-pod image from GHCR (~10-15 min realistic
+                   # in US-CA-2). Subsequent pulls hit RunPod host cache.
+  # Plan 02-06: bumped 0.67 -> 1.50 to match the new 30-min ceiling at
+  # H100 SXM ($2.99/hr × 30 min = $1.495). Typical actual after host-cache
+  # warms is still ~$0.50 (10-min run). Ledger authorizes the ceiling.
+  cache_bootstrap_one_time_usd: 1.50

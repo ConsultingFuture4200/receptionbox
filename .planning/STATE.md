@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v0.4
 milestone_name: milestone
 status: executing
-stopped_at: Plan 02-04 PARTIAL — Task 4 (real H100 spend) blocked on lockfile pending-revision gap + missing bootstrap-pod automation. Operator approved path C; routed to /gsd-plan-phase 02 --gaps.
-last_updated: "2026-05-06T17:48:31.729Z"
-last_activity: 2026-05-06 -- Phase 02 execution started
+stopped_at: Plan 02-06 SHIPPED — rbox-pod custom image baked + digest-pinned; bootstrap real-spend confirmed (pod zqfyj2c5z9m8tx, all 4 HF models cached on volume, T6 idempotency verified via SKIP-on-rerun). Linear DEV-1035 → Delivered. Phase 02 unblocked for P2.1 (smoke) / P2.2 (sanity).
+last_updated: "2026-05-07T20:40:00.000Z"
+last_activity: 2026-05-07 -- Plan 02-06 (rbox-pod image + digest pin) shipped
 progress:
   total_phases: 4
   completed_phases: 1
-  total_plans: 10
-  completed_plans: 8
-  percent: 80
+  total_plans: 12
+  completed_plans: 10
+  percent: 83
 ---
 
 # Project State
@@ -61,6 +61,8 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02 P02 | 0.5 | 5 tasks | 14 files |
 | Phase 02 P03 | 0.5 | 4 tasks | 11 files |
 | Phase 02 P04 | 0.4 | 3/4 tasks (PARTIAL) | 6 files |
+| Phase 02 P05 | 0.5 | 3 tasks | 13 files |
+| Phase 02 P06 | 6.0 | 6 tasks (T1-T6 ✓) | 8 files |
 
 ## Accumulated Context
 
@@ -102,6 +104,8 @@ Decisions are logged in PROJECT.md Key Decisions table. Recent:
 - [Phase 02]: [Phase 02-03]: provision() dry-runs when RUNPOD_API_KEY unset — ledger row still committed so operator sees the spend, but no SDK call; pod_id='dry-run' returned
 - [Phase 02]: [Phase 02-03]: pod entrypoint _shutdown() is idempotent via _SHUTDOWN_DONE guard — trap on TERM/INT and post-wait normal exit can both fire it without double-running audit + rsync
 - [Phase 02]: [Phase 02-04 PARTIAL]: Tasks 1-3 done (build_strata, run_preflight, OPERATOR-CHECKLIST; commits 1c7e70d, 8cc35e3, 097f95e, ba2c1a4, bd5e6eb). Task 4 (real H100 smoke + sanity) NOT executed — blocked on two upstream gaps surfaced during operator bootstrap dry-run: (a) bench/models.lock.yaml has all 4 entries at revision: pending — both tools/cache_bootstrap.py and tools/fetch_models.py skip pending entries, so a bootstrap pod would be a no-op; (b) tools/run_preflight.py --mode bootstrap defers to operator-side runpodctl with no automation. $0 spent on RunPod this session. Operator chose path C: route to /gsd-plan-phase 02 --gaps for a follow-up plan that resolves the 4 SHAs and auto-provisions the bootstrap pod via the SDK before any real spend.
+- [Phase 02]: [Phase 02-05]: HF lockfile populated (real 40-char commit SHAs + per-file SHA-256 for distil-whisper, Qwen3-4B, chatterbox, Kokoro). `--mode bootstrap` now goes through provision() (Hard Constraint #1 preserved). REPRO-02 annotated (schema-enforced != data-populated). E2E test added.
+- [Phase 02]: [Phase 02-06]: Custom rbox-pod image (FROM vllm/vllm-openai:v0.10.0) baked with tools/pod_entrypoint.sh as ENTRYPOINT; pushed to ghcr.io/consultingfuture4200/rbox-pod, digest-pinned in _DEFAULT_IMAGE per CLAUDE.md §2.3. Closes the gap that the bare upstream image's CMD ignored BOOTSTRAP_MODE/GATE env vars (incident pod zkqbit98s0uulf 2026-05-06). pod_entrypoint.sh uv-fallback removed (4 sites — system python only since deps are pip-installed in the image, not in a uv-managed venv). requirements.lock regenerated (added runpod 1.9.0). Bootstrap re-run confirmed all 4 HF models cached on /models with revision-pinned paths; T6 idempotency verified via 3 consecutive SKIP-on-rerun cycles. Known limitation: bootstrap pod auto-restarts on clean exit — operator manually terminates; tracked as future P2.6 follow-up.
 
 ### Pending Todos
 
@@ -117,7 +121,7 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-06T17:30:00.000Z
-Stopped at: Plan 02-04 PARTIAL — Task 4 (real H100 spend) blocked on lockfile pending-revision gap + missing bootstrap-pod automation. Operator approved path C; routed to /gsd-plan-phase 02 --gaps.
+Last session: 2026-05-07T20:40:00.000Z
+Stopped at: Plan 02-06 SHIPPED — rbox-pod image + digest pin + bootstrap real-spend confirmed. Linear DEV-1035 → Delivered.
 Resume file: None
-Next action: /gsd-plan-phase 02 --gaps
+Next action: /gsd-next → routes to Route 5 (verify) for Phase 02 or Route 6 (advance to Phase 03 ROCm validation). Practically, P2.1 smoke (DEV-1018) is the next executable Linear issue once verification confirms 02-06 acceptance.

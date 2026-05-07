@@ -145,7 +145,7 @@ def test_run_preflight_bootstrap_real_spend_calls_provision(
     assert sess["gates"][0]["status"] == "EXITED"
     assert sess["gates"][0]["pod_id"] == "fake-bootstrap-pod"
     assert sess["gates"][0]["final_spend_usd"] == 0.45
-    assert sess["gates"][0]["projected_cost_usd"] == 0.67
+    assert sess["gates"][0]["projected_cost_usd"] == 1.50
 
     # And a ledger row exists for gate='bootstrap' at projected_cost=0.67.
     conn = sqlite3.connect(pathlib.Path.cwd() / "cost" / "ledger.sqlite")
@@ -154,7 +154,7 @@ def test_run_preflight_bootstrap_real_spend_calls_provision(
     ).fetchall()
     conn.close()
     assert rows, "no bootstrap authorization in ledger"
-    assert rows[-1][0] == 0.67
+    assert rows[-1][0] == 1.50
 
 
 def test_run_preflight_bootstrap_honors_gpu_type_env_override(

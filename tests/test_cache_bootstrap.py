@@ -164,15 +164,16 @@ def test_budget_yaml_has_phase2_block() -> None:
     assert mm["g2"] == 15
     assert mm["g3"] == 10
     assert mm["g5"] == 15
-    # Plan 02-05 Task 2: bootstrap pod max_minutes added to the table.
-    assert mm["bootstrap"] == 15
+    # Plan 02-05 Task 2 added bootstrap; Plan 02-06 bumped 15 -> 30 to
+    # absorb cold first-pull of the 11 GB rbox-pod image from GHCR.
+    assert mm["bootstrap"] == 30
     # Sum across smoke + 4 sanity gates remains <=100 minutes (D-18). Bootstrap
     # is a one-time pre-condition, not part of the per-session ceiling.
     sanity_sum = mm["smoke"] + mm["g1"] + mm["g2"] + mm["g3"] + mm["g5"]
     assert sanity_sum <= 100
-    # Plan 02-05 Task 2 bumped 0.50 -> 0.67 to match real bootstrap pod
-    # ceiling (15 min x $2.69/hr H100 SXM).
-    assert p2["cache_bootstrap_one_time_usd"] == 0.67
+    # Plan 02-05 set 0.67 (15 min x $2.69/hr H100 PCIe). Plan 02-06 bumped
+    # to 1.50 (30 min x $2.99/hr H100 SXM = $1.495 rounded up).
+    assert p2["cache_bootstrap_one_time_usd"] == 1.50
 
 
 def test_cache_bootstrap_help_exits_zero() -> None:

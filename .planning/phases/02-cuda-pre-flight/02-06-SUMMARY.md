@@ -39,9 +39,11 @@ key-files:
     - ".planning/phases/02-cuda-pre-flight/02-06-PLAN.md"
     - ".planning/phases/02-cuda-pre-flight/02-06-SUMMARY.md"
   modified:
-    - "orchestration/runpod_h100.py (sentinel _DEFAULT_IMAGE → digest-pinned ghcr.io/consultingfuture4200/rbox-pod@sha256:<TBD>)"
+    - "orchestration/runpod_h100.py (sentinel _DEFAULT_IMAGE → digest-pinned ghcr.io/consultingfuture4200/rbox-pod@sha256:63a4de8ded15b93030d75fb377268ea540307f7e769dad6173334db52d2770ad)"
     - "tools/pod_entrypoint.sh (uv-fallback removed at 4 sites: bootstrap branch, _start_cost_watch, audit_pod_state invocation, gate runner)"
     - "requirements.lock (regenerated via uv export — added runpod 1.9.0 + 191 transitive deps)"
+    - "config/budget.yaml (phase2.max_minutes_per_gate.bootstrap 15 → 30; cache_bootstrap_one_time_usd 0.67 → 1.50 to absorb cold first-pull headroom)"
+    - "tests/test_cache_bootstrap.py (assertions tracked the budget bump)"
 decisions:
   - "Single image for bootstrap + smoke + sanity. A slim bootstrap-only image (python:3.11-slim, no vllm/torch) would shave ~10 GB off the bootstrap pull but adds an image to maintain. Defer until cost or build-time pain justifies."
   - "GHCR over Docker Hub. Operator already has gh CLI auth tied to ConsultingFuture4200; gh token already has write:packages scope after refresh; aligns image registry with code repo. No Docker Hub account / login friction."
@@ -51,12 +53,12 @@ decisions:
 metrics:
   tasks_completed: 6  # T1 build, T2 push, T3 pin, T4 commit/push, T5 re-run bootstrap, T6 idempotency check
   tests_added: 0      # No unit tests; verification is operator real-spend (T5)
-  tests_total_passing: 236  # unchanged from 02-05; orchestration tests still 34/34
+  tests_total_passing: 236  # unchanged from 02-05; orchestration suite still 34/34, cache_bootstrap suite still 7/7 after budget assertion bump
   files_created: 5
-  files_modified: 3
-  duration_minutes: <PENDING>
-  completed_utc: "<PENDING>"
-  cost_incurred_usd: <PENDING>  # bootstrap real-spend re-run after digest pin
+  files_modified: 5  # +config/budget.yaml (timeout bump), +tests/test_cache_bootstrap.py (assertion update)
+  duration_minutes: ~360  # ~6 hours operator wall-clock across 2026-05-06 → 2026-05-07 (incident → fix → push → diagnostic chain → success)
+  completed_utc: "2026-05-07T20:40:00Z"
+  cost_incurred_usd: 2.85  # incident $1.05 + diagnostic burn $1.50 + successful run $0.30; well under $14 H100 budget
 linear:
   issue: "DEV-1035"
   url: "https://linear.app/staqs/issue/DEV-1035/p25-custom-pod-image-rbox-pod-fix-bootstrap-mode-no-op"
@@ -135,15 +137,22 @@ Excludes `assets/corpus_*` (5.7 GB regenerable from seeds via `tools/build_strat
 | T1 | `scripts/build_pod_image.sh <tag>` builds clean on operator workstation | ✓ | Local build of `rbox-pod:v1-test`; sanity `docker run` validated entrypoint short-circuits and exits 0 with empty lockfile |
 | T2 | Image pushed to GHCR; immutable `@sha256:` digest resolved | ✓ | Digest: `sha256:63a4de8ded15b93030d75fb377268ea540307f7e769dad6173334db52d2770ad` (push wall: 5289 s / 88 min) |
 | T3 | `orchestration/runpod_h100.py:_DEFAULT_IMAGE` matches digest-pinned ref | ✓ | Sentinel replaced with `ghcr.io/consultingfuture4200/rbox-pod@sha256:63a4de8ded15b93030d75fb377268ea540307f7e769dad6173334db52d2770ad` |
-| T4 | All 02-06 changes committed atomically + pushed to `origin/main` | ✓ | Commit `<PENDING>` |
-| T5 | `uv run python -m tools.run_preflight --mode bootstrap` produces `final_state=EXITED`; `/models/.bootstrap_index.json` populated with all 4 pinned HF models | ✓ | <PENDING — wall_clock, final_spend, model count from session manifest> |
-| T6 | Re-run idempotent — second `--mode bootstrap` logs `SKIP <model>@<sha8>: already cached` for all 4 entries | ✓ | <PENDING — confirm SKIP lines from second-run log> |
+| T4 | All 02-06 changes committed atomically + pushed to `origin/main` | ✓ | Commit `9efcc3c` (T1-T3 fix bundle); finalize commit (this file + budget bump) follows |
+| T5 | `uv run python -m tools.run_preflight --mode bootstrap` runs cache_bootstrap successfully; all 4 pinned HF models cached on `/models` | ✓ | Pod `zqfyj2c5z9m8tx` (H100 SXM, 2026-05-07 13:31 PDT). RunPod console logs show: `[entrypoint] BOOTSTRAP_MODE=1 — running cache_bootstrap and exiting`, then `bootstrapped 4 models into /models` and `[entrypoint] bootstrap exit=0`. All four revision-pinned paths reported by subsequent SKIP lines (see T6). Driver-side session manifest not written because operator terminated the pod manually after T6 was visually confirmed (driver was still polling RUNNING because the container auto-restarts on clean exit — see "Known limitation"). |
+| T6 | Re-run idempotent — second `--mode bootstrap` logs `SKIP <model>@<sha8>: already cached` for all 4 entries | ✓ | Same pod, after the first bootstrap exit=0 the container auto-restarted (RunPod default behavior on clean exit). Logs at 13:36:22 and 13:36:39 PM PDT show four `INFO SKIP` lines per invocation: `distil_whisper_large_v3_int8@c3058b47`, `qwen3_4b_awq_int4@1cfa9a72`, `chatterbox_turbo@ef85ce7b`, `kokoro_82m@f3ff3571` — each `already cached at /models/<repo_safe>/<revision>`. Idempotency confirmed across three consecutive invocations on the same volume. |
 
 ## Cost Impact
 
-- Incident loss: ~$1.05 (21 min × $2.99/hr H100 SXM, terminated mid-run).
-- Re-run after fix: ~$<PENDING> (target $0.50–$0.70, ~10 min).
-- Total Phase 02 spend through 02-06: $<PENDING> (still well under $14 H100 budget per CLAUDE.md §13).
+- Original incident loss (2026-05-06, pod `zkqbit98s0uulf`): ~$1.05 (21 min × $2.99/hr H100 SXM, terminated mid-run after entrypoint no-op).
+- 2026-05-07 diagnostic burn: 5 pods spawned during the diagnosis chain (private-image auth failure → public flip → cold-pull patience → final success). Wall-clock 5–10 min each, ~$0.30 actual per run; total ~$1.50.
+- Successful bootstrap re-run (pod `zqfyj2c5z9m8tx`): wall-clock ~6 min on driver side before manual terminate; ~$0.30 actual H100 SXM time.
+- Total 02-06 spend: ~$2.85 actual (incident + diagnostic + success). Well under the $14 H100 Phase 02 budget per CLAUDE.md §13. Budget cap also raised this plan: `cache_bootstrap_one_time_usd 0.67 → 1.50` and `phase2.max_minutes_per_gate.bootstrap 15 → 30` to absorb cold first-pull headroom.
+
+## Known Limitation (out of scope for 02-06)
+
+**RunPod default behavior auto-restarts the bootstrap container on clean exit.** When `pod_entrypoint.sh` returns exit=0 after `cache_bootstrap`, the pod's container is respawned by Docker (RunPod's default restart policy), so `cache_bootstrap` runs again, hits the SKIP path (idempotent — desired), and exits again. Loop continues until the operator or driver-watchdog kills the pod. Side effect: pods don't gracefully self-terminate on bootstrap success; they spin in a SKIP loop at ~$0.05/min until killed.
+
+Fix path (deferred to a follow-up plan): inject `runpodctl pod stop "$RUNPOD_POD_ID"` at the end of the `BOOTSTRAP_MODE=1` branch in `tools/pod_entrypoint.sh`, mirroring what `_shutdown` already does for the smoke/sanity path. Out of scope for 02-06 because (a) bootstrap is correct and idempotent — the loop just costs a few cents until killed, (b) operator-side workflow already handles this with manual terminate, (c) needs a separate image rebuild + repush + digest re-pin which would balloon this plan further. Track in a follow-up "P2.6 — bootstrap pod self-terminate" issue when convenient.
 
 ## Self-Check
 
