@@ -25,6 +25,16 @@
 #
 # Strict: assets/ is NEVER copied back. The rsync source is results/ only.
 
+# Plan 02-07 v11: pre-flight stderr echoes BEFORE `set -e` and the v10 tee
+# redirect. v10 added /models/_boot tee but pod 8040qpqsg5p0be (2026-05-08)
+# was in a Docker restart loop with only the NVIDIA base banner in container
+# logs and ZERO `[entrypoint]` lines — entrypoint was exiting silently before
+# the redirect block ran. These stderr writes hit RunPod's log capture even
+# if `set -e` kills us on cd / GATE-unset / tee-block-fail, so the next
+# failure mode leaves a fingerprint instead of a black hole.
+echo "[entrypoint] v11 starting pid=$$ GATE=${GATE:-UNSET} MAX_MINUTES=${MAX_MINUTES:-UNSET} BOOTSTRAP_MODE=${BOOTSTRAP_MODE:-0} WORKSPACE=${WORKSPACE:-UNSET} HOSTNAME=${HOSTNAME:-} RUNPOD_POD_ID=${RUNPOD_POD_ID:-}" >&2
+echo "[entrypoint] v11 pwd=$(pwd) models_dir=$( [[ -d /models ]] && echo yes || echo no ) models_writable=$( [[ -w /models ]] && echo yes || echo no ) workspace_dir=$( [[ -d /workspace ]] && echo yes || echo no )" >&2
+
 set -euo pipefail
 
 : "${GATE:?GATE env var required}"
