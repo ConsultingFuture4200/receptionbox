@@ -70,10 +70,19 @@ PYEOF
 fi
 
 _setup_ssh() {
-    if [[ -n "${SSH_PRIVATE_KEY:-}" ]]; then
+    # Plan 02-07 fix: orchestration passes the key as SSH_PRIVATE_KEY_B64 to
+    # avoid breaking RunPod's GraphQL mutation on embedded newlines (multi-
+    # line PEM). Falls back to plain SSH_PRIVATE_KEY for legacy callers.
+    local key_data=""
+    if [[ -n "${SSH_PRIVATE_KEY_B64:-}" ]]; then
+        key_data=$(printf '%s' "$SSH_PRIVATE_KEY_B64" | base64 -d)
+    elif [[ -n "${SSH_PRIVATE_KEY:-}" ]]; then
+        key_data="$SSH_PRIVATE_KEY"
+    fi
+    if [[ -n "$key_data" ]]; then
         mkdir -p ~/.ssh
         # Write the key value to a file. Never echo it to stdout/stderr.
-        printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+        printf '%s\n' "$key_data" > ~/.ssh/id_ed25519
         chmod 600 ~/.ssh/id_ed25519
         # First-connection TOFU: pre-populate known_hosts so ssh doesn't prompt.
         if [[ -n "${OPERATOR_HOST:-}" ]]; then
@@ -82,6 +91,41 @@ _setup_ssh() {
         echo "[entrypoint] SSH key installed (path=~/.ssh/id_ed25519, mode=0600)"
     else
         echo "[entrypoint] WARN no SSH_PRIVATE_KEY; rsync will be skipped on shutdown"
+    fi
+
+    # Plan 02-07 v7: install operator's pubkey into authorized_keys so
+    # operator can ssh INTO the pod for live debugging. SSH_PUBKEY is
+    # forwarded by orchestration/runpod_h100.py for all gates. RunPod
+    # also auto-injects PUBLIC_KEY (from account-level SSH keys); fall
+    # back to that when SSH_PUBKEY isn't set.
+    local pub=""
+    if [[ -n "${SSH_PUBKEY:-}" ]]; then
+        pub="$SSH_PUBKEY"
+    elif [[ -n "${PUBLIC_KEY:-}" && "$PUBLIC_KEY" != "null" ]]; then
+        pub="$PUBLIC_KEY"
+    fi
+    if [[ -n "$pub" ]]; then
+        mkdir -p /root/.ssh
+        chmod 700 /root/.ssh
+        # Idempotent: only append if not already there.
+        grep -qF "$pub" /root/.ssh/authorized_keys 2>/dev/null \
+            || printf '%s\n' "$pub" >> /root/.ssh/authorized_keys
+        chmod 600 /root/.ssh/authorized_keys
+        echo "[entrypoint] inbound SSH pub key installed (/root/.ssh/authorized_keys)"
+    fi
+}
+
+_start_sshd() {
+    # Background sshd daemon. Plan 02-07 v7. Pod's port 22 is published in
+    # orchestration/runpod_h100.py:provision() (ports="8000/http,22/tcp").
+    # Operator connects via `ssh -i <key> root@<pod-ip>` once Connect→TCP
+    # mapping is read from the RunPod console.
+    if command -v /usr/sbin/sshd >/dev/null 2>&1; then
+        /usr/sbin/sshd -D -e > /tmp/sshd.log 2>&1 &
+        SSHD_PID=$!
+        echo "[entrypoint] sshd pid=$SSHD_PID port=22 (log: /tmp/sshd.log)"
+    else
+        echo "[entrypoint] sshd not installed; skipping inbound SSH"
     fi
 }
 
@@ -122,20 +166,26 @@ _start_inference_services() {
     WHISPER_DIR="$(python -c "import json,sys;d=json.load(open('$idx'))['models']['distil_whisper_large_v3_int8'];print('/models/'+d['repo_id'].replace('/','__')+'/'+d['revision'])")"
     echo "[entrypoint] resolved Qwen=${QWEN_DIR} Kokoro=${KOKORO_DIR} Whisper=${WHISPER_DIR}"
 
-    # Symlink the cached Kokoro weights into the location Kokoro-FastAPI expects.
-    # Kokoro-FastAPI's start-gpu.sh sets MODEL_DIR=src/models and reads
-    # api/src/models/v1_0/. Symlinking the cache_bootstrap revision dir there
-    # avoids a re-download on every pod start.
-    mkdir -p /opt/kokoro-server/api/src/models
-    ln -sfn "$KOKORO_DIR" /opt/kokoro-server/api/src/models/v1_0
+    # Symlink ONLY the kokoro-v1_0.pth weight file from the cache_bootstrap
+    # download into Kokoro-FastAPI's expected `api/src/models/v1_0/` directory.
+    # Kokoro-FastAPI ships its own config.json at that path; we leave it alone
+    # so any tuning shipped with the wrapper applies. Symlinking the whole
+    # directory (ln -sfn $DIR target) creates a NESTED symlink inside the
+    # existing dir instead of replacing it (Plan 02-07 v4 → v5 bug fix).
+    mkdir -p /opt/kokoro-server/api/src/models/v1_0
+    ln -sf "$KOKORO_DIR/kokoro-v1_0.pth" /opt/kokoro-server/api/src/models/v1_0/kokoro-v1_0.pth
 
     # vLLM serve — the OpenAI-compatible endpoint gates/g1/runner.py talks to.
-    # Q4_K_M (cloud equivalent: AWQ-Int4 per CLAUDE.md §3.1) loaded via
-    # --quantization awq; xgrammar backend for grammar-constrained gen.
+    # Plan 02-07 v8: drop `--quantization awq`. The lockfile pins
+    # `Qwen/Qwen3-4B` (FP16 base) per CLAUDE.md §3.1's "AWQ at serve time"
+    # plan, but vLLM's `--quantization awq` flag means "load AWQ-format
+    # weights" not "quantize FP→AWQ at load". For smoke we run FP16:
+    # 7.5 GB easily fits in H100 80GB. Real AWQ-Int4 is a sanity-time
+    # optimization — switch the lockfile to a `Qwen/Qwen3-4B-AWQ` repo and
+    # restore the flag in a follow-up plan.
     python -m vllm.entrypoints.openai.api_server \
         --model "$QWEN_DIR" \
         --served-model-name "Qwen/Qwen3-4B" \
-        --quantization awq \
         --port 8000 \
         --host 127.0.0.1 \
         --max-model-len 4096 \
@@ -151,8 +201,12 @@ _start_inference_services() {
         cd /opt/kokoro-server
         export USE_GPU=true USE_ONNX=false
         export PYTHONPATH=/opt/kokoro-server:/opt/kokoro-server/api
-        export MODEL_DIR=src/models
-        export VOICES_DIR=src/voices/v1_0
+        # MODEL_DIR / VOICES_DIR override the upstream defaults
+        # ("/app/api/src/...") which assume the project lives at /app rather
+        # than our /opt/kokoro-server. Use absolute paths so pydantic-settings
+        # treats them as-is (no project-root prefixing).
+        export MODEL_DIR=/opt/kokoro-server/api/src/models
+        export VOICES_DIR=/opt/kokoro-server/api/src/voices/v1_0
         /opt/kokoro-venv/bin/python -m uvicorn api.src.main:app \
             --host 127.0.0.1 --port 8005 \
             > /tmp/kokoro.log 2>&1
@@ -206,9 +260,9 @@ _shutdown() {
         kill -KILL "$RUNNER_PID" 2>/dev/null || true
     fi
 
-    # 1b. Stop inference servers (Plan 02-07). Audit looks at results/, not at
-    # live processes, but leaving these running while we rsync is wasteful.
-    for svc_pid in "${VLLM_PID:-}" "${KOKORO_PID:-}"; do
+    # 1b. Stop inference servers + sshd (Plan 02-07). Audit looks at results/,
+    # not at live processes, but leaving these running while we rsync is wasteful.
+    for svc_pid in "${VLLM_PID:-}" "${KOKORO_PID:-}" "${SSHD_PID:-}"; do
         [[ -n "$svc_pid" ]] && kill -TERM "$svc_pid" 2>/dev/null || true
     done
 
@@ -246,6 +300,7 @@ trap _shutdown TERM INT
 ENTRY_PID=$$
 
 _setup_ssh
+_start_sshd
 _start_cost_watch
 _start_watchdog
 _start_inference_services

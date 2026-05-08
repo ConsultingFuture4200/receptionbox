@@ -101,6 +101,21 @@ RUN git clone --depth 1 https://github.com/remsky/Kokoro-FastAPI.git /opt/kokoro
 # kokoro-server's expected MODEL_DIR (api/src/models/v1_0) at startup time so
 # we reuse the cache_bootstrap-cached weights instead of re-downloading.
 
+# openssh-server: installed AFTER the heavy pip + Kokoro layers (Plan 02-07
+# v8 lesson) so adding/changing it does NOT invalidate the ~16 GB of
+# cached layers above. pod_entrypoint.sh starts sshd as a background
+# daemon and writes SSH_PUBKEY to /root/.ssh/authorized_keys on boot. Host
+# keys generated at build time so they're consistent across pods (operator's
+# known_hosts won't churn). Root login restricted to key-only (no password).
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        openssh-server \
+    && rm -rf /var/lib/apt/lists/* \
+    && ssh-keygen -A \
+    && mkdir -p /var/run/sshd /root/.ssh \
+    && chmod 700 /root/.ssh \
+    && sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin prohibit-password/' /etc/ssh/sshd_config \
+    && sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
+
 # Copy harness source. .dockerignore excludes results/, secrets/, .git, the
 # heavy assets/corpus_* trees, .planning/, tests/, docs/.
 COPY . /workspace/

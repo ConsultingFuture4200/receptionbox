@@ -31,7 +31,7 @@ logger = logging.getLogger(__name__)
 # create_pod time so a missed pin can't silently recur.
 _DEFAULT_IMAGE = (
     "ghcr.io/consultingfuture4200/rbox-pod"
-    "@sha256:052cd8e5a068d3758b4933f4d23b40e7d3be580a5f09b072ecbc62fa6a4b927b"
+    "@sha256:c786bbeb9af0c627c4d167192e2cd8b7411778452e6d8b8c743c6194f00bcf54"
 )
 _DEFAULT_GPU = "NVIDIA H100 PCIe"
 
@@ -105,13 +105,28 @@ def provision(
             # short-circuits to `python -m tools.cache_bootstrap` instead of
             # running a gate runner.
             env["BOOTSTRAP_MODE"] = "1"
-            # Plan 02-06 follow-up: pass the operator's API key so the pod
-            # can self-stop via `runpodctl pod stop $RUNPOD_POD_ID` after
-            # cache_bootstrap exits — otherwise RunPod's container-restart
-            # policy respawns the entrypoint into an idempotent SKIP loop.
-            # The key is per-pod env (NOT in the image), so the public GHCR
-            # image never carries the secret. Pod isolation contains the key.
-            env["RUNPOD_API_KEY"] = api_key
+        # Plan 02-07 fix: forward operator-side secrets/config to the pod env
+        # for ALL gates (previously only bootstrap got RUNPOD_API_KEY). The
+        # pod uses RUNPOD_API_KEY for cost-watch + self-stop; SSH_PRIVATE_KEY
+        # for rsync to OPERATOR_HOST; OPERATOR_USER for the rsync target user.
+        # All secrets are per-pod env (NOT baked into the image) so the public
+        # GHCR image carries no credentials.
+        env["RUNPOD_API_KEY"] = api_key
+        operator_user = os.environ.get("OPERATOR_USER")
+        if operator_user:
+            env["OPERATOR_USER"] = operator_user
+        ssh_private_key = os.environ.get("SSH_PRIVATE_KEY")
+        if ssh_private_key:
+            # RunPod's create_pod mutation interpolates env values directly into
+            # a GraphQL string. Multi-line PEM-format keys (with embedded
+            # newlines) trip the GraphQL parser ("Unterminated string"). Base64
+            # the key on the operator side; pod_entrypoint.sh:_setup_ssh
+            # decodes back to PEM before writing ~/.ssh/id_ed25519.
+            import base64
+
+            env["SSH_PRIVATE_KEY_B64"] = base64.b64encode(ssh_private_key.encode("utf-8")).decode(
+                "ascii"
+            )
         if ssh_pubkey:
             env["SSH_PUBKEY"] = ssh_pubkey
         if operator_host:

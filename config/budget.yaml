@@ -42,14 +42,18 @@ gates:
 #   line item for the one-time HF model pull (D-19/D-20).
 phase2:
   max_minutes_per_gate:
-    smoke: 30
+    smoke: 60       # Plan 02-07: bumped 30 -> 60 to absorb cold first-pull of
+                    # the 16 GB v6+ image (vllm + Kokoro venv) onto a fresh
+                    # RunPod host. Pod 'zxy4alh5w1x8fd' (2026-05-07) hit the
+                    # 30-min ceiling with uptime=0/dockerId=null = container
+                    # never came up before driver TIMEOUT. Subsequent pods
+                    # pulled to the same host cache run in <2 min.
     g1: 30
     g2: 15
     g3: 10
     g5: 15
-    bootstrap: 30  # Plan 02-06: bumped 15 -> 30 to absorb cold first-pull of
-                   # the 11 GB rbox-pod image from GHCR (~10-15 min realistic
-                   # in US-CA-2). Subsequent pulls hit RunPod host cache.
+    bootstrap: 30   # Plan 02-06: bumped 15 -> 30 to absorb cold first-pull
+                    # of the rbox-pod image. Subsequent pulls hit cache.
   # Plan 02-06: bumped 0.67 -> 1.50 to match the new 30-min ceiling at
   # H100 SXM ($2.99/hr × 30 min = $1.495). Typical actual after host-cache
   # warms is still ~$0.50 (10-min run). Ledger authorizes the ceiling.

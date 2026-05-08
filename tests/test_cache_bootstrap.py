@@ -159,18 +159,20 @@ def test_budget_yaml_has_phase2_block() -> None:
     assert "phase2" in data
     p2 = data["phase2"]
     mm = p2["max_minutes_per_gate"]
-    assert mm["smoke"] == 30
+    # Plan 02-07 bumped smoke 30 -> 60 to absorb cold first-pull of the v6+
+    # image (16 GB; vllm + Kokoro venv) onto a fresh host.
+    assert mm["smoke"] == 60
     assert mm["g1"] == 30
     assert mm["g2"] == 15
     assert mm["g3"] == 10
     assert mm["g5"] == 15
     # Plan 02-05 Task 2 added bootstrap; Plan 02-06 bumped 15 -> 30 to
-    # absorb cold first-pull of the 11 GB rbox-pod image from GHCR.
+    # absorb cold first-pull of the rbox-pod image from GHCR.
     assert mm["bootstrap"] == 30
-    # Sum across smoke + 4 sanity gates remains <=100 minutes (D-18). Bootstrap
-    # is a one-time pre-condition, not part of the per-session ceiling.
+    # Sum across smoke + 4 sanity gates is now 130 (D-18 cap relaxed by
+    # Plan 02-07; the cap was a $14-budget heuristic, not a hard rule).
     sanity_sum = mm["smoke"] + mm["g1"] + mm["g2"] + mm["g3"] + mm["g5"]
-    assert sanity_sum <= 100
+    assert sanity_sum <= 130
     # Plan 02-05 set 0.67 (15 min x $2.69/hr H100 PCIe). Plan 02-06 bumped
     # to 1.50 (30 min x $2.99/hr H100 SXM = $1.495 rounded up).
     assert p2["cache_bootstrap_one_time_usd"] == 1.50
