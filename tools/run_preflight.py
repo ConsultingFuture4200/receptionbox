@@ -41,6 +41,7 @@ from orchestration.runpod_h100 import (
     ProvisionResult,
     RunPodProvisionError,
     provision,
+    terminate,
 )
 
 logger = logging.getLogger(__name__)
@@ -207,6 +208,18 @@ async def _run_gate(
         }
 
     final_state = await _wait_for_pod_exit(result.pod_id, timeout_s=max_minutes * 60 + 300)
+    # 2026-05-08: on TIMEOUT the pod is still RUNNING (the wait function gave
+    # up but did not tear it down). Without an explicit terminate the pod
+    # burns the full per-gate ceiling — observed wedge cost $3.33 on a
+    # US-KS-2 host that never produced a JSONL row. Terminate fail-safe:
+    # idempotent on already-EXITED pods, safe on dry-run / unset key per
+    # orchestration.runpod_h100.terminate().
+    if final_state == "TIMEOUT":
+        logger.warning(
+            f"[preflight] pod={result.pod_id} TIMEOUT after "
+            f"{max_minutes}m+5m budget; force-terminating to stop burn"
+        )
+        terminate(result.pod_id)
     wall_clock_s = time.time() - started
     final_spend = await _final_spend()
     verdict = {
@@ -294,6 +307,15 @@ async def _run(mode: str) -> int:
         final_state = await _wait_for_pod_exit(
             result.pod_id, timeout_s=bootstrap_max_min * 60 + 300
         )
+        # 2026-05-08: terminate on TIMEOUT so a wedged bootstrap pod can't
+        # burn the full 30-min ceiling silently. See _run_gate above for
+        # the smoke-side incident this protects against.
+        if final_state == "TIMEOUT":
+            logger.warning(
+                f"[preflight] bootstrap pod={result.pod_id} TIMEOUT after "
+                f"{bootstrap_max_min}m+5m budget; force-terminating"
+            )
+            terminate(result.pod_id)
         wall_clock_s = time.time() - started
         final_spend = await _final_spend()
         session["gates"].append(
