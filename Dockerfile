@@ -93,9 +93,15 @@ RUN pip install --no-cache-dir \
 RUN git clone --depth 1 https://github.com/remsky/Kokoro-FastAPI.git /opt/kokoro-server \
     && python -m venv /opt/kokoro-venv \
     && /opt/kokoro-venv/bin/pip install --no-cache-dir --upgrade pip \
-    && /opt/kokoro-venv/bin/pip install --no-cache-dir \
-        --extra-index-url https://download.pytorch.org/whl/cu129 \
-        -e "/opt/kokoro-server[gpu]"
+    && /opt/kokoro-venv/bin/pip install --no-cache-dir -e "/opt/kokoro-server[cpu]"
+
+# Plan 02-07 v9: switched Kokoro [gpu] → [cpu] to shrink the image from
+# ~16 GB to ~13 GB compressed. The [gpu] extra pulled torch 2.8.0+cu129
+# (~3 GB) — duplicate of the system torch 2.7.1+cu128 used by vllm and
+# faster-whisper. Smoke is 5 calls; CPU TTS adds ~2 sec/call (Kokoro-82M
+# CPU inference at ~1-3 sec per utterance per upstream README) — total
+# ~10 sec extra wall, negligible vs the 30-min smoke budget. GPU TTS
+# returns as a follow-up if sanity reveals real bottleneck.
 
 # pod_entrypoint.sh symlinks /models/hexgrad__Kokoro-82M/<rev>/ into the
 # kokoro-server's expected MODEL_DIR (api/src/models/v1_0) at startup time so
