@@ -33,6 +33,19 @@ set -euo pipefail
 WORKSPACE="${WORKSPACE:-/workspace}"
 cd "$WORKSPACE"
 
+# Plan 02-07 v10: tee all entrypoint stdout+stderr to a per-pod log file on
+# the network volume so failed-host pods (uptime=0, dockerId=null pathology
+# observed under RunPod support ticket 2026-05-08) leave evidence behind.
+# Subsequent bootstrap pods can `ls /models/_boot/` to triage. Volume mount
+# may not be ready instantly on every host; mkdir + tee tolerate a missing
+# /models gracefully (we lose log capture on those pods, container still
+# runs).
+if [[ -d /models ]] && mkdir -p /models/_boot 2>/dev/null; then
+    BOOT_LOG="/models/_boot/$(date -u +%Y%m%dT%H%M%SZ)-${HOSTNAME:-$(hostname)}-${RUNPOD_POD_ID:-nopod}-${GATE}.log"
+    exec > >(tee -a "$BOOT_LOG") 2>&1
+    echo "[entrypoint] boot log -> $BOOT_LOG"
+fi
+
 # Plan 02-05 Task 2: bootstrap mode short-circuits to cache_bootstrap, then
 # exits. No gate runner, no rsync, no audit chain — there are no result
 # files to pull. Same volume mount (/models) as smoke/sanity so the cache
