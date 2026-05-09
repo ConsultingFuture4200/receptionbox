@@ -33,7 +33,7 @@
 # if `set -e` kills us on cd / GATE-unset / tee-block-fail, so the next
 # failure mode leaves a fingerprint instead of a black hole.
 echo "[entrypoint] v11 starting pid=$$ GATE=${GATE:-UNSET} MAX_MINUTES=${MAX_MINUTES:-UNSET} BOOTSTRAP_MODE=${BOOTSTRAP_MODE:-0} WORKSPACE=${WORKSPACE:-UNSET} HOSTNAME=${HOSTNAME:-} RUNPOD_POD_ID=${RUNPOD_POD_ID:-}" >&2
-echo "[entrypoint] v14 pwd=$(pwd) models_dir=$( [[ -d /models ]] && echo yes || echo no ) models_writable=$( [[ -w /models ]] && echo yes || echo no ) workspace_dir=$( [[ -d /workspace ]] && echo yes || echo no ) DIAG_MODE=${DIAG_MODE:-0}" >&2
+echo "[entrypoint] v15 pwd=$(pwd) models_dir=$( [[ -d /models ]] && echo yes || echo no ) models_writable=$( [[ -w /models ]] && echo yes || echo no ) workspace_dir=$( [[ -d /workspace ]] && echo yes || echo no ) DIAG_MODE=${DIAG_MODE:-0}" >&2
 
 # Plan 02-07 v12: DIAG_MODE=1 short-circuits to sshd + sleep infinity.
 # Lets the operator ssh into a stable container to step through smoke
@@ -395,13 +395,25 @@ _start_inference_services
 
 # Exec the gate runner. D-24: smoke profile is g1.runner --n-calls=5 against
 # corpus_500. Sanity gates use config/sanity_strata.yaml (Plan 02-04).
+#
+# 2026-05-09 (post-v14 follow-up): pass --whisper-dir from the bootstrap-
+# index-resolved WHISPER_DIR. Runner defaults are
+# `--whisper-dir=/models/distil_whisper_large_v3_int8` — the LOGICAL name
+# from the lockfile, not the on-disk repo+revision path. Without this
+# override the FasterWhisperEngine got an HFValidationError trying to
+# interpret the logical name as a HF repo_id, the STT path silently
+# yielded nothing, and stt_ttft_ms / e2e_ms stayed null in the JSONL —
+# breaking D-25 d_per_stage_timings. WHISPER_DIR is set inside
+# _start_inference_services with no `local`, so it's already in scope here.
 if [[ "$GATE" == "smoke" ]]; then
-    python -m gates.g1.runner --gate=smoke --n-calls=5 --corpus=corpus_500 &
+    python -m gates.g1.runner --gate=smoke --n-calls=5 --corpus=corpus_500 \
+        --whisper-dir="$WHISPER_DIR" &
 else
-    python -m gates."$GATE".runner --gate="$GATE" --strata=config/sanity_strata.yaml &
+    python -m gates."$GATE".runner --gate="$GATE" --strata=config/sanity_strata.yaml \
+        --whisper-dir="$WHISPER_DIR" &
 fi
 RUNNER_PID=$!
-echo "[entrypoint] runner pid=$RUNNER_PID gate=$GATE"
+echo "[entrypoint] runner pid=$RUNNER_PID gate=$GATE whisper_dir=$WHISPER_DIR"
 
 # Wait for the runner. SIGTERM trap intercepts at watchdog timeout / operator stop.
 wait "$RUNNER_PID" || true
