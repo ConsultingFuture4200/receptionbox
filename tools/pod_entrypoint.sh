@@ -33,7 +33,29 @@
 # if `set -e` kills us on cd / GATE-unset / tee-block-fail, so the next
 # failure mode leaves a fingerprint instead of a black hole.
 echo "[entrypoint] v11 starting pid=$$ GATE=${GATE:-UNSET} MAX_MINUTES=${MAX_MINUTES:-UNSET} BOOTSTRAP_MODE=${BOOTSTRAP_MODE:-0} WORKSPACE=${WORKSPACE:-UNSET} HOSTNAME=${HOSTNAME:-} RUNPOD_POD_ID=${RUNPOD_POD_ID:-}" >&2
-echo "[entrypoint] v11 pwd=$(pwd) models_dir=$( [[ -d /models ]] && echo yes || echo no ) models_writable=$( [[ -w /models ]] && echo yes || echo no ) workspace_dir=$( [[ -d /workspace ]] && echo yes || echo no )" >&2
+echo "[entrypoint] v13 pwd=$(pwd) models_dir=$( [[ -d /models ]] && echo yes || echo no ) models_writable=$( [[ -w /models ]] && echo yes || echo no ) workspace_dir=$( [[ -d /workspace ]] && echo yes || echo no ) DIAG_MODE=${DIAG_MODE:-0}" >&2
+
+# Plan 02-07 v12: DIAG_MODE=1 short-circuits to sshd + sleep infinity.
+# Lets the operator ssh into a stable container to step through smoke
+# startup manually when remote diagnosis is needed. Skipped during normal
+# smoke / bootstrap / sanity runs (DIAG_MODE unset → falls through).
+# Done BEFORE `set -e` and the GATE check so DIAG_MODE works even when
+# the smoke env vars are absent.
+if [[ "${DIAG_MODE:-0}" == "1" ]]; then
+    echo "[entrypoint] DIAG_MODE=1 — installing pubkey + starting sshd, then sleep infinity" >&2
+    mkdir -p /root/.ssh && chmod 700 /root/.ssh
+    if [[ -n "${SSH_PUBKEY:-}" ]]; then
+        printf '%s\n' "$SSH_PUBKEY" >> /root/.ssh/authorized_keys
+    fi
+    if [[ -n "${PUBLIC_KEY:-}" && "$PUBLIC_KEY" != "null" ]]; then
+        grep -qF "$PUBLIC_KEY" /root/.ssh/authorized_keys 2>/dev/null \
+            || printf '%s\n' "$PUBLIC_KEY" >> /root/.ssh/authorized_keys
+    fi
+    chmod 600 /root/.ssh/authorized_keys
+    /usr/sbin/sshd -D -e > /tmp/sshd.log 2>&1 &
+    echo "[entrypoint] DIAG sshd started (log: /tmp/sshd.log) — entering sleep infinity" >&2
+    exec sleep infinity
+fi
 
 set -euo pipefail
 
@@ -237,10 +259,14 @@ _start_inference_services() {
     KOKORO_PID=$!
     echo "[entrypoint] kokoro pid=$KOKORO_PID port=8005 (log: /tmp/kokoro.log)"
 
-    # Health-check loop: 90 sec budget per service. vLLM model load is the
-    # slow path (~30-60 sec for Qwen3-4B AWQ on H100). Kokoro is faster.
-    local deadline_vllm=$((SECONDS + 120))
-    local deadline_kokoro=$((SECONDS + 90))
+    # Health-check budgets. v13 bump: 2026-05-08 SSH'd into a diag pod and
+    # measured Qwen3-4B FP16 cold-load on H100 NVL at 145s — exceeded the
+    # prior 120s vLLM ceiling, FATAL'd, exited 1, and Docker restart-looped
+    # the container indefinitely. New ceilings give 2× headroom over the
+    # measured cold path. Kokoro CPU bumped from 90s to 180s for similar
+    # safety (the venv hasn't been cold-load measured under load).
+    local deadline_vllm=$((SECONDS + 300))
+    local deadline_kokoro=$((SECONDS + 180))
     local vllm_ok=0 kokoro_ok=0
     while (( SECONDS < deadline_vllm || SECONDS < deadline_kokoro )); do
         if (( ! vllm_ok )) && curl -sf -o /dev/null http://127.0.0.1:8000/v1/models 2>/dev/null; then
@@ -260,6 +286,19 @@ _start_inference_services() {
     echo "[entrypoint] FATAL services not healthy in budget — vllm=${vllm_ok} kokoro=${kokoro_ok}"
     echo "[entrypoint] --- vllm tail ---"; tail -50 /tmp/vllm.log 2>/dev/null
     echo "[entrypoint] --- kokoro tail ---"; tail -50 /tmp/kokoro.log 2>/dev/null
+    # v13: self-terminate before exit. Without this, `exit 1` triggers RunPod's
+    # Docker restart policy → container respawns → same FATAL → infinite loop
+    # burning $$ until the operator-side smoke timeout fires (observed: 65 min
+    # at $3.07/hr = $3.33). Same SDK pattern as the BOOTSTRAP_MODE branch.
+    if [[ -n "${RUNPOD_POD_ID:-}" && -n "${RUNPOD_API_KEY:-}" ]]; then
+        echo "[entrypoint] self-terminating pod ${RUNPOD_POD_ID} (FATAL path)" >&2
+        python - <<PYEOF || true
+import os, runpod
+runpod.api_key = os.environ["RUNPOD_API_KEY"]
+runpod.terminate_pod(os.environ["RUNPOD_POD_ID"])
+print("[entrypoint] runpod.terminate_pod accepted")
+PYEOF
+    fi
     exit 1
 }
 
@@ -311,9 +350,17 @@ _shutdown() {
         echo "[entrypoint] skip rsync (no OPERATOR_HOST or SSH key)"
     fi
 
-    # 4. Self-terminate the pod.
-    if [[ -n "${RUNPOD_POD_ID:-}" ]] && command -v runpodctl >/dev/null 2>&1; then
-        runpodctl pod stop "$RUNPOD_POD_ID" || true
+    # 4. Self-terminate the pod. v13: switched runpodctl → runpod SDK
+    # (matches the BOOTSTRAP_MODE branch). runpodctl shells out and frequently
+    # 403s on env-injected RUNPOD_API_KEY (observed plan 02-06); the Python
+    # SDK is what actually works in-pod.
+    if [[ -n "${RUNPOD_POD_ID:-}" && -n "${RUNPOD_API_KEY:-}" ]]; then
+        python - <<PYEOF || true
+import os, runpod
+runpod.api_key = os.environ["RUNPOD_API_KEY"]
+runpod.terminate_pod(os.environ["RUNPOD_POD_ID"])
+print("[entrypoint] shutdown trap: runpod.terminate_pod accepted")
+PYEOF
     fi
 
     exit "$AUDIT_RC"
