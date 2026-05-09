@@ -229,7 +229,13 @@ async def _run_gate(
     # network volume is configured. Fetch failure is logged but doesn't
     # invalidate the gate verdict — _validate_smoke just won't find rows.
     network_volume_id = os.environ.get("RUNPOD_NETWORK_VOLUME_ID")
-    if final_state == "EXITED" and network_volume_id:
+    # GONE means the pod deleted itself via runpod.terminate_pod() (the v13
+    # self-terminate path) — successful completion, not failure. EXITED is
+    # the alternate clean-exit state when the pod is stopped but not deleted.
+    # Both should trigger result fetch. TIMEOUT means we already
+    # force-terminated above; the pod ran out of budget without producing
+    # useful data, so skip the fetch round-trip.
+    if final_state in ("EXITED", "GONE") and network_volume_id:
         try:
             from tools.fetch_results import fetch as fetch_results
 

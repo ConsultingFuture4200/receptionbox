@@ -23,7 +23,6 @@ Environment:
 from __future__ import annotations
 
 import argparse
-import base64
 import os
 import pathlib
 import shlex
@@ -92,18 +91,12 @@ def fetch(pod_id: str, gate: str | None, volume_id: str, dest_root: pathlib.Path
         print(f"[fetch] missing keypair {pubkey_path}/{privkey_path}", file=sys.stderr)
         return 1
     pubkey = pubkey_path.read_text().strip()
-    pubkey_b64 = base64.b64encode(pubkey.encode()).decode()
 
-    docker_args = (
-        "bash -c '"
-        "mkdir -p /root/.ssh && chmod 700 /root/.ssh && "
-        f"echo {pubkey_b64} | base64 -d >> /root/.ssh/authorized_keys && "
-        "chmod 600 /root/.ssh/authorized_keys && "
-        "ssh-keygen -A 2>/dev/null || true; "
-        "exec /usr/sbin/sshd -D -e"
-        "'"
-    )
-
+    # Use the entrypoint's DIAG_MODE=1 branch (added in v12). docker_args
+    # gets appended to the Dockerfile ENTRYPOINT, NOT replaced — so we
+    # cannot bypass the script via docker_args. DIAG_MODE=1 short-circuits
+    # at the top of pod_entrypoint.sh into sshd + sleep infinity. GATE
+    # must also be set so the early `: "${GATE:?}"` check doesn't trip.
     print(f"[fetch] creating fetch pod (volume={volume_id} gpu={FETCH_GPU})")
     fetch_pod = runpod.create_pod(
         name=f"rbox-fetch-{int(time.time())}",
@@ -115,8 +108,7 @@ def fetch(pod_id: str, gate: str | None, volume_id: str, dest_root: pathlib.Path
         ports="22/tcp",
         network_volume_id=volume_id,
         volume_mount_path="/models",
-        docker_args=docker_args,
-        env={"DIAG_MODE_FETCH": "1"},
+        env={"SSH_PUBKEY": pubkey, "DIAG_MODE": "1", "GATE": "fetch"},
     )
     fetch_pod_id = fetch_pod["id"]
     print(f"[fetch] fetch_pod_id={fetch_pod_id}")
