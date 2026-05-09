@@ -221,6 +221,38 @@ async def _run_gate(
         )
         terminate(result.pod_id)
     wall_clock_s = time.time() - started
+
+    # 2026-05-09 v14 transport: gate pods persist results to
+    # /models/_results/<pod_id>/<gate>/ (pod_entrypoint.sh shutdown trap).
+    # Spawn a tiny fetch pod to pull them off the volume to local
+    # results/<gate>/. Skipped on TIMEOUT (no useful data) and when no
+    # network volume is configured. Fetch failure is logged but doesn't
+    # invalidate the gate verdict — _validate_smoke just won't find rows.
+    network_volume_id = os.environ.get("RUNPOD_NETWORK_VOLUME_ID")
+    if final_state == "EXITED" and network_volume_id:
+        try:
+            from tools.fetch_results import fetch as fetch_results
+
+            tmp_dest = results_dir / "_pulled"
+            rc = fetch_results(result.pod_id, gate, network_volume_id, tmp_dest)
+            if rc == 0:
+                src = tmp_dest / result.pod_id / gate
+                gate_dir = results_dir / gate
+                gate_dir.mkdir(parents=True, exist_ok=True)
+                # Flatten {pod_id}/{gate}/* -> results/{gate}/* so
+                # _validate_smoke's existing glob still matches.
+                if src.exists():
+                    for child in src.iterdir():
+                        target_path = gate_dir / child.name
+                        if target_path.exists():
+                            continue
+                        target_path.write_bytes(child.read_bytes()) if child.is_file() else None
+                logger.info(f"[preflight] fetched results to {gate_dir}")
+            else:
+                logger.warning(f"[preflight] fetch_results rc={rc}")
+        except Exception as e:
+            logger.warning(f"[preflight] fetch_results failed: {e}")
+
     final_spend = await _final_spend()
     verdict = {
         "gate": gate,

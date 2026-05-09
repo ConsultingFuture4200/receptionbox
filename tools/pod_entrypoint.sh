@@ -33,7 +33,7 @@
 # if `set -e` kills us on cd / GATE-unset / tee-block-fail, so the next
 # failure mode leaves a fingerprint instead of a black hole.
 echo "[entrypoint] v11 starting pid=$$ GATE=${GATE:-UNSET} MAX_MINUTES=${MAX_MINUTES:-UNSET} BOOTSTRAP_MODE=${BOOTSTRAP_MODE:-0} WORKSPACE=${WORKSPACE:-UNSET} HOSTNAME=${HOSTNAME:-} RUNPOD_POD_ID=${RUNPOD_POD_ID:-}" >&2
-echo "[entrypoint] v13 pwd=$(pwd) models_dir=$( [[ -d /models ]] && echo yes || echo no ) models_writable=$( [[ -w /models ]] && echo yes || echo no ) workspace_dir=$( [[ -d /workspace ]] && echo yes || echo no ) DIAG_MODE=${DIAG_MODE:-0}" >&2
+echo "[entrypoint] v14 pwd=$(pwd) models_dir=$( [[ -d /models ]] && echo yes || echo no ) models_writable=$( [[ -w /models ]] && echo yes || echo no ) workspace_dir=$( [[ -d /workspace ]] && echo yes || echo no ) DIAG_MODE=${DIAG_MODE:-0}" >&2
 
 # Plan 02-07 v12: DIAG_MODE=1 short-circuits to sshd + sleep infinity.
 # Lets the operator ssh into a stable container to step through smoke
@@ -339,7 +339,25 @@ _shutdown() {
         --audit-log "$AUDIT_LOG" || AUDIT_RC=$?
     echo "[entrypoint] audit exit=$AUDIT_RC log=$AUDIT_LOG"
 
-    # 3. Rsync. Audit pass → full results/. Audit fail → audit log only (D-23).
+    # 3a. Persist results to the network volume so a follow-up fetch pod can
+    # rsync them off-pod. Container disk (/workspace) is ephemeral —
+    # the v13 smoke pod ran 5/5 calls fine but the JSONL was lost when the
+    # pod terminated (verdict: "no JSONL found"). v14 always copies to
+    # /models/_results/<pod_id>/<gate>/ regardless of OPERATOR_HOST so the
+    # operator can pull via tools/fetch_results.py later. Volume is mounted
+    # for smoke/sanity gates; bootstrap doesn't take this branch (early exit).
+    if [[ -d /models ]]; then
+        DEST="/models/_results/${RUNPOD_POD_ID:-nopod}/${GATE}"
+        mkdir -p "$DEST"
+        cp -a "${WORKSPACE}/results/${GATE}/." "$DEST/" 2>/dev/null \
+            || echo "[entrypoint] warn: failed to persist results to $DEST"
+        echo "[entrypoint] results persisted to $DEST"
+    fi
+
+    # 3b. Legacy direct-rsync to operator workstation. Off by default; the
+    # v14 fetch-pod path in tools/fetch_results.py is the supported transport
+    # for cloud-only Phase 0. Kept for operators who run the harness from a
+    # publicly-reachable workstation.
     if [[ -n "${OPERATOR_HOST:-}" && -f ~/.ssh/id_ed25519 ]]; then
         if [[ "$AUDIT_RC" -eq 0 ]]; then
             bash tools/rsync_results.sh
@@ -347,7 +365,7 @@ _shutdown() {
             bash tools/rsync_results.sh --audit-only
         fi
     else
-        echo "[entrypoint] skip rsync (no OPERATOR_HOST or SSH key)"
+        echo "[entrypoint] skip operator rsync (no OPERATOR_HOST or SSH key)"
     fi
 
     # 4. Self-terminate the pod. v13: switched runpodctl → runpod SDK

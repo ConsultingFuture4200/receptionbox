@@ -72,6 +72,16 @@ def bootstrap(
             continue
         dest.mkdir(parents=True, exist_ok=True)
         started = datetime.datetime.utcnow().isoformat()
+        # 2026-05-09: wrap the ENTIRE per-model block (download + post-process
+        # + marker write) in one try/except. The previous version only caught
+        # exceptions from snapshot_download; a kokoro_82m bootstrap on
+        # 2026-05-08 succeeded snapshot_download but then raised somewhere in
+        # the file-enumeration / total_bytes step, propagating up out of the
+        # loop and leaving an `.bootstrap_index.json` with kokoro_82m missing
+        # while its weights sat fully on disk. Smoke pods then died with
+        # `KeyError: 'kokoro_82m'` until the index was hand-patched. Now any
+        # post-snapshot failure logs a `FAIL post-process` and continues to
+        # the next model without losing prior progress.
         try:
             from huggingface_hub import snapshot_download
 
@@ -80,26 +90,41 @@ def bootstrap(
                 revision=rev,
                 local_dir=str(dest),
             )
+            files = sorted(str(p.relative_to(dest)) for p in dest.rglob("*") if p.is_file())
+            total_bytes = sum((dest / f).stat().st_size for f in files if (dest / f).is_file())
+            record = {
+                "repo_id": repo,
+                "revision": rev,
+                "name": name,
+                "started_utc": started,
+                "finished_utc": datetime.datetime.utcnow().isoformat(),
+                "total_bytes": total_bytes,
+                "files": files,
+            }
+            # Atomic marker write: tmp then rename. Avoids half-written
+            # marker on crash mid-write_text (rare but cheap to defend).
+            marker_tmp = marker.with_suffix(".json.tmp")
+            marker_tmp.write_text(json.dumps(record, indent=2, sort_keys=True))
+            marker_tmp.replace(marker)
+            index[name] = record
+            logger.info(f"OK {name}@{rev[:8]}: {total_bytes / 1e9:.2f} GB at {dest}")
         except Exception as e:
-            logger.error(f"FAIL {name}@{rev[:8]}: {e}")
+            logger.error(f"FAIL {name}@{rev[:8]}: {type(e).__name__}: {e}")
+            # Belt-and-suspenders: also write idx_path NOW so partial state
+            # is preserved on crash. The final write below covers the happy
+            # path; this handles "raise propagates out of the loop".
+            _write_index(target, lockfile, index)
             continue
-        files = sorted(str(p.relative_to(dest)) for p in dest.rglob("*") if p.is_file())
-        total_bytes = sum((dest / f).stat().st_size for f in files if (dest / f).is_file())
-        record = {
-            "repo_id": repo,
-            "revision": rev,
-            "name": name,
-            "started_utc": started,
-            "finished_utc": datetime.datetime.utcnow().isoformat(),
-            "total_bytes": total_bytes,
-            "files": files,
-        }
-        marker.write_text(json.dumps(record, indent=2, sort_keys=True))
-        index[name] = record
-        logger.info(f"OK {name}@{rev[:8]}: {total_bytes / 1e9:.2f} GB at {dest}")
 
+    _write_index(target, lockfile, index)
+    return index
+
+
+def _write_index(target: pathlib.Path, lockfile: pathlib.Path, index: dict) -> None:
+    """Atomic write of /models/.bootstrap_index.json from current `index`."""
     idx_path = target / ".bootstrap_index.json"
-    idx_path.write_text(
+    idx_tmp = idx_path.with_suffix(".json.tmp")
+    idx_tmp.write_text(
         json.dumps(
             {
                 "schema_version": "1.0",
@@ -111,7 +136,7 @@ def bootstrap(
             sort_keys=True,
         )
     )
-    return index
+    idx_tmp.replace(idx_path)
 
 
 def main(argv: list[str] | None = None) -> int:
