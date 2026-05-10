@@ -150,6 +150,21 @@ class CUDASubstrate(Substrate):
     # ---- env_fingerprint helpers --------------------------------------
 
     def _lookup_image_digest(self) -> str:
+        # DEV-1021 fix: prefer the deployed image digest injected by
+        # orchestration.runpod_h100.provision() as RBOX_IMAGE_DIGEST. The
+        # lockfile path tracks the *base* vllm/vllm-openai image whose digest
+        # we never resolve (we deploy the derived rbox-pod image instead), so
+        # the env-var path is the source of truth at runtime. Lockfile read
+        # is preserved as fallback for substrates that don't go through
+        # provision() (e.g., local dev, future ROCm cohort that keys differently).
+        import os
+
+        env_digest = os.environ.get("RBOX_IMAGE_DIGEST")
+        if env_digest:
+            # Accept either bare "sha256:..." or full "registry/repo@sha256:..."
+            if "@" in env_digest:
+                return env_digest.split("@", 1)[1]
+            return env_digest
         try:
             data = yaml.safe_load(self._images_lockfile.read_text()) or {}
         except Exception as e:

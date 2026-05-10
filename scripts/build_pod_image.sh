@@ -48,12 +48,20 @@ fi
 
 echo "[build] tag=${TAG} push=${PUSH} context=${REPO_ROOT}"
 
+# DEV-1021 fix: forward the operator-side git commit as a build arg so
+# the image bakes /workspace/.git_commit (read by gates/_runner_base.py
+# when the pod has no .git directory). Falls back to "unknown" outside a
+# git work-tree (e.g., raw tarball builds).
+GIT_COMMIT_VAL="$(git rev-parse HEAD 2>/dev/null || echo unknown)"
+echo "[build] GIT_COMMIT=${GIT_COMMIT_VAL}"
+
 # --load brings the image into the local docker daemon for inspection.
 # --push uploads to the registry. The two flags are mutually exclusive in
 # buildx, so we choose at invocation time.
 if [[ "$PUSH" -eq 1 ]]; then
     docker buildx build \
         --platform linux/amd64 \
+        --build-arg "GIT_COMMIT=${GIT_COMMIT_VAL}" \
         --tag "$TAG" \
         --file Dockerfile \
         --push \
@@ -74,6 +82,7 @@ if [[ "$PUSH" -eq 1 ]]; then
 else
     docker buildx build \
         --platform linux/amd64 \
+        --build-arg "GIT_COMMIT=${GIT_COMMIT_VAL}" \
         --tag "$TAG" \
         --file Dockerfile \
         --load \

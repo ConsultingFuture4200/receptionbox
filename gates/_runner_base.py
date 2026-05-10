@@ -40,7 +40,14 @@ def _gen_run_id() -> str:
 
 
 def _git_commit() -> str:
-    """`git rev-parse HEAD`, or 'unknown' on failure (no exceptions escape)."""
+    """`git rev-parse HEAD`, or read /workspace/.git_commit, or 'unknown'.
+
+    Operator workstation has a .git directory and the subprocess call works.
+    Pod-side has no .git (excluded by .dockerignore), so DEV-1021 fix bakes
+    the commit into /workspace/.git_commit at image build time via
+    `--build-arg GIT_COMMIT=$(git rev-parse HEAD)`. The fallback chain is:
+    git rev-parse > baked file > "unknown".
+    """
     try:
         r = subprocess.run(
             ["git", "rev-parse", "HEAD"],  # noqa: S607
@@ -49,10 +56,18 @@ def _git_commit() -> str:
             check=False,
             timeout=5,
         )
-        if r.returncode == 0:
+        if r.returncode == 0 and r.stdout.strip():
             return r.stdout.strip()
     except (FileNotFoundError, subprocess.TimeoutExpired):
         pass
+    baked = pathlib.Path("/workspace/.git_commit")
+    if baked.exists():
+        try:
+            v = baked.read_text().strip()
+            if v and v != "unknown":
+                return v
+        except OSError:
+            pass
     return "unknown"
 
 

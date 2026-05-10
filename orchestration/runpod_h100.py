@@ -31,7 +31,7 @@ logger = logging.getLogger(__name__)
 # create_pod time so a missed pin can't silently recur.
 _DEFAULT_IMAGE = (
     "ghcr.io/consultingfuture4200/rbox-pod"
-    "@sha256:3244985dd53c1bd7cfced3a1922e08d5c20ca22c58bc8b0d7079aa7a31e07220"
+    "@sha256:abcf19f8d84c165682f615b6e609e209850593b44b67dbec80fb93275ea9d217"
 )
 _DEFAULT_GPU = "NVIDIA H100 PCIe"
 
@@ -99,6 +99,13 @@ def provision(
             "GATE": gate,
             "MAX_MINUTES": str(max_minutes) if max_minutes else "30",
             "RUN_ID_PREFIX": gate,
+            # DEV-1021 fix: forward the deployed image_ref so the pod-side
+            # substrate can stamp the correct image_digest in every result row.
+            # substrate.cuda._lookup_image_digest() reads this and parses out
+            # the @sha256 segment. Without this, the lockfile fallback returns
+            # 'pending' (the unresolved base vllm/vllm-openai entry), which
+            # breaks Phase 4's repro-manifest seal.
+            "RBOX_IMAGE_DIGEST": image_ref,
         }
         if gate == "bootstrap":
             # Plan 02-05 Task 2: pod_entrypoint.sh reads BOOTSTRAP_MODE=1 and

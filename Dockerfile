@@ -126,6 +126,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # heavy assets/corpus_* trees, .planning/, tests/, docs/.
 COPY . /workspace/
 
+# DEV-1021 fix: bake the operator-side git commit so
+# gates/_runner_base.py:_git_commit() can stamp every result row, even
+# though the pod has no .git directory (excluded by .dockerignore).
+# Build script passes `--build-arg GIT_COMMIT=$(git rev-parse HEAD)`;
+# defaults to "unknown" when the script is not used.
+#
+# ARG is declared HERE (not at top of file) so the heavy pip / apt
+# layers above stay cached across commits; only this trailing
+# 1-line layer rebuilds when the commit changes.
+ARG GIT_COMMIT=unknown
+RUN echo "$GIT_COMMIT" > /workspace/.git_commit
+
 # pod_entrypoint.sh probes for `uv` and falls back to `python` when absent.
 # Deps are in system Python (above), so no `uv` install needed; `python -m
 # tools.cache_bootstrap` resolves correctly.
