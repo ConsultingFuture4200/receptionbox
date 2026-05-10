@@ -15,6 +15,7 @@ import asyncio
 import logging
 from collections.abc import AsyncIterator
 
+from ..paths import resolve_model_dir
 from ..types import STTChunk
 
 logger = logging.getLogger(__name__)
@@ -28,7 +29,13 @@ class FasterWhisperEngine:
         compute_type: str = "int8",
         device: str = "cuda",
     ) -> None:
-        self.model_dir = model_dir
+        # `model_dir` may be either an on-disk path (the entrypoint pre-resolves
+        # via `/models/.bootstrap_index.json` and passes the real path) OR the
+        # logical lockfile name (gate-runner defaults; e.g.
+        # `/models/distil_whisper_large_v3_int8`). resolve_model_dir is a
+        # no-op for real directories and consults the bootstrap index
+        # otherwise. See substrate/paths.py.
+        self.model_dir = resolve_model_dir(model_dir)
         self.compute_type = compute_type
         self.device = device
         self._model = None  # populated by load()
