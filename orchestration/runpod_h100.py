@@ -31,7 +31,7 @@ logger = logging.getLogger(__name__)
 # create_pod time so a missed pin can't silently recur.
 _DEFAULT_IMAGE = (
     "ghcr.io/consultingfuture4200/rbox-pod"
-    "@sha256:fd6fc6fdacf98c331aba98d5d8aadcb5de5ac7c733b969c0ce409cdd653517a4"
+    "@sha256:b6110466a8dd01c8dab5574b87edb8c8887a4b4fbd8e26f66d8feb2966b78c35"
 )
 _DEFAULT_GPU = "NVIDIA H100 PCIe"
 
