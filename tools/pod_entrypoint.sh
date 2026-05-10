@@ -201,6 +201,14 @@ _start_watchdog() {
 _start_inference_services() {
     # Resolve model paths from the cache_bootstrap index (.bootstrap_index.json).
     # Never hardcode the revision SHA — read whatever the lockfile pinned.
+    #
+    # NOTE: as of substrate/paths.py the WHISPER_DIR resolution below is no
+    # longer load-bearing for the gate runners — FasterWhisperEngine now
+    # resolves logical lockfile names against /models/.bootstrap_index.json
+    # itself. We keep the resolution here defensively (vLLM and Kokoro still
+    # need the real on-disk paths for their CLI flags), and so that a single
+    # `--whisper-dir=$WHISPER_DIR` works end-to-end without relying on the
+    # in-process resolver.
     local idx="/models/.bootstrap_index.json"
     if [[ ! -f "$idx" ]]; then
         echo "[entrypoint] FATAL /models/.bootstrap_index.json missing — bootstrap pod must run first"
