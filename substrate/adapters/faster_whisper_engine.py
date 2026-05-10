@@ -111,11 +111,66 @@ class FasterWhisperEngine:
             logger.warning("[faster-whisper] empty audio buffer")
             return
 
+        # Codec-aware decode (DEV-1083). Two byte-stream shapes are supported:
+        #
+        #  1. Raw int16 mono PCM at the caller-declared `sample_rate`. Legacy
+        #     path; preserved for backward compatibility (unit-test paths and
+        #     any future raw-PCM caller).
+        #  2. A complete WAV file (RIFF container) — what gates/g2/runner.py
+        #     and substrate/livekit_pipeline.py actually stream today. Both
+        #     PCM-int16 (fmt code 1) and G.711 μ-law (fmt code 7) are handled
+        #     via soundfile, which transparently decompands μ-law to int16
+        #     and exposes the authoritative header sample rate. The
+        #     caller-declared `sample_rate` is overridden by the WAV header
+        #     because the header is the source of truth for what's in the
+        #     bytes; mismatched declarations are logged at INFO once.
+        #
+        # Without this branch, μ-law codewords are reinterpreted as int16
+        # samples, the resampler upsamples noise to 16 kHz, and Whisper
+        # hallucinates short coherent English fillers ("thank you", "i don't
+        # know") on what it perceives as near-silent or noisy input — the
+        # exact failure mode reported in DEV-1083.
         try:
-            arr = np.frombuffer(bytes(buf), dtype=np.int16).astype(np.float32) / 32768.0
-            if sample_rate != 16000 and arr.size > 0:
+            wav_bytes = bytes(buf)
+            is_riff = (
+                len(wav_bytes) >= 12 and wav_bytes[:4] == b"RIFF" and wav_bytes[8:12] == b"WAVE"
+            )
+            if is_riff:
+                try:
+                    import io
+
+                    import soundfile as sf  # type: ignore[import-not-found]
+                except Exception as e:
+                    logger.warning(
+                        f"[faster-whisper] soundfile unavailable for WAV decode: {type(e).__name__}"
+                    )
+                    return
+                try:
+                    samples, file_sr = sf.read(
+                        io.BytesIO(wav_bytes),
+                        dtype="float32",
+                        always_2d=False,
+                    )
+                except Exception as e:
+                    logger.warning(f"[faster-whisper] WAV decode failed: {type(e).__name__}")
+                    return
+                # Force mono.
+                if samples.ndim == 2:
+                    samples = samples.mean(axis=1)
+                arr = np.ascontiguousarray(samples, dtype=np.float32)
+                if file_sr != sample_rate:
+                    logger.info(
+                        f"[faster-whisper] WAV header sample_rate={file_sr} overrides "
+                        f"caller-declared sample_rate={sample_rate}"
+                    )
+                effective_sr = int(file_sr)
+            else:
+                arr = np.frombuffer(wav_bytes, dtype=np.int16).astype(np.float32) / 32768.0
+                effective_sr = int(sample_rate)
+
+            if effective_sr != 16000 and arr.size > 0:
                 # Linear resample to 16 kHz (deps-free; deterministic).
-                target_n = round(arr.size * 16000 / sample_rate)
+                target_n = round(arr.size * 16000 / effective_sr)
                 if target_n > 0:
                     src_x = np.linspace(0.0, 1.0, num=arr.size, endpoint=False)
                     dst_x = np.linspace(0.0, 1.0, num=target_n, endpoint=False)

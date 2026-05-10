@@ -366,6 +366,194 @@ async def test_faster_whisper_engine_transcribe_logs_and_yields_nothing_on_failu
 
 
 # ---------------------------------------------------------------------------
+# DEV-1083: codec-aware audio decode (WAV/RIFF μ-law + PCM int16) regression
+#
+# Both regressions are tested against the real audio-prep code path, with the
+# faster-whisper model itself stubbed so the test runs CPU-side with no GPU /
+# no model download. We capture the float32 array the engine *would have
+# handed to* WhisperModel.transcribe() and assert it has speech-like
+# statistics (RMS in (0.005, 0.5), peak in (0.05, 1.0)) — the broken pre-fix
+# code path produces a saturated noise array (peak ~1.0, RMS > 0.5) which
+# would fail these bounds.
+# ---------------------------------------------------------------------------
+
+
+def _audio_stats_capture():
+    """Return (capture_dict, fake_model_class). The fake model records the
+    numpy array passed to transcribe() so the test can inspect it."""
+    import numpy as np  # local import; tests/ is unconstrained
+
+    capture: dict = {"arr": None}
+
+    class _FakeWhisperModel:
+        def __init__(self, *_a, **_kw) -> None:
+            pass
+
+        def transcribe(self, arr, **_kwargs):
+            capture["arr"] = np.asarray(arr, dtype=np.float32).copy()
+            # Return (segments, info) shape that matches faster_whisper's API.
+            return iter(()), object()
+
+    return capture, _FakeWhisperModel
+
+
+def _make_mulaw_wav_bytes(seconds: float = 0.5, freq_hz: float = 1000.0) -> bytes:
+    """Synthesize an 8 kHz mono μ-law WAV in-memory (RIFF + fmt 7 + data)."""
+    import io
+
+    import numpy as np
+    import soundfile as sf
+
+    sr = 8000
+    t = np.linspace(0.0, seconds, int(sr * seconds), endpoint=False, dtype=np.float32)
+    tone = 0.3 * np.sin(2 * np.pi * freq_hz * t)
+    buf = io.BytesIO()
+    # subtype="ULAW" emits WAVE_FORMAT_MULAW (fmt code 7) — matches the G.711
+    # corpus produced by ffmpeg's pcm_mulaw codec (assets/g711.py).
+    sf.write(buf, tone, sr, format="WAV", subtype="ULAW")
+    return buf.getvalue()
+
+
+def _make_pcm16_wav_bytes(seconds: float = 0.5, freq_hz: float = 1000.0) -> bytes:
+    """Synthesize a 16 kHz mono PCM-int16 WAV in-memory."""
+    import io
+
+    import numpy as np
+    import soundfile as sf
+
+    sr = 16000
+    t = np.linspace(0.0, seconds, int(sr * seconds), endpoint=False, dtype=np.float32)
+    tone = 0.3 * np.sin(2 * np.pi * freq_hz * t)
+    buf = io.BytesIO()
+    sf.write(buf, tone, sr, format="WAV", subtype="PCM_16")
+    return buf.getvalue()
+
+
+@pytest.mark.asyncio
+async def test_faster_whisper_engine_decodes_g711_mulaw_wav(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """DEV-1083: μ-law WAV bytes must be decompanded, not reinterpreted as int16.
+
+    Pre-fix: `np.frombuffer(wav_file_bytes, dtype=np.int16)` would feed Whisper
+    a saturated noise array (peak ≈ 1.0, RMS ≈ 0.6), causing hallucination of
+    short coherent English fillers. Post-fix: soundfile decodes μ-law to
+    float32 in [-1, 1] with speech-like statistics.
+    """
+    capture, FakeModel = _audio_stats_capture()
+    fake_module = type(sys)("faster_whisper")
+    fake_module.WhisperModel = FakeModel  # type: ignore[attr-defined]
+    monkeypatch.setitem(sys.modules, "faster_whisper", fake_module)
+    for mod in list(sys.modules):
+        if mod.startswith("substrate.adapters.faster_whisper_engine"):
+            sys.modules.pop(mod)
+
+    import substrate.adapters.faster_whisper_engine as fw
+
+    eng = fw.FasterWhisperEngine(model_dir="/nonexistent", device="cpu")
+    wav = _make_mulaw_wav_bytes(seconds=0.5, freq_hz=1000.0)
+
+    async def audio() -> AsyncIterator[bytes]:
+        # Stream in two chunks to exercise the bytearray drain.
+        mid = len(wav) // 2
+        yield wav[:mid]
+        yield wav[mid:]
+
+    out = []
+    async for chunk in eng.transcribe(audio(), sample_rate=8000):
+        out.append(chunk)
+
+    arr = capture["arr"]
+    assert arr is not None, "fake WhisperModel.transcribe was not called"
+    # After 8 kHz → 16 kHz linear resample, a 0.5s tone is ~8000 samples.
+    assert 7900 <= arr.size <= 8100, f"unexpected resampled length {arr.size}"
+    # Speech-like (or in this case clean-tone) statistics — the broken
+    # int16-frombuffer path on a μ-law WAV would produce peak ≈ 1.0 / RMS > 0.5.
+    import numpy as np
+
+    peak = float(np.max(np.abs(arr)))
+    rms = float(np.sqrt(np.mean(arr.astype(np.float64) ** 2)))
+    assert 0.05 < peak < 0.95, f"peak {peak} outside speech-like range"
+    assert 0.05 < rms < 0.4, f"rms {rms} outside speech-like range"
+
+
+@pytest.mark.asyncio
+async def test_faster_whisper_engine_decodes_pcm16_wav(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """DEV-1083: PCM-int16 WAV bytes must also go through the soundfile path
+    so RIFF header bytes are not interpreted as samples."""
+    capture, FakeModel = _audio_stats_capture()
+    fake_module = type(sys)("faster_whisper")
+    fake_module.WhisperModel = FakeModel  # type: ignore[attr-defined]
+    monkeypatch.setitem(sys.modules, "faster_whisper", fake_module)
+    for mod in list(sys.modules):
+        if mod.startswith("substrate.adapters.faster_whisper_engine"):
+            sys.modules.pop(mod)
+
+    import substrate.adapters.faster_whisper_engine as fw
+
+    eng = fw.FasterWhisperEngine(model_dir="/nonexistent", device="cpu")
+    wav = _make_pcm16_wav_bytes(seconds=0.5, freq_hz=1000.0)
+
+    async def audio() -> AsyncIterator[bytes]:
+        yield wav
+
+    out = []
+    async for chunk in eng.transcribe(audio(), sample_rate=16000):
+        out.append(chunk)
+
+    arr = capture["arr"]
+    assert arr is not None
+    # 16 kHz x 0.5 s, no resample needed -> ~8000 samples.
+    assert 7900 <= arr.size <= 8100
+    import numpy as np
+
+    peak = float(np.max(np.abs(arr)))
+    assert 0.05 < peak < 0.95
+
+
+@pytest.mark.asyncio
+async def test_faster_whisper_engine_legacy_raw_pcm_path_still_works(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """DEV-1083: The legacy raw-int16-PCM path (no RIFF prefix) must keep
+    working unchanged — guards backward compat for non-WAV callers."""
+    capture, FakeModel = _audio_stats_capture()
+    fake_module = type(sys)("faster_whisper")
+    fake_module.WhisperModel = FakeModel  # type: ignore[attr-defined]
+    monkeypatch.setitem(sys.modules, "faster_whisper", fake_module)
+    for mod in list(sys.modules):
+        if mod.startswith("substrate.adapters.faster_whisper_engine"):
+            sys.modules.pop(mod)
+
+    import numpy as np
+
+    import substrate.adapters.faster_whisper_engine as fw
+
+    eng = fw.FasterWhisperEngine(model_dir="/nonexistent", device="cpu")
+
+    sr = 16000
+    t = np.linspace(0.0, 0.5, int(sr * 0.5), endpoint=False, dtype=np.float32)
+    tone = (0.3 * np.sin(2 * np.pi * 1000 * t) * 32767).astype(np.int16)
+    raw = tone.tobytes()
+    assert raw[:4] != b"RIFF"
+
+    async def audio() -> AsyncIterator[bytes]:
+        yield raw
+
+    out = []
+    async for chunk in eng.transcribe(audio(), sample_rate=sr):
+        out.append(chunk)
+
+    arr = capture["arr"]
+    assert arr is not None
+    assert 7900 <= arr.size <= 8100
+    peak = float(np.max(np.abs(arr)))
+    assert 0.05 < peak < 0.95
+
+
+# ---------------------------------------------------------------------------
 # CUDASubstrate (composes the 4 adapters per D-14)
 # ---------------------------------------------------------------------------
 
@@ -385,9 +573,8 @@ def _new_substrate(**overrides: Any):
 
 
 def test_cuda_substrate_implements_abc() -> None:
-    from substrate.cuda import CUDASubstrate
-
     from substrate import Substrate
+    from substrate.cuda import CUDASubstrate
 
     assert issubclass(CUDASubstrate, Substrate)
     sub = _new_substrate()
