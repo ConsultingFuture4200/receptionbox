@@ -73,6 +73,32 @@ def test_corpus_g711_sample_rate_is_8000() -> None:
         assert r["sample_rate"] == "8000", f"{r['asset_id']} not at 8000 Hz"
 
 
+def test_every_corpus_g711_clip_has_sibling_transcript() -> None:
+    """G2 runner resolves reference text via `audio_path.with_suffix('.txt')`
+    when no `transcript_path` is set on the asset row. Without the sibling
+    .txt every G2 row errors with FileNotFoundError (sanity 2026-05-09)."""
+    if not _has_audio():
+        return
+    dialogues = {
+        d["script_id"]: d
+        for d in json.loads((ROOT / "assets" / "scripts" / "dialogues.json").read_text())
+    }
+    for r in _audio_rows("corpus_g711"):
+        wav = ROOT / r["path"]
+        txt = wav.with_suffix(".txt")
+        assert txt.exists(), f"{r['asset_id']}: missing reference transcript at {txt}"
+        # Source column is `transcoded_from:<call-NNNN>`; the .txt MUST
+        # equal that dialogue's utterance so WER is computed against the
+        # ground truth (not a stale or unrelated transcript).
+        source = r["source"]
+        assert source.startswith("transcoded_from:"), source
+        script_id = source.split(":", 1)[1]
+        expected = dialogues[script_id]["utterance"].strip()
+        assert txt.read_text().strip() == expected, (
+            f"{r['asset_id']}: transcript drift vs dialogues.json[{script_id}]"
+        )
+
+
 def test_corpus_hesitation_has_clips_and_turn_truth() -> None:
     if not _has_audio():
         return
