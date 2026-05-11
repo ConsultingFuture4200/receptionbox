@@ -11,7 +11,7 @@ Phase 0 is a one-week, $150-ceiling cloud benchmark harness that produces derate
 - Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
 
 - [x] **Phase 1: Foundation** — Repo skeleton, asset curation, cost rails, NC-R14 resolution; zero GPU spend
-- [~] **Phase 2: CUDA Pre-flight** — RunPod H100 substrate proves pipeline with 5-call smoke (DONE, verdict pass) + G1/G2/G3/G5 sanity (DEV-1019, operator-driven)
+- [x] **Phase 2: CUDA Pre-flight** — RunPod H100 substrate proves pipeline with 5-call smoke (verdict pass) + G1/G2/G3/G5 sanity (DEV-1019 Delivered with operator-accepted 20-row-per-gate partial coverage)
 - [ ] **Phase 3: ROCm Validation** — TensorWave MI300X full G1–G7 measurement + co-residency + gfx1151 audit
 - [ ] **Phase 4: Synthesis & Gate Decision** — Per-stage derating, sales-safe report, feasibility memo v0.4, go/no-go package
 
@@ -93,6 +93,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 5/5 | Complete | 2026-05-04 |
-| 2. CUDA Pre-flight | 8/8 plans; PREFLIGHT-01 closed | Smoke pass; sanity (DEV-1019) carved out | 2026-05-10 (smoke verdict + lineage) |
+| 2. CUDA Pre-flight | 8/8 plans; PREFLIGHT-01/02/03 all closed | Complete (smoke verdict pass + sanity 20-row-per-gate partial coverage operator-accepted via DEV-1019) | 2026-05-11 |
 | 3. ROCm Validation | 0/6 | Planned (6 plans on disk; AUDIT-IDs reconciled 2026-05-11) | - |
 | 4. Synthesis & Gate Decision | 0/TBD | Not started | - |

@@ -48,8 +48,8 @@ Requirements for the Phase 0 deliverable set. Each maps to roadmap phases.
 ### CUDA Pre-flight (Gate Phase 1)
 
 - [x] **PREFLIGHT-01**: 5-call G1 smoke test on RunPod H100 proves substrate + orchestration + cost ledger work end-to-end (~$1, <30 min). Closed by Plan 02-07 T7 (session `20260509T231720Z`, run `2f6b…`, verdict pass on all six D-25 sub-criteria).
-- [ ] **PREFLIGHT-02**: Once smoke passes, sanity runs of G1, G2, G3, G5 on H100 produce non-degenerate baseline numbers (G7 deferred to MI300X). Tracked under DEV-1019.
-- [ ] **PREFLIGHT-03**: H100 results stored with substrate fingerprint = `cuda` so cross-substrate consistency check (within 25% projection) is possible in synthesis. Substrate-fingerprint path proven on smoke (`substrate:"cuda"` on every row); sanity row-data verification carried by DEV-1019.
+- [x] **PREFLIGHT-02**: Sanity runs of G1, G2, G3, G5 on H100 produce non-degenerate baseline numbers. Closed by DEV-1019 (Delivered 2026-05-10) — `results/g{1,2,3,5}/` carry 20 rows per gate across 2 jsonl files each (G2 reaches the 20-clip AC; G1 produces 20 of 25, G3 produces 20 vs 10 floor, G5 produces 20 of 25). Operator-accepted coverage; sufficient for Phase 4 cross-substrate consistency-check reference data. G7 deferred to MI300X (Phase 3).
+- [x] **PREFLIGHT-03**: H100 results stored with substrate fingerprint = `cuda` so cross-substrate consistency check (within 25% projection) is possible in synthesis. Substrate-fingerprint path proven on smoke (`substrate:"cuda"` on every row); sanity rows carry the same fingerprint via the same GateRunner base path. Closed alongside PREFLIGHT-02.
 
 ### ROCm Validation Gates (Gate Phase 2)
 
@@ -168,8 +168,8 @@ Populated by `gsd-roadmapper` after ROADMAP.md creation.
 | CLOUD-05 | Phase 2 | Complete |
 | CLOUD-06 | Phase 2 | Complete |
 | PREFLIGHT-01 | Phase 2 | Complete (02-07 T7) |
-| PREFLIGHT-02 | Phase 2 | Pending (DEV-1019 sanity) |
-| PREFLIGHT-03 | Phase 2 | Pending (sanity row-data; smoke proves substrate-fingerprint path) |
+| PREFLIGHT-02 | Phase 2 | Complete (DEV-1019 — operator-accepted partial coverage) |
+| PREFLIGHT-03 | Phase 2 | Complete (closed alongside PREFLIGHT-02) |
 | GATE-G1 | Phase 3 | Pending |
 | GATE-G2 | Phase 3 | Pending |
 | GATE-G3 | Phase 3 | Pending |

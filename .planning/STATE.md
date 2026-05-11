@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v0.4
 milestone_name: milestone
-status: phase2_smoke_pass_phase3_context_ready
-stopped_at: Phase 02 closure landed (02-04 / 02-07 / 02-08 summaries; PREFLIGHT-01 [x] via run 2f6b verdict pass; REPRO-03 row-data verified via DEV-1021 on G2 diag). Phase 3 context separately gathered (provider=Vultr, image=rbox-pod-rocm, Chatterbox kill-switch=2hr/$4) — ready for /gsd-plan-phase 3.
-last_updated: "2026-05-10T16:35:00.000Z"
-last_activity: 2026-05-10 -- 02-04/02-07/02-08 summaries written; PREFLIGHT-01 closed; REQUIREMENTS+ROADMAP advanced
+status: phase2_complete_phase3_wave1_ready
+stopped_at: "Phase 02 fully closed (PREFLIGHT-01 via smoke verdict 2f6b; PREFLIGHT-02/03 via DEV-1019 operator-accepted partial sanity coverage). Phase 03 plans 01-06 on disk; AUDIT-IDs reconciled. About to fire /gsd-execute-phase 3 --wave 1 (substrate, HARNESS-03)."
+last_updated: "2026-05-11T16:55:00.000Z"
+last_activity: 2026-05-11 -- Phase 02 fully closed; Phase 03 wave-1 execution ready
 progress:
   total_phases: 4
-  completed_phases: 1
-  total_plans: 13
+  completed_phases: 2
+  total_plans: 19
   completed_plans: 13
-  percent: 100
+  percent: 68
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-04)
 
 **Core value:** Produce trustworthy go/no-go evidence on receptionBOX feasibility — derated Strix Halo predictions for latency/WER/turn-detection/UPL/TTS — before any sales commitment is made to the firm.
-**Current focus:** Phase 02 — cuda-pre-flight
+**Current focus:** Phase 03 — rocm-validation
 
 ## Current Position
 
-Phase: 02 (cuda-pre-flight) — SMOKE COMPLETE; sanity = DEV-1019 carve-out. Phase 3 context gathered (separate work), planning next.
-Plan: 8 of 8 documented (02-04/02-07/02-08 all closed today)
-Status: Phase 02 plans done; PREFLIGHT-01 closed; PREFLIGHT-02/03 pending DEV-1019 sanity (operator-driven)
-Last activity: 2026-05-10 -- 02-04/02-07/02-08 summaries written
+Phase: 03 (rocm-validation) — EXECUTING
+Plan: 1 of 6
+Status: Executing Phase 03
+Last activity: 2026-05-11 -- Phase 03 execution started
 
 Progress: [██████████] 100% (plans); smoke verdict pass; sanity carved out
 
@@ -129,6 +129,7 @@ Resume file: .planning/phases/03-rocm-validation/03-CONTEXT.md
 Next action: /gsd-verify-work 2 to refresh 02-VERIFICATION.md against new SUMMARY artifacts; then /gsd-plan-phase 3 against the gathered context; DEV-1019 sanity is a parallel operator-driven option (closes PREFLIGHT-02/03 in Phase 2 rather than carrying as a Phase 3 precondition).
 
 Open loose ends:
+
 - 02-VERIFICATION.md still reflects 2026-05-06 state ("gaps_found", 3 BLOCKING gaps); refreshed by /gsd-verify-work 2.
 - DEV-1019 sanity not run (PREFLIGHT-02/03 still pending).
 - ~22 untracked files in repo (results/_pulled, results/g{1,2,3,5}, results/smoke, results/preflight, secrets/, .planning/debug/, tools/find_runpod_volume.py + 2 probe scripts, docs/receptionbox-technical-prd-v0_2-2026-05-06.md). Decide commit-vs-gitignore per file before Phase 3 starts.
