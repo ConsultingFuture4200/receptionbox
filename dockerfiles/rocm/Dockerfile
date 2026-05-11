@@ -8,8 +8,18 @@
 #   scripts/build_pod_image_rocm.sh ghcr.io/consultingfuture4200/rbox-pod-rocm:v1 --push
 # After push, paste the @sha256 digest into orchestration/vultr_mi300x.py
 # (_DEFAULT_IMAGE_ROCM) per CLAUDE.md §2.3 (digest pinning).
+#
+# Plan 03-01 Task 5 checkpoint amendment D-32-A1 (2026-05-11): base image
+# migrated from CLAUDE.md §2.1's
+#   rocm/vllm:rocm6.4_mi300_ubuntu22.04_py3.11_vllm_0.10.x
+# (which does not exist on Docker Hub — CLAUDE.md spec was an extrapolated
+# pattern that never matched AMD's actual tag schema) to AMD's current
+# stable ROCm 7.12 base. Pinned by digest per CLAUDE.md §2.3. See
+# .planning/phases/03-rocm-validation/03-01-AMENDMENTS.md §D-32-A1.
+# Origin tag:
+#   rocm/vllm:rocm7.12.0_gfx94X-dcgpu_ubuntu24.04_py3.12_pytorch_2.9.1_vllm_0.16.0
 
-FROM rocm/vllm:rocm6.4_mi300_ubuntu22.04_py3.11_vllm_0.10.x
+FROM rocm/vllm@sha256:997f858b973cb4e9566653a180c79bc27170bd87585a6930f9257346869a28f7
 
 ARG GIT_COMMIT
 RUN echo "${GIT_COMMIT}" > /workspace/.git_commit

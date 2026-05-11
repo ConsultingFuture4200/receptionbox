@@ -42,6 +42,11 @@ images:
     captured_utc: pending
     notes: "AMD-validated PyTorch ROCm 6.4 base for STT/TTS dev on MI300X."
 
+  # Plan 03-01 Task 5 checkpoint, 2026-05-11: D-32-A1 base image migration.
+  # Original CLAUDE.md §2.1 base tag (rocm/vllm:rocm6.4_mi300_ubuntu22.04_py3.11_vllm_0.10.x)
+  # does not exist on Docker Hub. Migrated to current AMD-published ROCm 7.12
+  # base for the rbox-pod-rocm derived image. See
+  # .planning/phases/03-rocm-validation/03-01-AMENDMENTS.md for full rationale.
   - provider: vultr
     rail: rocm
     image_ref: ghcr.io/consultingfuture4200/rbox-pod-rocm
@@ -49,4 +54,7 @@ images:
     digest: pending
     registry: ghcr.io
     captured_utc: pending
-    notes: "Custom ROCm pod image; FROM rocm/vllm:rocm6.4_mi300_*; baked tools/pod_entrypoint.sh ENTRYPOINT per D-32. Used by orchestration/vultr_mi300x.py. Digest pinned by Plan 03-01 Task 5 operator checkpoint."
+    base_image_ref: rocm/vllm:rocm7.12.0_gfx94X-dcgpu_ubuntu24.04_py3.12_pytorch_2.9.1_vllm_0.16.0
+    base_image_digest: sha256:997f858b973cb4e9566653a180c79bc27170bd87585a6930f9257346869a28f7
+    base_image_captured_utc: "2026-05-11T17:52:03Z"
+    notes: "Custom ROCm pod image; FROM rocm/vllm:rocm7.12.0_gfx94X-dcgpu_* per D-32-A1 (amended); baked tools/pod_entrypoint.sh ENTRYPOINT per D-32. Used by orchestration/vultr_mi300x.py (now backup-only per D-31-A4) and a forthcoming orchestration/tensorwave_mi300x.py (primary). Derived-image digest pinned by operator after a TensorWave-validated dev pod confirms the new base runs faster-whisper / Kokoro / Chatterbox cleanly. gfx1151 counterpart digest (Phase 4 opportunity): sha256:8a09c886e1bab993f5e12faec669579c8455e5ca1ab31553350f87c3e26ca5a1."

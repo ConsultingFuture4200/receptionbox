@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v0.4
 milestone_name: milestone
-status: phase2_complete_phase3_wave1_ready
-stopped_at: "Phase 02 fully closed (PREFLIGHT-01 via smoke verdict 2f6b; PREFLIGHT-02/03 via DEV-1019 operator-accepted partial sanity coverage). Phase 03 plans 01-06 on disk; AUDIT-IDs reconciled. About to fire /gsd-execute-phase 3 --wave 1 (substrate, HARNESS-03)."
-last_updated: "2026-05-11T16:55:00.000Z"
-last_activity: 2026-05-11 -- Phase 02 fully closed; Phase 03 wave-1 execution ready
+status: executing
+stopped_at: "Phase 02 plans 02-04 / 02-07 / 02-08 summaries written; PREFLIGHT-01 closed; REQUIREMENTS / ROADMAP advanced. Phase 3 context (gathered separately at 16:18Z) preserved at .planning/phases/03-rocm-validation/03-CONTEXT.md and DISCUSSION-LOG.md — ready for /gsd-plan-phase 3."
+last_updated: "2026-05-11T17:51:45.181Z"
+last_activity: 2026-05-11
 progress:
   total_phases: 4
   completed_phases: 2
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-05-04)
 ## Current Position
 
 Phase: 03 (rocm-validation) — EXECUTING
-Plan: 1 of 6
-Status: Executing Phase 03
-Last activity: 2026-05-11 -- Phase 03 execution started
+Plan: 2 of 6
+Status: Ready to execute
+Last activity: 2026-05-11
 
 Progress: [██████████] 100% (plans); smoke verdict pass; sanity carved out
 
@@ -108,6 +108,8 @@ Decisions are logged in PROJECT.md Key Decisions table. Recent:
 - [Phase 02]: [Phase 02-06]: Custom rbox-pod image (FROM vllm/vllm-openai:v0.10.0) baked with tools/pod_entrypoint.sh as ENTRYPOINT; pushed to ghcr.io/consultingfuture4200/rbox-pod, digest-pinned in _DEFAULT_IMAGE per CLAUDE.md §2.3. Closes the gap that the bare upstream image's CMD ignored BOOTSTRAP_MODE/GATE env vars (incident pod zkqbit98s0uulf 2026-05-06). pod_entrypoint.sh uv-fallback removed (4 sites — system python only since deps are pip-installed in the image, not in a uv-managed venv). requirements.lock regenerated (added runpod 1.9.0). Bootstrap re-run confirmed all 4 HF models cached on /models with revision-pinned paths; T6 idempotency verified via 3 consecutive SKIP-on-rerun cycles. Known limitation: bootstrap pod auto-restarts on clean exit — operator manually terminates; tracked as future P2.6 follow-up.
 - [Phase 02]: [Phase 02-07]: Multi-service pod startup (vLLM + Kokoro venv on :8005), corpus_500 baked into image, transport pivoted from rsync-push to fetch_pod-pull (tools/fetch_results.py spawns ~$0.05 diag pod). Image iterated v8→v9→v10→v11→v13→v14→v15→v16 closing startup/transport bugs surfaced in real-spend smoke. Chatterbox-TTS scoped out of image (Python 3.10 vs 3.12 base conflict); DR-27 fallback to Kokoro acceptable for G1 smoke. Smoke verdict pass on session 20260509T231720Z, run 2f6b — all 6 D-25 sub-criteria true; pod self-terminated GONE, wall-clock 185s, estimated true spend ~$0.14.
 - [Phase 02]: [Phase 02-08 retroactive]: DEV-1021 fix for image_digest + git_commit lineage on result rows. provision() forwards RBOX_IMAGE_DIGEST env; substrate/cuda.py reads env first (lockfile fallback preserved). Dockerfile ARG GIT_COMMIT placed after heavy COPY/pip layers (preserves ~16GB layer cache across HEAD churn); build script passes git rev-parse HEAD; pod-side _git_commit() falls back to /workspace/.git_commit. Image v18 baked + pushed (_DEFAULT_IMAGE = sha256:abcf19f8…ea9d217). Verified on G2 diag pod jow8x9kugpkgxm: rows show real digest + commit, WER 2.55% re-confirmed (DEV-1083 intact).
+- [Phase 03]: [Phase 03-01 amendment D-32-A1]: ROCm base image migrated from CLAUDE.md §2.1's (non-existent) `rocm/vllm:rocm6.4_mi300_ubuntu22.04_py3.11_vllm_0.10.x` to AMD's current stable `rocm/vllm:rocm7.12.0_gfx94X-dcgpu_ubuntu24.04_py3.12_pytorch_2.9.1_vllm_0.16.0` @ `sha256:997f858b…2a8f7` (14.1 GB, last updated 2026-03-27). Driver: original tag never existed on Docker Hub. Bonus: vLLM 0.16 has xgrammar as default structured-output backend (required by GATE-G5). Phase 4 opportunity: matching gfx1151 base now published (`sha256:8a09c886…5a1`) — tightens DERATE-03 cross-substrate consistency by eliminating ROCm/PyTorch/vLLM version-skew between MI300X and Strix Halo measurements. Files: `bench/images.lock.yaml` row updated with `base_image_digest`; `dockerfiles/rocm/Dockerfile` `FROM` now digest-pinned per CLAUDE.md §2.3. See `.planning/phases/03-rocm-validation/03-01-AMENDMENTS.md`.
+- [Phase 03]: [Phase 03-01 amendment D-31-A4]: Day-1 MI300X substrate pivoted from Vultr to **TensorWave** (primary). Driver: Vultr's actual MI300X surface is `/v2/plans-metal` (not `/v2/plans?type=gpu` as CLAUDE.md speculated), and the one MI300X SKU is `vbm-256c-2048gb-8-mi300x-gpu` — an 8-GPU bare-metal node, `deploy_ondemand=false`, preemptible-only at $14.80/hr for the whole node. That breaks GATE-CHATTERBOX-D1's $4 spend cap (would cost $29.60) and the Phase 3 $54 MI300X subtotal (would cost $200+). TensorWave at $1.71/GPU-hr on-demand fits the budget. Vultr is **backup-only**. `orchestration/vultr_mi300x.py` stays in repo (sentinel UNSET intact, all 10 tests still pass) for use if Vultr ever publishes a 1-GPU SKU. **Follow-up blocker**: TensorWave provisioning surface unknown (no public REST API like Vultr's `/v2/instances`); a separate research plan is required before Wave 2 spend can run Plan 03-02. See `.planning/phases/03-rocm-validation/03-01-AMENDMENTS.md`.
 
 ### Pending Todos
 
@@ -117,7 +119,8 @@ None yet.
 
 - **NC-R14 (sharing Phase 0 with firm):** RESOLVED 2026-05-06 — DR-31 v0.1.0 approved.
 - **Companion documents:** RESOLVED 2026-05-06 — all 6 present in `docs/` (commit e16d86e).
-- **CLOUD-02 (TensorWave provisioning):** PARTIAL — $75 deposited; sales access pending response. RunPod (CLOUD-01) and Vultr (CLOUD-02 backup) fully provisioned and adapter-verified. Cost-watch loop polls all 3 cleanly; TensorWave WARNING is by-design (Pitfall C). Unblocks Phase 2 (CUDA pre-flight on RunPod H100); blocks G1/G2/G3/G5/G7 MI300X measurement runs unless operator falls back to Vultr.
+- **CLOUD-02 (TensorWave provisioning):** PARTIAL — $75 deposited; sales access pending response. RunPod (CLOUD-01) and Vultr (CLOUD-02 backup) fully provisioned and adapter-verified. Cost-watch loop polls all 3 cleanly; TensorWave WARNING is by-design (Pitfall C). Unblocks Phase 2 (CUDA pre-flight on RunPod H100). **Phase 3 03-01 amendment D-31-A4 (2026-05-11) made TensorWave primary, Vultr backup-only** — operator confirmed Vultr's only MI300X SKU is an 8-GPU preemptible-only node at $14.80/hr (breaks Phase 3 budget). Wave 2 spend (Plan 03-02) is now blocked until a TensorWave orchestration module exists; TensorWave provisioning surface (dashboard? CLI? partner API?) is unknown and needs a separate research plan before scaffolding `orchestration/tensorwave_mi300x.py`.
+- **Plan 03-01 follow-ups (deferred):** (1) `orchestration/tensorwave_mi300x.py` real provision() — required before Wave 2; (2) `rbox-pod-rocm` derived-image build + push to GHCR + digest pin in `bench/images.lock.yaml` — operator does this once a TensorWave-validated dev pod confirms the ROCm 7.12 base runs harness deps cleanly.
 - **gfx942 → gfx1151 kernel gap:** dominant residual technical risk. Phase 3 must produce op-by-op kernel-coverage audit; Phase 4 widens confidence bands for "unknown" ops.
 - **Phase 3 research recommended:** Chatterbox-Turbo ROCm install on TensorWave MI300X is highest-risk surface (devnen issues #192/#445 unresolved). Consider `/gsd-research-phase` before Phase 3 begins.
 
