@@ -41,3 +41,12 @@ images:
     registry: docker.io
     captured_utc: pending
     notes: "AMD-validated PyTorch ROCm 6.4 base for STT/TTS dev on MI300X."
+
+  - provider: vultr
+    rail: rocm
+    image_ref: ghcr.io/consultingfuture4200/rbox-pod-rocm
+    tag: v1
+    digest: pending
+    registry: ghcr.io
+    captured_utc: pending
+    notes: "Custom ROCm pod image; FROM rocm/vllm:rocm6.4_mi300_*; baked tools/pod_entrypoint.sh ENTRYPOINT per D-32. Used by orchestration/vultr_mi300x.py. Digest pinned by Plan 03-01 Task 5 operator checkpoint."
