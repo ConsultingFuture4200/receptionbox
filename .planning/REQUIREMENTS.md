@@ -31,7 +31,7 @@ Requirements for the Phase 0 deliverable set. Each maps to roadmap phases.
 
 - [x] **HARNESS-01**: `substrate/__init__.py` defines `Substrate` ABC with `load_stt`, `load_llm`, `load_tts`, `transcribe`, `generate`, `synthesize`, `env_fingerprint` methods; gate runners may not import torch/onnxruntime directly
 - [x] **HARNESS-02**: `substrate/cuda.py` implements the ABC for RunPod H100 (vLLM 0.10+ CUDA wheel, faster-whisper INT8, Chatterbox-Turbo CUDA, Kokoro CUDA, LiveKit Agents 1.x)
-- [ ] **HARNESS-03**: `substrate/rocm.py` implements the ABC for TensorWave/Vultr MI300X (vLLM ROCm wheel, faster-whisper INT8 ROCm, devnen Chatterbox-TTS-Server, moritzchow Kokoro-FastAPI-ROCm, LiveKit Agents 1.x)
+- [x] **HARNESS-03**: `substrate/rocm.py` implements the ABC for TensorWave/Vultr MI300X (vLLM ROCm wheel, faster-whisper INT8 ROCm, devnen Chatterbox-TTS-Server, moritzchow Kokoro-FastAPI-ROCm, LiveKit Agents 1.x)
 - [x] **HARNESS-04**: Result schema is pydantic-validated with `schema_version` field; results stored as JSONL + Parquet + SQLite index in `results/`
 - [x] **HARNESS-05**: Each gate run emits an `env.json` sidecar (substrate fingerprint, model SHAs, image digests, git commit, asset manifest hash, timestamps)
 - [x] **HARNESS-06**: Gate runners under `gates/g{1,2,3,5,7}/runner.py` are substrate-agnostic and standalone-invokable via `make gN`
@@ -157,7 +157,7 @@ Populated by `gsd-roadmapper` after ROADMAP.md creation.
 | ASSETS-08 | Phase 1 | Complete |
 | HARNESS-01 | Phase 1 | Complete |
 | HARNESS-02 | Phase 2 | Complete |
-| HARNESS-03 | Phase 3 | Pending |
+| HARNESS-03 | Phase 3 | Complete |
 | HARNESS-04 | Phase 1 | Complete |
 | HARNESS-05 | Phase 2 | Complete |
 | HARNESS-06 | Phase 2 | Complete |

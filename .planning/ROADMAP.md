@@ -66,7 +66,7 @@ Plans:
   4. `audit/gfx1151_op_status.md` exists with a status table (present / fallback / unknown) for every critical op used by Whisper, Qwen3-4B, Chatterbox, and Kokoro against the planned appliance ROCm minor + PyTorch wheel cut
 **Plans**: 6 plans
 Plans:
-- [ ] 03-01-PLAN.md — substrate/rocm.py + Dockerfile.rocm + Vultr provisioning + phase3 config + image digest pin (HARNESS-03)
+- [x] 03-01-PLAN.md — substrate/rocm.py + Dockerfile.rocm + Vultr provisioning + phase3 config + image digest pin (HARNESS-03)
 - [ ] 03-02-PLAN.md — Day-1 Chatterbox ROCm kill-switch (2hr/$4 timebox; D-35/D-36/D-37/D-38) (GATE-CHATTERBOX-D1)
 - [ ] 03-03-PLAN.md — G1 concurrency N=1/2/4 + G2 dual-path + G3 12-threshold sweep + G5 constraint_status (GATE-G1/G2/G3/G5)
 - [ ] 03-04-PLAN.md — G7 TTS A/B: warm + cold first-audio × 30 pairs × 2 engines = 120+ rows + WAV files (GATE-G7)
