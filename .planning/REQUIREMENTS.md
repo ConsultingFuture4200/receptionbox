@@ -39,7 +39,7 @@ Requirements for the Phase 0 deliverable set. Each maps to roadmap phases.
 ### Cloud Orchestration & Cost Control
 
 - [x] **CLOUD-01**: RunPod account provisioned with provider-level $75 cap; `runpodctl` CLI configured; ephemeral H100 Secure Cloud spin-up scripted in `orchestration/runpod_h100.py`
-- [ ] **CLOUD-02**: TensorWave (primary) and Vultr (backup) accounts provisioned with provider-level $75 caps; `orchestration/tensorwave_mi300x.py` + `orchestration/vultr_mi300x.py` scripted
+- [ ] **CLOUD-02**: RunPod (primary per D-31-A4.1 amendment 2026-05-11; supersedes D-31-A4 TensorWave-primary), TensorWave (secondary fallback), and Vultr (backup) accounts provisioned with provider-level $75 caps; `orchestration/runpod_mi300x.py` + `orchestration/tensorwave_mi300x.py` + `orchestration/vultr_mi300x.py` + `orchestration/mi300x.py` dispatch shim (default provider=runpod) scripted. _Plan 03-01.5 (substrate-pivot enabler, inserted 2026-05-11; rewritten in place per D-31-A4.1 to retarget RunPod) closes the RunPod-primary half via shape-parity to the existing Vultr module; HALT-STOCK branch re-activates a TensorWave-investigation 03-01.6 plan; HALT-COST branch downgrades to CUDA-only per DR-31._
 - [x] **CLOUD-03**: `cost-watch.py` daemon runs locally during cloud sessions, polls provider billing APIs every 5 minutes, hard-stops instances if projected daily spend would breach budget
 - [x] **CLOUD-04**: In-instance watchdog terminates the GPU pod after `max_minutes` (per-gate config); rsync result-pull on shutdown trigger
 - [x] **CLOUD-05**: Persistent model cache (HF revision-pinned) on cloud volume to avoid re-downloads across pods; bandwidth cost included in projection
@@ -162,7 +162,7 @@ Populated by `gsd-roadmapper` after ROADMAP.md creation.
 | HARNESS-05 | Phase 2 | Complete |
 | HARNESS-06 | Phase 2 | Complete |
 | CLOUD-01 | Phase 1 | Partial-pending-operator (skeleton + ledger gate shipped; awaits $75 deposit + API key) |
-| CLOUD-02 | Phase 1 | Partial-pending-operator (skeletons + adapters shipped; awaits TensorWave + Vultr $75 deposits) |
+| CLOUD-02 | Phase 1 (skeleton) + Phase 3-01.5 (real RunPod provisioning per D-31-A4.1) | Partial — RunPod API key already in env from Phase 02 + cost adapter proven; TensorWave $75 deposited but provisioning surface unknown (secondary fallback); Vultr $75 deposited + adapter verified (backup; sentinel UNSET); **real provisioning module `orchestration/runpod_mi300x.py` + dispatch shim scheduled in Plan 03-01.5** (PROCEED-RUNPOD) OR re-activate TensorWave research as 03-01.6 (HALT-STOCK) OR Phase 0 downgrades to CUDA-only (HALT-COST per DR-31) |
 | CLOUD-03 | Phase 1 | Partial-pending-operator (cost-watch daemon + 3 adapters shipped; awaits ledger bootstrap with funded caps) |
 | CLOUD-04 | Phase 2 | Complete |
 | CLOUD-05 | Phase 2 | Complete |

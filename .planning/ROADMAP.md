@@ -2,7 +2,7 @@
 
 ## Overview
 
-Phase 0 is a one-week, $150-ceiling cloud benchmark harness that produces derated Strix Halo (gfx1151) predictions for receptionBOX latency, WER, turn-detection, UPL, and TTS, packaged as a feasibility memo v0.4 update plus a sales-safe gate decision package. The roadmap follows dependency order, not gate order: a no-GPU-spend foundation phase prevents six of eleven critical pitfalls, then CUDA pre-flight on RunPod H100 assembles the pipeline at known-working-substrate cost, then ROCm validation on TensorWave MI300X collects the load-bearing measurements with co-residency and gfx1151 kernel-coverage audits, then synthesis derates per-stage with 80% confidence bands and produces a gate decision survivable under adversarial review.
+Phase 0 is a one-week, $150-ceiling cloud benchmark harness that produces derated Strix Halo (gfx1151) predictions for receptionBOX latency, WER, turn-detection, UPL, and TTS, packaged as a feasibility memo v0.4 update plus a sales-safe gate decision package. The roadmap follows dependency order, not gate order: a no-GPU-spend foundation phase prevents six of eleven critical pitfalls, then CUDA pre-flight on RunPod H100 assembles the pipeline at known-working-substrate cost, then ROCm validation on RunPod MI300X (per D-31-A4.1 amendment — single substrate for both rails) collects the load-bearing measurements with co-residency and gfx1151 kernel-coverage audits, then synthesis derates per-stage with 80% confidence bands and produces a gate decision survivable under adversarial review.
 
 ## Phases
 
@@ -12,7 +12,7 @@ Phase 0 is a one-week, $150-ceiling cloud benchmark harness that produces derate
 
 - [x] **Phase 1: Foundation** — Repo skeleton, asset curation, cost rails, NC-R14 resolution; zero GPU spend
 - [x] **Phase 2: CUDA Pre-flight** — RunPod H100 substrate proves pipeline with 5-call smoke (verdict pass) + G1/G2/G3/G5 sanity (DEV-1019 Delivered with operator-accepted 20-row-per-gate partial coverage)
-- [ ] **Phase 3: ROCm Validation** — TensorWave MI300X full G1–G7 measurement + co-residency + gfx1151 audit
+- [ ] **Phase 3: ROCm Validation** — RunPod MI300X full G1–G7 measurement + co-residency + gfx1151 audit
 - [ ] **Phase 4: Synthesis & Gate Decision** — Per-stage derating, sales-safe report, feasibility memo v0.4, go/no-go package
 
 ## Phase Details
@@ -56,7 +56,7 @@ Plans:
 - [x] 02-08-PLAN.md — RETROACTIVE GAP CLOSURE: image_digest + git_commit lineage on result rows (DEV-1021); REPRO-03 data verified on G2 diag pod
 
 ### Phase 3: ROCm Validation
-**Goal**: TensorWave MI300X (Day-1 per D-31-A4 amendment 2026-05-11; Vultr demoted to backup — its only MI300X SKU is an 8-GPU bare-metal preemptible at $14.80/hr which breaks the $54 budget 4×) produces measurement-grade data for G1, G2, G3, G5, G7 against pinned corpora at concurrencies N=1/2/4 with per-stage decomposition, plus the load-bearing audits — Chatterbox Day-1 kill-switch, co-residency stack-load, gfx1151 op coverage, engine-swap-under-load — that prevent the dominant Phase 0 → Phase 2 false-pass paths. **BLOCKED on TensorWave sales unblock** before Wave 2 (Plan 03-02 Day-1 kill-switch) can execute.
+**Goal**: RunPod MI300X (Day-1 per D-31-A4.1 amendment 2026-05-11; supersedes D-31-A4 which had named TensorWave primary; TensorWave demoted to secondary fallback; Vultr remains backup — Vultr's only MI300X SKU is an 8-GPU bare-metal preemptible at $14.80/hr which breaks the $54 budget 4×; TensorWave's provisioning surface is unknown and would require a separate research plan; RunPod publicly lists MI300X at $1.99/GPU-hr Secure Cloud per-GPU through the same surface Phase 02 already uses, yielding a single substrate for the entire Phase 0 program with trivial cost premium) produces measurement-grade data for G1, G2, G3, G5, G7 against pinned corpora at concurrencies N=1/2/4 with per-stage decomposition, plus the load-bearing audits — Chatterbox Day-1 kill-switch, co-residency stack-load, gfx1151 op coverage, engine-swap-under-load — that prevent the dominant Phase 0 → Phase 2 false-pass paths. **Plan 03-01.5 (inserted 2026-05-11; rewritten 2026-05-11 per D-31-A4.1) is the substrate-pivot enabler:** RunPod MI300X stock-poll mechanic + `orchestration/runpod_mi300x.py` module + dispatch shim + $2 smoke pod. Wave 2 (03-02) is blocked on 03-01.5 completion (PROCEED-RUNPOD) or downgraded to a TensorWave-investigation 03-01.6 plan (HALT-STOCK) or to CUDA-only synthesis (HALT-COST per DR-31 fallback).
 **Depends on**: Phase 2
 **Requirements**: HARNESS-03, GATE-CHATTERBOX-D1, GATE-G1, GATE-G2, GATE-G3, GATE-G5, GATE-G7, AUDIT-01, AUDIT-02, AUDIT-03
 **Success Criteria** (what must be TRUE):
@@ -64,9 +64,10 @@ Plans:
   2. G1 latency on the 500-call corpus at N=1/2/4 reports p50/p90/p99 per-stage (STT TTFT, LLM TTFT, LLM decode, TTS first-audio) and aggregate; G2 WER measured on 200 G.711 clips with both faster-whisper INT8 and ONNX-RT ROCm parallel paths; G3 turn-detection threshold sweep 400–1500ms in 100ms steps; G5 evaluated against the receptionBOX-shaped reference prompt with grammar-constrained generation ON; G7 renders both warm-path and cold-path TTS first-audio across 30 stimulus pairs
   3. Co-residency stack-load test (Whisper + Qwen3-4B + Chatterbox/Kokoro all loaded simultaneously under sustained load ≥ 5 min) records memory headroom, kernel mismatches, and crash detection without aborting; engine-swap-under-load demo flips TTS from Chatterbox to Kokoro mid-session via config row with measured swap-time
   4. `audit/gfx1151_op_status.md` exists with a status table (present / fallback / unknown) for every critical op used by Whisper, Qwen3-4B, Chatterbox, and Kokoro against the planned appliance ROCm minor + PyTorch wheel cut
-**Plans**: 6 plans
+**Plans**: 7 plans (1 inserted Wave-1.5 dependency-enabler after 03-01 amendment D-31-A4; rewritten in place per D-31-A4.1 to retarget RunPod instead of TensorWave)
 Plans:
 - [x] 03-01-PLAN.md — substrate/rocm.py + Dockerfile.rocm + Vultr provisioning + phase3 config + image digest pin (HARNESS-03)
+- [ ] 03-01.5-PLAN.md — INSERTED (D-31-A4 substrate-pivot enabler; REWRITTEN per D-31-A4.1 to retarget RunPod): RunPod MI300X stock-poll mechanic + `orchestration/runpod_mi300x.py` drop-in + `orchestration/mi300x.py` dispatch shim (default=runpod) + $2 smoke pod; HALT-STOCK branch re-activates a TensorWave investigation as a future 03-01.6; HALT-COST branch downgrades Phase 0 to CUDA-only per DR-31 (CLOUD-02, HARNESS-04)
 - [ ] 03-02-PLAN.md — Day-1 Chatterbox ROCm kill-switch (2hr/$4 timebox; D-35/D-36/D-37/D-38) (GATE-CHATTERBOX-D1)
 - [ ] 03-03-PLAN.md — G1 concurrency N=1/2/4 + G2 dual-path + G3 12-threshold sweep + G5 constraint_status (GATE-G1/G2/G3/G5)
 - [ ] 03-04-PLAN.md — G7 TTS A/B: warm + cold first-audio × 30 pairs × 2 engines = 120+ rows + WAV files (GATE-G7)
@@ -94,5 +95,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Foundation | 5/5 | Complete | 2026-05-04 |
 | 2. CUDA Pre-flight | 8/8 plans; PREFLIGHT-01/02/03 all closed | Complete (smoke verdict pass + sanity 20-row-per-gate partial coverage operator-accepted via DEV-1019) | 2026-05-11 |
-| 3. ROCm Validation | 0/6 | Planned (6 plans on disk; AUDIT-IDs reconciled 2026-05-11) | - |
+| 3. ROCm Validation | 1/7 | Planned (7 plans on disk; 03-01 closed via amendments; 03-01.5 inserted as substrate-pivot enabler 2026-05-11; rewritten in place per D-31-A4.1 to retarget RunPod) | - |
 | 4. Synthesis & Gate Decision | 0/TBD | Not started | - |
