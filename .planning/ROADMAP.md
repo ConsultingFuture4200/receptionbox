@@ -56,7 +56,7 @@ Plans:
 - [x] 02-08-PLAN.md — RETROACTIVE GAP CLOSURE: image_digest + git_commit lineage on result rows (DEV-1021); REPRO-03 data verified on G2 diag pod
 
 ### Phase 3: ROCm Validation
-**Goal**: Vultr MI300X (Day-1 per D-31; TensorWave-ready when sales unblocks) produces measurement-grade data for G1, G2, G3, G5, G7 against pinned corpora at concurrencies N=1/2/4 with per-stage decomposition, plus the load-bearing audits — Chatterbox Day-1 kill-switch, co-residency stack-load, gfx1151 op coverage, engine-swap-under-load — that prevent the dominant Phase 0 → Phase 2 false-pass paths.
+**Goal**: TensorWave MI300X (Day-1 per D-31-A4 amendment 2026-05-11; Vultr demoted to backup — its only MI300X SKU is an 8-GPU bare-metal preemptible at $14.80/hr which breaks the $54 budget 4×) produces measurement-grade data for G1, G2, G3, G5, G7 against pinned corpora at concurrencies N=1/2/4 with per-stage decomposition, plus the load-bearing audits — Chatterbox Day-1 kill-switch, co-residency stack-load, gfx1151 op coverage, engine-swap-under-load — that prevent the dominant Phase 0 → Phase 2 false-pass paths. **BLOCKED on TensorWave sales unblock** before Wave 2 (Plan 03-02 Day-1 kill-switch) can execute.
 **Depends on**: Phase 2
 **Requirements**: HARNESS-03, GATE-CHATTERBOX-D1, GATE-G1, GATE-G2, GATE-G3, GATE-G5, GATE-G7, AUDIT-01, AUDIT-02, AUDIT-03
 **Success Criteria** (what must be TRUE):

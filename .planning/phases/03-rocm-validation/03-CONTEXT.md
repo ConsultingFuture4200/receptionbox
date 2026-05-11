@@ -51,8 +51,8 @@ Phase 3 also closes three load-bearing audits whose absence would invalidate the
 
 ### MI300X provider + Day-1 substrate
 
-- **D-31 (Day-1 provider): Vultr.** `orchestration/vultr_mi300x.py` is wired to real provisioning first because Vultr is provisioned + adapter-verified per STATE (`/v2/billing/pending-charges` adapter exists). TensorWave (`tensorwave_mi300x.py`) gets wired up when sales contact unblocks; until then it stays Phase-1-stub. **Do not wait for TensorWave** — keeps the project off the sales-cycle critical path. `$1.85/hr` on-demand is the cost basis for Day-1 budget projections.
-- **D-32 (Image strategy): Separate `rbox-pod-rocm` image.** New Dockerfile `Dockerfile.rocm` (or `dockerfiles/rocm/Dockerfile`) FROM `rocm/vllm:rocm6.4_mi300_ubuntu22.04_py3.11_vllm_0.10.x` per CLAUDE.md §2.1. ENTRYPOINT remains `tools/pod_entrypoint.sh`. Build script `scripts/build_pod_image_rocm.sh` (or `--rail rocm` flag on existing script) takes `--build-arg GIT_COMMIT` (mirrors v18 pattern). Pushed to `ghcr.io/consultingfuture4200/rbox-pod-rocm`. `_DEFAULT_IMAGE_ROCM` constant in `orchestration/vultr_mi300x.py` (and later `tensorwave_mi300x.py`) carries the digest pin per CLAUDE.md §2.3.
+- **D-31 [AMENDED to D-31-A4 — 2026-05-11]: TensorWave is Day-1 primary; Vultr demoted to backup.** Original D-31 named Vultr Day-1 on the strength of an already-provisioned account + adapter. Task 5 operator checkpoint surfaced that Vultr's *only* MI300X SKU is `vbm-256c-2048gb-8-mi300x-gpu` — an 8-GPU bare-metal node, `deploy_ondemand=false`, preemptible-only at $14.80/hr for the whole node. Breaks Phase 3's $54 budget 4× over and breaks GATE-CHATTERBOX-D1's $4 spend cap (D-36). TensorWave at ~$1.71/GPU-hr on-demand fits the budget. `orchestration/vultr_mi300x.py` stays in the repo as backup with `_DEFAULT_IMAGE_ROCM` UNSET sentinel intact; a new `orchestration/tensorwave_mi300x.py` is the Day-1 follow-up gated on TensorWave sales unblock. **Wave 2 (Plan 03-02) is currently blocked** on this sales contact; the previous "don't wait for TensorWave" posture no longer applies. See `.planning/phases/03-rocm-validation/03-01-AMENDMENTS.md` for the full rationale.
+- **D-32 [AMENDED to D-32-A1 — 2026-05-11]: Separate `rbox-pod-rocm` image.** New Dockerfile at `dockerfiles/rocm/Dockerfile` FROM `rocm/vllm:rocm7.12.0_gfx94X-dcgpu_ubuntu24.04_py3.12_pytorch_2.9.1_vllm_0.16.0` @ `sha256:997f858b…2a8f7` (D-32-A1 migration — CLAUDE.md §2.1's `rocm6.4_mi300_*` tag pattern never existed on Docker Hub). ENTRYPOINT remains `tools/pod_entrypoint.sh`. Build script `scripts/build_pod_image_rocm.sh` takes `--build-arg GIT_COMMIT` (mirrors v18 pattern). Pushed to `ghcr.io/consultingfuture4200/rbox-pod-rocm`. `_DEFAULT_IMAGE_ROCM` constant carries the digest pin per CLAUDE.md §2.3.
 - **D-33 (Per-gate max_minutes for Phase 3):** `config/budget.yaml` adds `phase3.max_minutes_per_gate`:
   - `chatterbox_d1: 120` (2-hr Day-1 timebox per D-35 below)
   - `g1: 120` (500-call corpus × N=1/2/4 takes time)
@@ -122,8 +122,8 @@ The following Phase 3 gray areas were not discussed at this depth — defaults b
 - `cost/adapters/vultr.py` — billing-poll adapter (already real; reused for Phase 3 D-34)
 - `cost/adapters/tensorwave.py` — stub-with-warning (CLAUDE.md Pitfall C; D-34 documents this asymmetry)
 - `orchestration/runpod_h100.py` — Phase 2 reference impl; mirror provision() shape in `vultr_mi300x.py`
-- `orchestration/vultr_mi300x.py` — Phase-1 stub; Phase 3 fills with real provisioning (D-31)
-- `orchestration/tensorwave_mi300x.py` — Phase-1 stub; Phase 3 fills only when sales unblocks (D-31)
+- `orchestration/vultr_mi300x.py` — Phase 3 03-01 filled with real `provision()` but PARKED per D-31-A4 (sentinel UNSET); kept as backup-only path
+- `orchestration/tensorwave_mi300x.py` — Phase 1 stub; Day-1 primary per D-31-A4 — needs its own follow-up plan once TensorWave sales unblocks (Wave-2 blocker)
 - `gates/_runner_base.py`, `gates/g{1,2,3,5}/runner.py` — substrate-agnostic; Phase 3 adds `gates/g7/runner.py` (TTS A/B)
 - `tools/pod_entrypoint.sh`, `tools/cache_bootstrap.py`, `tools/audit_pod_state.py`, `tools/rsync_results.sh`, `tools/fetch_results.py`, `tools/run_preflight.py` — operational tooling (Phase 2; reused on ROCm rail with provider-flag awareness)
 - `bench/models.lock.yaml` — HF revision SHA pins (already populated for all 4 models in Phase 2 P2.5)
@@ -183,7 +183,7 @@ The following Phase 3 gray areas were not discussed at this depth — defaults b
 - **Turn detection** — silero-vad v5 + LiveKit `turn-detector` plugin (CLAUDE.md §6). Threshold sweep 400–1500 ms in 100 ms steps for P3.4 — 12 thresholds, false-positive rate at each. Driven from `gates/g3/runner.py` with `--threshold-ms` flag.
 - **vLLM benchmark CLI** (CLAUDE.md §3.3) — reference for TTFT / ITL measurement; gate runners can wrap it OR roll their own with the same fields.
 - **Repro tuple population** — DEV-1021 fix carry-forward is mandatory: `RBOX_IMAGE_DIGEST` env + `/workspace/.git_commit` baked file. ROCm rail must populate `image_digest` and `git_commit` correctly from the start; no "fix in Phase 4" loophole.
-- **Day-1 sequencing** — Vultr provisioning + first Chatterbox kill-switch happen on the same pod or back-to-back pods (the Chatterbox docker image cache survives across pods on the same Vultr host). Plan should account for the cold-pull on first pod and the warm-cache speedup on follow-on pods.
+- **Day-1 sequencing [AMENDED — D-31-A4]** — TensorWave (not Vultr) provisioning + first Chatterbox kill-switch happen on the same pod or back-to-back pods (the Chatterbox docker image cache may survive across pods on the same host — TensorWave behavior here is TBD; the previous Vultr-host-cache assumption does not transfer). Plan 03-02 should account for cold-pull on first TensorWave pod and validate warm-cache behavior empirically.
 
 </specifics>
 
