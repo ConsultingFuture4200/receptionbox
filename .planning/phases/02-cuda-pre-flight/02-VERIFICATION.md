@@ -1,146 +1,92 @@
 ---
-status: gaps_found
+status: smoke_pass_sanity_carved_out
 phase: 02-cuda-pre-flight
-verified_utc: 2026-05-06T17:30:00Z
-verifier: orchestrator (operator-driven path-C verification, not gsd-verifier subagent)
-must_haves_total: 7
-must_haves_passed: 4
-must_haves_failed: 3
-gaps_block_phase_complete: true
+verified_utc: 2026-05-10T16:35:00Z
+verifier: orchestrator (operator-driven path-A verification, summary refresh — not gsd-verifier subagent)
+prior_verification:
+  - utc: "2026-05-06T17:30:00Z"
+    status: gaps_found
+    gaps_blocking_phase_complete: true
+must_haves_total: 10
+must_haves_passed: 8
+must_haves_carved_out: 2
+gaps_block_phase_complete: false
+notes: Re-run /gsd-verify-work 2 with the gsd-verifier subagent for an independent audit; this refresh is operator-side bookkeeping after 02-04 / 02-07 / 02-08 SUMMARY artifacts landed.
 ---
 
-# Phase 02: cuda-pre-flight — Verification Report
+# Phase 02: cuda-pre-flight — Verification Refresh
 
 ## Summary
 
-Plans 02-01, 02-02, 02-03 are complete and shipped (224 tests passing, lint clean). Plan 02-04 reached 3/4 tasks complete and was paused at Task 4 (real H100 spend) when an operator bootstrap dry-run surfaced an upstream blocker. The operator selected path C (defer real spend; route to gap-closure planning) so $0 was spent on RunPod this session.
+The 2026-05-06 verification reported `gaps_found` with three BLOCKING gaps (PREFLIGHT-01/02/03 not executed; root cause lockfile pending-revisions). All three gaps closed in dependency order:
 
-**Phase cannot be marked complete** because the must-haves PREFLIGHT-01, PREFLIGHT-02, PREFLIGHT-03 require an actual H100 run, and the bootstrap step that precedes them is a no-op against the current lockfile state.
+1. **Plan 02-05** (gap closure) resolved the lockfile data + auto-provisioned bootstrap SDK path → unblocked the model cache.
+2. **Plan 02-06** baked the custom `rbox-pod` image and digest-pinned `_DEFAULT_IMAGE` → env vars are actually consumed by the pod entrypoint.
+3. **Plan 02-07** (gap closure) closed three newly-surfaced pre-conditions for smoke (multi-service startup; corpus_500 in image; operator transport via fetch_pod pull) across eight image iterations (v8 → v18); smoke verdict `pass=True` recorded on session `20260509T231720Z`.
+4. **Plan 02-08** (retroactive gap closure, DEV-1021) populated the `image_digest` + `git_commit` REPRO-03 fields on result rows; verified on a G2 diag pod row.
+
+PREFLIGHT-01 closed. PREFLIGHT-02 + PREFLIGHT-03 carved out as DEV-1019 (operator-driven sanity) — explicit choice, not a gap.
 
 ## Must-Haves Verified
 
 | ID | Status | Evidence |
 |----|--------|----------|
-| HARNESS-02 | PASS | `substrate/cuda.py` + 4 adapters + `substrate/livekit_pipeline.py` shipped in 02-01 (137→164 tests). Adapters expose `health()` per [Phase 02-01] decision; CUDASubstrate composes per D-14; LiveKit AgentSession rig per D-15. |
-| HARNESS-05 | PASS | `harness/env_sidecar.py` writes pydantic-validated `results/{gate}/{run_id}.env.json` once per run; verified by `tests/test_env_sidecar.py`. |
-| HARNESS-06 | PASS | 4 substrate-agnostic gate runners under `gates/g{1,2,3,5}/runner.py`, all typed against `substrate.Substrate` ABC (grep-asserted). G7 explicitly deferred to Phase 3 in Makefile. |
-| REPRO-03 | PASS | `GateRunner.build_result` injects all 6 reproducibility fields from `self`; pydantic `GateResult` validation rejects construction if any field is missing; verified by `tests/test_gate_runners.py`. |
+| HARNESS-02 | PASS | `substrate/cuda.py` + 4 adapters + `substrate/livekit_pipeline.py` shipped in 02-01. Adapters expose `health()`; CUDASubstrate composes per D-14; LiveKit AgentSession rig per D-15. |
+| HARNESS-05 | PASS | `harness/env_sidecar.py` writes pydantic-validated `results/{gate}/{run_id}.env.json` once per run; verified by `tests/test_env_sidecar.py` and on smoke run `2f6b…` (env sidecar present, values populated). |
+| HARNESS-06 | PASS | 4 substrate-agnostic gate runners under `gates/g{1,2,3,5}/runner.py`, all typed against `substrate.Substrate` ABC. G7 deferred to Phase 3 per Makefile. |
+| CLOUD-04 | PASS | `tools/pod_entrypoint.sh` orchestrates watchdog + audit + service startup + result transport; image v18 baked with sshd + pod_entrypoint as ENTRYPOINT (02-06) plus multi-service startup (02-07). |
+| CLOUD-05 | PASS | HF model cache on `/models` network volume; bootstrap SDK-driven via `provision()`; lockfile populated (02-05); idempotency verified across 3 SKIP-on-rerun cycles (02-06 T6); operator confirmation that all 4 model directories landed on volume `rgkzzrl34n`. |
+| CLOUD-06 | PASS | `tools/audit_pod_state.py` runs in shutdown chain; smoke audit `1778368799.audit.json` reports 0 violations across extension_check, manifest_check, pii_check. |
+| REPRO-03 | PASS | Schema enforced in 02-02 (pydantic GateResult). Row-data populated for all six fields verified on Plan 02-08 / DEV-1021 (G2 diag pod `jow8x9kugpkgxm`, image v18, rows show real `sha256:abcf19f8…` digest + real commit `f049bb87…`). Smoke run `2f6b…` carries placeholders for `image_digest` and `git_commit` (pre-DEV-1021); future smoke / sanity / Phase-3 runs inherit the fix automatically. |
+| PREFLIGHT-01 | PASS | Session `20260509T231720Z`, pod `d6ii16l245t41m`, run `2f6b0aa20acb4ebda0302d51b98c6334`. All six D-25 sub-criteria (a_5_rows, b_under_30min, c_under_1usd, d_per_stage_timings, e_env_sidecar, f_audit_clean) → True. Pod GONE; wall-clock 185.66 s; estimated true spend ~$0.14. |
 
-## Must-Haves Failed (Gaps)
+## Must-Haves Carved Out
 
-### GAP-1: PREFLIGHT-01 not executed (BLOCKING)
+| ID | Status | Disposition |
+|----|--------|-------------|
+| PREFLIGHT-02 | DEFERRED to DEV-1019 (operator-driven sanity) | Sanity baselines for G1/G2/G3/G5 on H100 are a separate operator-driven run (~$4.49 per the operator checklist); not a gap, an explicit carve-out. Closes inside Phase 2 if run before Phase 3 starts, OR carries as a Phase 3 precondition. Operator decides. |
+| PREFLIGHT-03 | DEFERRED to DEV-1019 | Substrate-fingerprint path is proven on every smoke row (`substrate="cuda"`). Row-data verification across all sanity gates is part of DEV-1019. |
 
-**Requirement:** 5-call G1 smoke test on RunPod H100 proves substrate + orchestration + cost ledger work end-to-end (~$1, <30 min).
+## Resolution Log (vs. 2026-05-06 verification)
 
-**Status:** Code path complete (`tools/run_preflight.py --mode smoke` is wired and tested with mocks); no real H100 run performed.
+### GAP-1 (PREFLIGHT-01 not executed, BLOCKING) → RESOLVED
 
-**Root cause:** Blocked by GAP-3 (lockfile pending-revisions) — a smoke pod cannot legitimately run without first bootstrapping the model cache, and the cache bootstrap is currently a no-op.
+Smoke real-spend executed via 02-07 T7 on 2026-05-09 23:17; verdict pass. See `results/preflight/20260509T231720Z.json` and `results/smoke/2f6b0aa20acb4ebda0302d51b98c6334.jsonl`.
 
-**Evidence:** No `results/smoke/*.jsonl` in repo; cost ledger has no Phase 02 RunPod entries.
+### GAP-2 (PREFLIGHT-02 + PREFLIGHT-03 not executed, BLOCKING) → REFRAMED
 
-### GAP-2: PREFLIGHT-02 + PREFLIGHT-03 not executed (BLOCKING)
+Not a verification gap; explicit carve-out as DEV-1019. Sanity is its own operator-driven session, decoupled from smoke verdict so Phase 3 planning can proceed in parallel.
 
-**Requirement:**
-- PREFLIGHT-02: Sanity G1+G2+G3+G5 runs on H100 produce non-degenerate baseline numbers.
-- PREFLIGHT-03: Every result row has `substrate_fingerprint == "cuda"` + full REPRO-03 tuple.
+### GAP-3 (Lockfile pending + manual bootstrap, ROOT CAUSE) → RESOLVED
 
-**Status:** Driver complete; no real run.
+Closed by Plan 02-05 (lockfile data + SDK-driven `--mode bootstrap`) and Plan 02-06 (custom image so env vars are actually consumed). Bootstrap re-run confirmed all 4 models on `/models`.
 
-**Root cause:** Same as GAP-1 — blocked downstream of GAP-3.
+## New Gaps Surfaced During Closure
 
-**Evidence:** `results/g{1,2,3,5}/` empty for Phase 02.
+| Gap | Origin | Closed by |
+|-----|--------|-----------|
+| `pod_entrypoint.sh` smoke branch fired the runner with no inference services running → ConnectionRefused | 02-04 / 02-07 audit | 02-07 T3 (`_start_inference_services`) |
+| `.dockerignore` excluded `corpus_500` → FileNotFoundError mid-smoke | 02-07 audit | 02-07 T4 (un-ignore corpus_500) |
+| Operator-side rsync receiver setup friction (Tailscale-on-pod) | 02-07 execution | 02-07 architecture pivot: `tools/fetch_results.py` pull-based transport via diag pod |
+| Image restart-loop before entrypoint log reachable | 02-07 v10 | tee entrypoint log to `/models/_boot` (image v10) |
+| `image_digest = "pending"` + `git_commit = "unknown"` on smoke rows (REPRO-03 data) | 02-07 post-pass audit | 02-08 retroactive (DEV-1021); image v18 baked + verified on G2 diag |
+| Wedged bootstrap pods burning the full 30-min ceiling silently | 02-07 v13 | `fix(preflight): terminate pod on TIMEOUT instead of leaking RUNNING` (commit `ab31d97`) |
 
-### GAP-3: Lockfile pending-revisions + manual bootstrap step (ROOT CAUSE)
+## Pre-existing Issues Resolved / Carried Forward
 
-**Requirement:** REPRO-02 — `bench/models.lock.yaml` pins every HF model by `revision=<commit_sha>` (Whisper, Qwen3-4B, Chatterbox, Kokoro).
+- **REQUIREMENTS.md REPRO-02 schema-vs-data trap** (flagged 2026-05-06) → resolved by 02-05 with lockfile data populated; lesson generalized to REPRO-03 via 02-08. Audit heuristic to add: "every `[x]` REPRO requirement must have both schema enforcement and a sampled data row showing non-placeholder values."
 
-**Status:** PARTIAL. The lockfile structure exists and the schema is enforced, but **all 4 entries are at `revision: pending`** with `files: []` (Qwen/Chatterbox/Kokoro) or `sha256: pending` (Whisper). REPRO-02 was prematurely marked `[x]` in REQUIREMENTS.md after Phase 01 — the structural commitment is satisfied but the data is not.
+## Pass-Through Gates (Not Run This Session)
 
-**Discovered via:** Operator-run `uv run python -m tools.run_preflight --mode bootstrap` on 2026-05-06 returned `[preflight] bootstrap real-spend mode requires operator-side runpodctl invocation`. Investigation of `tools/cache_bootstrap.py` and `tools/fetch_models.py` revealed both skip `pending` entries with WARN-and-continue semantics, so even if the operator manually provisioned a bootstrap pod via `runpodctl`, no models would actually land on the network volume.
-
-**Secondary gap:** `tools/run_preflight.py --mode bootstrap` does not auto-provision the bootstrap pod via the RunPod SDK — it defers to operator-side `runpodctl`. This is documented in `docs/OPERATOR-CHECKLIST-PHASE-02.md` §4 Step 1, but the checklist was written assuming the operator would invoke `runpodctl pod create` by hand. That breaks the "Reproducibility" constraint (CLAUDE.md §Constraints): every benchmark must be re-runnable from `~/RBOX`.
-
-**Evidence:**
-```yaml
-# bench/models.lock.yaml — all 4 entries
-- name: distil_whisper_large_v3_int8
-  revision: pending
-- name: qwen3_4b_awq_int4
-  revision: pending
-- name: chatterbox_turbo
-  revision: pending
-- name: kokoro_82m
-  revision: pending
-```
-
-```python
-# tools/cache_bootstrap.py:62-63
-if rev == "pending":
-    logger.warning(f"SKIP {name}: revision still 'pending'; resolve in lockfile first")
-    continue
-```
-
-```python
-# tools/run_preflight.py:247-251
-logger.info(
-    "[preflight] bootstrap real-spend mode requires operator-side runpodctl "
-    "invocation; see docs/OPERATOR-CHECKLIST-PHASE-02.md"
-)
-```
-
-## Recommended Gap-Closure Plan
-
-A single follow-up plan (Plan 02.1-01) should close all three gaps in dependency order:
-
-### Task 1 — Resolve HF revision SHAs (closes GAP-3 root)
-
-- Pin commit SHAs for the 4 models. Choice criteria for SHA selection should be discussed before pinning — these become the fixed substrate for every Phase 02–4 measurement and any post-hoc re-run. Prefer the most-recent SHA on `main` at the time of Phase 02 execution unless there is a known regression.
-- Models:
-  - `Systran/faster-distil-whisper-large-v3` — populate `revision` + per-file SHA-256 for `model.bin`, `config.json`, `tokenizer.json`, `vocabulary.json`.
-  - `Qwen/Qwen3-4B` — choose AWQ-Int4 quantized variant (per [Phase 02-02] context); populate `revision` + relevant `files`.
-  - `ResembleAI/chatterbox` — `revision` + main weight file SHAs.
-  - `hexgrad/Kokoro-82M` — `revision` + main weight file SHAs.
-- Update `REQUIREMENTS.md`: REPRO-02 should remain `[x]` after this is resolved (it'll genuinely be true).
-- AC: `tools/cache_bootstrap.py --target /tmp/cache --lockfile bench/models.lock.yaml` no longer logs any `SKIP` lines (run locally with limited disk; we don't need to hold full weights — just verify resolution succeeds).
-
-### Task 2 — Auto-provision bootstrap pod via SDK (closes GAP-3 secondary)
-
-- Replace the operator-action stub in `tools/run_preflight.py` `if mode == "bootstrap": ...real-spend...` branch with a real call to `orchestration.runpod_h100.provision()` (cost-ledger gated, just like smoke/sanity) configured for: small CPU-only or smallest-GPU pod, `/models` volume mounted, entrypoint `python -m tools.cache_bootstrap`, watchdog max ~15 min.
-- Rev `config/budget.yaml` `phase2.cache_bootstrap_one_time_usd` if pod selection changes the cost.
-- Update `docs/OPERATOR-CHECKLIST-PHASE-02.md` §4 Step 1 to document the now-automated path.
-- AC: `RUNPOD_API_KEY=fake-but-set uv run python -m tools.run_preflight --mode bootstrap` calls `provision()` (mocked at SDK boundary), session manifest gets `gates[0].status: STOPPED` (or `EXITED`), pod starts and self-terminates after running cache_bootstrap. Tests at the mock-SDK level only — real spend lives in Task 4 below.
-
-### Task 3 — End-to-end mock smoke test (defense in depth)
-
-- Add an E2E test that mocks the RunPod SDK + SSH + rsync layer and proves the full `bootstrap → smoke` chain runs cleanly without real spend. This is what the operator's actual run will exercise; we should be able to dry-run it locally first.
-- AC: `tests/test_run_preflight_e2e.py` simulates a successful bootstrap pod, then a successful smoke pod, asserts `smoke_verdict.pass: true` against synthetic results.
-
-### Task 4 — Operator real-spend run (closes GAP-1, GAP-2, GAP-3)
-
-- This is the original Plan 02-04 Task 4 unchanged: operator walks `docs/OPERATOR-CHECKLIST-PHASE-02.md`, runs bootstrap (now automated), runs smoke, runs sanity. Total ~$5–6, ceiling $14.
-- AC: `results/smoke/*.jsonl` has 5 rows with `substrate == "cuda"` + full REPRO-03 tuple; `results/g{1,2,3,5}/*.jsonl` each have 10 rows; cumulative spend < $14; PREFLIGHT-01/02/03 marked `[x]` in REQUIREMENTS.md; Plan 02-04 SUMMARY written; Plan 02.1-01 SUMMARY written; Phase 02 marked complete.
-
-## Pre-existing Issues Surfaced
-
-- **REQUIREMENTS.md REPRO-02 marked `[x]` prematurely.** The Phase 01 closeout marked REPRO-02 complete on the basis of structural lockfile schema enforcement, but the data inside the lockfile is empty. This is a process gap to flag for whoever runs `/gsd-audit-uat` or `/gsd-audit-milestone` — requirement traceability should distinguish "schema enforced" from "data populated". Not blocking Phase 02 gap closure; mention it in Plan 02.1-01 deliverable so it gets corrected as a side effect.
-
-## Pass-Through Gates (NOT BLOCKING)
-
-These were not run as part of this verification; they should run after the gap-closure plan completes:
-
-- Code review (`/gsd-code-review 02`) — advisory; runs after Phase 02 is actually complete.
-- Regression gate (`pytest` against Phase 01 test files) — should be re-run after Plan 02.1-01 lands.
-- Schema drift gate — N/A this phase (no DB schema changes).
+- `/gsd-code-review 02` — advisory; recommend running before Phase 3 begins.
+- `pytest` regression — last run was during 02-08 verification (commit `34c3607` notes); should re-run before Phase 3.
 
 ## Routing
 
 ```
-/gsd-plan-phase 02 --gaps    # writes Plan 02.1-01 (or similar numbering) closing GAP-1/2/3
+/gsd-verify-work 2          # Independent audit by gsd-verifier subagent of this refresh
+                            # (this file is operator bookkeeping, not the subagent's report)
+# parallel/branch choice:
+#   - run DEV-1019 sanity to close PREFLIGHT-02/03 inside Phase 2, OR
+#   - /gsd-plan-phase 3 against .planning/phases/03-rocm-validation/03-CONTEXT.md
 ```
-
-After Plan 02.1-01 is planned and reviewed:
-```
-/gsd-execute-phase 02.1 --gaps-only
-```
-
-The execute path will hit Task 4's checkpoint exactly as 02-04 just did, but this time the bootstrap will actually do something.

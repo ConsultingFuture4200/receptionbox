@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v0.4
 milestone_name: milestone
-status: executing
-stopped_at: Phase 3 context gathered (provider=Vultr, image=rbox-pod-rocm, Chatterbox kill-switch=2hr/$4)
-last_updated: "2026-05-10T16:18:51.966Z"
-last_activity: 2026-05-06 -- Phase 02 execution started
+status: phase2_smoke_pass_phase3_context_ready
+stopped_at: Phase 02 closure landed (02-04 / 02-07 / 02-08 summaries; PREFLIGHT-01 [x] via run 2f6b verdict pass; REPRO-03 row-data verified via DEV-1021 on G2 diag). Phase 3 context separately gathered (provider=Vultr, image=rbox-pod-rocm, Chatterbox kill-switch=2hr/$4) — ready for /gsd-plan-phase 3.
+last_updated: "2026-05-10T16:35:00.000Z"
+last_activity: 2026-05-10 -- 02-04/02-07/02-08 summaries written; PREFLIGHT-01 closed; REQUIREMENTS+ROADMAP advanced
 progress:
   total_phases: 4
   completed_phases: 1
-  total_plans: 12
-  completed_plans: 10
-  percent: 83
+  total_plans: 13
+  completed_plans: 13
+  percent: 100
 ---
 
 # Project State
@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-05-04)
 
 ## Current Position
 
-Phase: 02 (cuda-pre-flight) — EXECUTING
-Plan: 1 of 5
-Status: Executing Phase 02
-Last activity: 2026-05-06 -- Phase 02 execution started
+Phase: 02 (cuda-pre-flight) — SMOKE COMPLETE; sanity = DEV-1019 carve-out. Phase 3 context gathered (separate work), planning next.
+Plan: 8 of 8 documented (02-04/02-07/02-08 all closed today)
+Status: Phase 02 plans done; PREFLIGHT-01 closed; PREFLIGHT-02/03 pending DEV-1019 sanity (operator-driven)
+Last activity: 2026-05-10 -- 02-04/02-07/02-08 summaries written
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [██████████] 100% (plans); smoke verdict pass; sanity carved out
 
 ## Performance Metrics
 
@@ -106,6 +106,8 @@ Decisions are logged in PROJECT.md Key Decisions table. Recent:
 - [Phase 02]: [Phase 02-04 PARTIAL]: Tasks 1-3 done (build_strata, run_preflight, OPERATOR-CHECKLIST; commits 1c7e70d, 8cc35e3, 097f95e, ba2c1a4, bd5e6eb). Task 4 (real H100 smoke + sanity) NOT executed — blocked on two upstream gaps surfaced during operator bootstrap dry-run: (a) bench/models.lock.yaml has all 4 entries at revision: pending — both tools/cache_bootstrap.py and tools/fetch_models.py skip pending entries, so a bootstrap pod would be a no-op; (b) tools/run_preflight.py --mode bootstrap defers to operator-side runpodctl with no automation. $0 spent on RunPod this session. Operator chose path C: route to /gsd-plan-phase 02 --gaps for a follow-up plan that resolves the 4 SHAs and auto-provisions the bootstrap pod via the SDK before any real spend.
 - [Phase 02]: [Phase 02-05]: HF lockfile populated (real 40-char commit SHAs + per-file SHA-256 for distil-whisper, Qwen3-4B, chatterbox, Kokoro). `--mode bootstrap` now goes through provision() (Hard Constraint #1 preserved). REPRO-02 annotated (schema-enforced != data-populated). E2E test added.
 - [Phase 02]: [Phase 02-06]: Custom rbox-pod image (FROM vllm/vllm-openai:v0.10.0) baked with tools/pod_entrypoint.sh as ENTRYPOINT; pushed to ghcr.io/consultingfuture4200/rbox-pod, digest-pinned in _DEFAULT_IMAGE per CLAUDE.md §2.3. Closes the gap that the bare upstream image's CMD ignored BOOTSTRAP_MODE/GATE env vars (incident pod zkqbit98s0uulf 2026-05-06). pod_entrypoint.sh uv-fallback removed (4 sites — system python only since deps are pip-installed in the image, not in a uv-managed venv). requirements.lock regenerated (added runpod 1.9.0). Bootstrap re-run confirmed all 4 HF models cached on /models with revision-pinned paths; T6 idempotency verified via 3 consecutive SKIP-on-rerun cycles. Known limitation: bootstrap pod auto-restarts on clean exit — operator manually terminates; tracked as future P2.6 follow-up.
+- [Phase 02]: [Phase 02-07]: Multi-service pod startup (vLLM + Kokoro venv on :8005), corpus_500 baked into image, transport pivoted from rsync-push to fetch_pod-pull (tools/fetch_results.py spawns ~$0.05 diag pod). Image iterated v8→v9→v10→v11→v13→v14→v15→v16 closing startup/transport bugs surfaced in real-spend smoke. Chatterbox-TTS scoped out of image (Python 3.10 vs 3.12 base conflict); DR-27 fallback to Kokoro acceptable for G1 smoke. Smoke verdict pass on session 20260509T231720Z, run 2f6b — all 6 D-25 sub-criteria true; pod self-terminated GONE, wall-clock 185s, estimated true spend ~$0.14.
+- [Phase 02]: [Phase 02-08 retroactive]: DEV-1021 fix for image_digest + git_commit lineage on result rows. provision() forwards RBOX_IMAGE_DIGEST env; substrate/cuda.py reads env first (lockfile fallback preserved). Dockerfile ARG GIT_COMMIT placed after heavy COPY/pip layers (preserves ~16GB layer cache across HEAD churn); build script passes git rev-parse HEAD; pod-side _git_commit() falls back to /workspace/.git_commit. Image v18 baked + pushed (_DEFAULT_IMAGE = sha256:abcf19f8…ea9d217). Verified on G2 diag pod jow8x9kugpkgxm: rows show real digest + commit, WER 2.55% re-confirmed (DEV-1083 intact).
 
 ### Pending Todos
 
@@ -121,7 +123,13 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-10T16:18:51.961Z
-Stopped at: Phase 3 context gathered (provider=Vultr, image=rbox-pod-rocm, Chatterbox kill-switch=2hr/$4)
+Last session: 2026-05-10T16:35:00.000Z
+Stopped at: Phase 02 plans 02-04 / 02-07 / 02-08 summaries written; PREFLIGHT-01 closed; REQUIREMENTS / ROADMAP advanced. Phase 3 context (gathered separately at 16:18Z) preserved at .planning/phases/03-rocm-validation/03-CONTEXT.md and DISCUSSION-LOG.md — ready for /gsd-plan-phase 3.
 Resume file: .planning/phases/03-rocm-validation/03-CONTEXT.md
-Next action: /gsd-next → routes to Route 5 (verify) for Phase 02 or Route 6 (advance to Phase 03 ROCm validation). Practically, P2.1 smoke (DEV-1018) is the next executable Linear issue once verification confirms 02-06 acceptance.
+Next action: /gsd-verify-work 2 to refresh 02-VERIFICATION.md against new SUMMARY artifacts; then /gsd-plan-phase 3 against the gathered context; DEV-1019 sanity is a parallel operator-driven option (closes PREFLIGHT-02/03 in Phase 2 rather than carrying as a Phase 3 precondition).
+
+Open loose ends:
+- 02-VERIFICATION.md still reflects 2026-05-06 state ("gaps_found", 3 BLOCKING gaps); refreshed by /gsd-verify-work 2.
+- DEV-1019 sanity not run (PREFLIGHT-02/03 still pending).
+- ~22 untracked files in repo (results/_pulled, results/g{1,2,3,5}, results/smoke, results/preflight, secrets/, .planning/debug/, tools/find_runpod_volume.py + 2 probe scripts, docs/receptionbox-technical-prd-v0_2-2026-05-06.md). Decide commit-vs-gitignore per file before Phase 3 starts.
+- idle thumbox-spike-rtx5090 pod (vri99tskmvookr) STOPPED 2026-05-10 16:14Z; ~$0.24 sunk; volume preserved (50 GB). Separate from Phase 0; tracked under thUMBox parent project.

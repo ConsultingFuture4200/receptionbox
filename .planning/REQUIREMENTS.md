@@ -47,9 +47,9 @@ Requirements for the Phase 0 deliverable set. Each maps to roadmap phases.
 
 ### CUDA Pre-flight (Gate Phase 1)
 
-- [ ] **PREFLIGHT-01**: 5-call G1 smoke test on RunPod H100 proves substrate + orchestration + cost ledger work end-to-end (~$1, <30 min)
-- [ ] **PREFLIGHT-02**: Once smoke passes, sanity runs of G1, G2, G3, G5 on H100 produce non-degenerate baseline numbers (G7 deferred to MI300X)
-- [ ] **PREFLIGHT-03**: H100 results stored with substrate fingerprint = `cuda` so cross-substrate consistency check (within 25% projection) is possible in synthesis
+- [x] **PREFLIGHT-01**: 5-call G1 smoke test on RunPod H100 proves substrate + orchestration + cost ledger work end-to-end (~$1, <30 min). Closed by Plan 02-07 T7 (session `20260509T231720Z`, run `2f6b…`, verdict pass on all six D-25 sub-criteria).
+- [ ] **PREFLIGHT-02**: Once smoke passes, sanity runs of G1, G2, G3, G5 on H100 produce non-degenerate baseline numbers (G7 deferred to MI300X). Tracked under DEV-1019.
+- [ ] **PREFLIGHT-03**: H100 results stored with substrate fingerprint = `cuda` so cross-substrate consistency check (within 25% projection) is possible in synthesis. Substrate-fingerprint path proven on smoke (`substrate:"cuda"` on every row); sanity row-data verification carried by DEV-1019.
 
 ### ROCm Validation Gates (Gate Phase 2)
 
@@ -88,7 +88,7 @@ Requirements for the Phase 0 deliverable set. Each maps to roadmap phases.
 
 - [x] **REPRO-01**: `bench/images.lock.yaml` pins every Docker image by digest (RunPod NGC pytorch, ROCm vllm, ROCm pytorch)
 - [x] **REPRO-02**: `bench/models.lock.yaml` pins every HF model by `revision=<commit_sha>` (Whisper, Qwen3-4B, Chatterbox, Kokoro). Schema enforced in Phase 1 (lockfile shape + pydantic validation); data populated in Plan 02-05 (real commit SHAs + per-file SHA-256). Future audits MUST distinguish schema-enforced from data-populated requirements.
-- [x] **REPRO-03**: Every result row records (image_digest, model_sha, asset_manifest_sha, git_commit, run_id, timestamp_utc)
+- [x] **REPRO-03**: Every result row records (image_digest, model_sha, asset_manifest_sha, git_commit, run_id, timestamp_utc). Schema enforced in Phase 2-02 (pydantic GateResult). Data populated for all six fields verified on Plan 02-08 / DEV-1021 (G2 diag pod `jow8x9kugpkgxm` row shows real `sha256:` digest + real commit). Schema-vs-data lesson carried forward to audit heuristics.
 - [ ] **REPRO-04**: End-of-week canary re-run executes a single G1 5-call run and confirms results within tolerance of the original measurement (Pitfall-11 guard)
 - [ ] **REPRO-05**: Reproducibility manifest sealed in `docs/repro-manifest-v1.0.md` at end of synthesis; references all locks, audits, and verifies canary status
 
@@ -167,9 +167,9 @@ Populated by `gsd-roadmapper` after ROADMAP.md creation.
 | CLOUD-04 | Phase 2 | Complete |
 | CLOUD-05 | Phase 2 | Complete |
 | CLOUD-06 | Phase 2 | Complete |
-| PREFLIGHT-01 | Phase 2 | Pending |
-| PREFLIGHT-02 | Phase 2 | Pending |
-| PREFLIGHT-03 | Phase 2 | Pending |
+| PREFLIGHT-01 | Phase 2 | Complete (02-07 T7) |
+| PREFLIGHT-02 | Phase 2 | Pending (DEV-1019 sanity) |
+| PREFLIGHT-03 | Phase 2 | Pending (sanity row-data; smoke proves substrate-fingerprint path) |
 | GATE-G1 | Phase 3 | Pending |
 | GATE-G2 | Phase 3 | Pending |
 | GATE-G3 | Phase 3 | Pending |
