@@ -31,6 +31,8 @@ __all__ = [
 
 # CUDASubstrate is re-exported lazily via `from substrate.cuda import CUDASubstrate`
 # (avoids importing the adapters subpackage on every `import substrate`).
+# ROCmSubstrate (Phase 3 Plan 03-01) follows the same lazy-export discipline:
+# `from substrate.rocm import ROCmSubstrate`.
 
 
 class Substrate(ABC):
