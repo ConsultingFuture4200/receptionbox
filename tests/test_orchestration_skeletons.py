@@ -63,11 +63,28 @@ def test_tensorwave_provision_authorizes(init_runpod_ledger) -> None:
     assert auth.provider == "tensorwave"
 
 
-def test_vultr_provision_authorizes(init_runpod_ledger) -> None:
+def test_vultr_provision_authorizes(init_runpod_ledger, monkeypatch) -> None:
+    """Plan 03-01 Task 3: vultr_mi300x.provision() now returns ProvisionResult
+    (same shape as runpod_h100). Authorization is reachable via .authorization.
+
+    Override _DEFAULT_IMAGE_ROCM with a real-looking digest so the sentinel
+    guard doesn't fire; ensure VULTR_API_KEY is unset to take the dry-run path.
+    """
     from orchestration import vultr_mi300x
 
-    auth = vultr_mi300x.provision(gate="g1", projected_cost=10.0)
-    assert auth.provider == "vultr"
+    monkeypatch.delenv("VULTR_API_KEY", raising=False)
+    digest = "ghcr.io/consultingfuture4200/rbox-pod-rocm@sha256:" + ("a" * 64)
+    monkeypatch.setattr(vultr_mi300x, "_DEFAULT_IMAGE_ROCM", digest, raising=True)
+    # Function defaults are bound at definition time; rebind provision()'s
+    # default image_ref kwarg so the UNSET sentinel guard doesn't fire.
+    kwdefs = dict(vultr_mi300x.provision.__kwdefaults__ or {})
+    kwdefs["image_ref"] = digest
+    monkeypatch.setattr(vultr_mi300x.provision, "__kwdefaults__", kwdefs)
+
+    result = vultr_mi300x.provision(gate="g1", projected_cost=10.0)
+    assert result.authorization.provider == "vultr"
+    assert result.authorization.gate == "g1"
+    assert result.pod_id == "dry-run"
 
 
 def test_orchestration_modules_call_authorize_spend_first() -> None:
