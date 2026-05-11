@@ -1,7 +1,16 @@
 # Ignore generated artifacts; index.sqlite already excluded by root .gitignore
 *.parquet
 # Per-gate jsonl files: keep .gitkeep so dir is tracked, but jsonl rows
-# are run output, not source. Phase 2+ will append; commit policy TBD.
-# For now, keep them out of source control by default.
+# are run output, not source. Phase 2+ will append; commit policy:
+# cited-evidence rows (referenced in *-SUMMARY.md or *-AUDIT.md) are committed
+# as explicit exceptions below; bulk run output stays untracked.
 *.jsonl
 !.gitkeep
+
+# Cited evidence for Phase 2 closure (AUDIT-FINDING-3, 2026-05-11):
+# Phase 4 repro-manifest seal cites these rows as primary evidence; they
+# must be reproducible from a fresh clone.
+# PREFLIGHT-01 smoke verdict pass evidence
+!smoke/2f6b0aa20acb4ebda0302d51b98c6334.jsonl
+# DEV-1021 lineage capture verification (G2 diag pod)
+!_pulled/jow8x9kugpkgxm/g2/e9319ce2d8124b1fb5c0ebccae37b551.jsonl

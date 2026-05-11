@@ -56,7 +56,7 @@ Plans:
 - [x] 02-08-PLAN.md — RETROACTIVE GAP CLOSURE: image_digest + git_commit lineage on result rows (DEV-1021); REPRO-03 data verified on G2 diag pod
 
 ### Phase 3: ROCm Validation
-**Goal**: TensorWave MI300X produces measurement-grade data for G1, G2, G3, G5, G7 against pinned corpora at concurrencies N=1/2/4 with per-stage decomposition, plus the three load-bearing audits (Chatterbox Day-1 kill-switch, co-residency stack-load, gfx1151 op coverage) that prevent the dominant Phase 0 → Phase 2 false-pass paths.
+**Goal**: Vultr MI300X (Day-1 per D-31; TensorWave-ready when sales unblocks) produces measurement-grade data for G1, G2, G3, G5, G7 against pinned corpora at concurrencies N=1/2/4 with per-stage decomposition, plus the load-bearing audits — Chatterbox Day-1 kill-switch, co-residency stack-load, gfx1151 op coverage, engine-swap-under-load — that prevent the dominant Phase 0 → Phase 2 false-pass paths.
 **Depends on**: Phase 2
 **Requirements**: HARNESS-03, GATE-CHATTERBOX-D1, GATE-G1, GATE-G2, GATE-G3, GATE-G5, GATE-G7, AUDIT-01, AUDIT-02, AUDIT-03
 **Success Criteria** (what must be TRUE):
@@ -64,7 +64,14 @@ Plans:
   2. G1 latency on the 500-call corpus at N=1/2/4 reports p50/p90/p99 per-stage (STT TTFT, LLM TTFT, LLM decode, TTS first-audio) and aggregate; G2 WER measured on 200 G.711 clips with both faster-whisper INT8 and ONNX-RT ROCm parallel paths; G3 turn-detection threshold sweep 400–1500ms in 100ms steps; G5 evaluated against the receptionBOX-shaped reference prompt with grammar-constrained generation ON; G7 renders both warm-path and cold-path TTS first-audio across 30 stimulus pairs
   3. Co-residency stack-load test (Whisper + Qwen3-4B + Chatterbox/Kokoro all loaded simultaneously under sustained load ≥ 5 min) records memory headroom, kernel mismatches, and crash detection without aborting; engine-swap-under-load demo flips TTS from Chatterbox to Kokoro mid-session via config row with measured swap-time
   4. `audit/gfx1151_op_status.md` exists with a status table (present / fallback / unknown) for every critical op used by Whisper, Qwen3-4B, Chatterbox, and Kokoro against the planned appliance ROCm minor + PyTorch wheel cut
-**Plans**: TBD
+**Plans**: 6 plans
+Plans:
+- [ ] 03-01-PLAN.md — substrate/rocm.py + Dockerfile.rocm + Vultr provisioning + phase3 config + image digest pin (HARNESS-03)
+- [ ] 03-02-PLAN.md — Day-1 Chatterbox ROCm kill-switch (2hr/$4 timebox; D-35/D-36/D-37/D-38) (GATE-CHATTERBOX-D1)
+- [ ] 03-03-PLAN.md — G1 concurrency N=1/2/4 + G2 dual-path + G3 12-threshold sweep + G5 constraint_status (GATE-G1/G2/G3/G5)
+- [ ] 03-04-PLAN.md — G7 TTS A/B: warm + cold first-audio × 30 pairs × 2 engines = 120+ rows + WAV files (GATE-G7)
+- [ ] 03-05-PLAN.md — AUDIT-01 co-residency 5-min sustained + AUDIT-03 engine-swap-under-load (D-37 config-row flip)
+- [ ] 03-06-PLAN.md — AUDIT-02 gfx1151 op-coverage audit (torch.profiler + hand-curated registry) (AUDIT-02)
 
 ### Phase 4: Synthesis & Gate Decision
 **Goal**: A defensible synthesis report with per-stage roofline-derated Strix Halo predictions, 80% confidence bands, sales-safe excerpt, feasibility memo v0.4 fragment, and a Phase 0 gate decision package that survives adversarial review and can ground a paid-discovery SOW conversation with the firm.
@@ -87,5 +94,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Foundation | 5/5 | Complete | 2026-05-04 |
 | 2. CUDA Pre-flight | 8/8 plans; PREFLIGHT-01 closed | Smoke pass; sanity (DEV-1019) carved out | 2026-05-10 (smoke verdict + lineage) |
-| 3. ROCm Validation | 0/TBD | Not started | - |
+| 3. ROCm Validation | 0/6 | Planned (6 plans on disk; AUDIT-IDs reconciled 2026-05-11) | - |
 | 4. Synthesis & Gate Decision | 0/TBD | Not started | - |

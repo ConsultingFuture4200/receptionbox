@@ -11,10 +11,13 @@ Phase 3 takes the proven CUDA-rail substrate from Phase 2 (LiveKit Agents → vL
 Phase 3 also closes three load-bearing audits whose absence would invalidate the gate decision:
 
 - **GATE-CHATTERBOX-D1** — Day 1 ROCm load smoke for Chatterbox-Turbo. The PRD risk register flags this as Medium-High; this gate is the dominant scope-shrink lever (fail → flip primary to Kokoro and re-scope G1/G7).
-- **AUDIT-02 (P3.7) Co-residency stack-load** — Whisper + Qwen3-4B + Chatterbox/Kokoro all loaded simultaneously under sustained ≥ 5-min load. Guards the false-pass path where individual gates pass but the integrated runtime OOMs / kernel-mismatches.
-- **AUDIT-03 (P3.8) gfx1151 op coverage audit** — `audit/gfx1151_op_status.md` with present/fallback/unknown per critical op for each model. The dominant residual technical risk per `.planning/STATE.md`: an op present on gfx942 (MI300X) but absent on gfx1151 (Strix Halo) turns a soft pass into a guaranteed appliance regression.
+- **AUDIT-01 (Plan 03-05) Co-residency stack-load** — Whisper + Qwen3-4B + Chatterbox/Kokoro all loaded simultaneously under sustained ≥ 5-min load. Guards the false-pass path where individual gates pass but the integrated runtime OOMs / kernel-mismatches.
+- **AUDIT-02 (Plan 03-06) gfx1151 op coverage audit** — `audit/gfx1151_op_status.md` with present/fallback/unknown per critical op for each model. The dominant residual technical risk per `.planning/STATE.md`: an op present on gfx942 (MI300X) but absent on gfx1151 (Strix Halo) turns a soft pass into a guaranteed appliance regression.
+- **AUDIT-03 (Plan 03-05, shared harness with AUDIT-01) Engine-swap-under-load** — TTS engine flipped from Chatterbox to Kokoro mid-session (T+2:30 of the 5-min co-residency window) via config-row write to `config/sanity_strata.yaml`; swap-time measured. Proves DR-27 pluggable-TTS architecture viability.
 
-**In-scope (10 requirements):** HARNESS-03 (`substrate/rocm.py`), GATE-CHATTERBOX-D1 (Day-1 kill-switch), GATE-G1 / G2 / G3 / G5 / G7 (full-corpora measurements), AUDIT-01 (provider stub-with-warning honesty), AUDIT-02 (co-residency), AUDIT-03 (gfx1151 op coverage).
+**In-scope (10 requirements):** HARNESS-03 (`substrate/rocm.py`), GATE-CHATTERBOX-D1 (Day-1 kill-switch), GATE-G1 / G2 / G3 / G5 / G7 (full-corpora measurements), AUDIT-01 (co-residency stack-load), AUDIT-02 (gfx1151 op-coverage), AUDIT-03 (engine-swap-under-load).
+
+**Note on AUDIT-ID labels:** `.planning/REQUIREMENTS.md` is authoritative. An earlier draft of this CONTEXT.md (and a planning brief that referenced it) used `AUDIT-01 = provider stub-with-warning honesty` — that mapping was incorrect. The D-34 stub-with-warning posture for `cost/adapters/tensorwave.py` is already enforced by Phase 1 code (`cost/adapters/tensorwave.py:_check()`) and does not need a Phase 3 audit plan.
 
 **Out-of-scope:**
 - Phase 4 derating + synthesis judgment (Phase 3 only captures cloud measurements; Phase 4 turns them into Strix Halo predictions)
@@ -134,7 +137,7 @@ The following Phase 3 gray areas were not discussed at this depth — defaults b
 - `dockerfiles/rocm/Dockerfile` (or `Dockerfile.rocm`) + `scripts/build_pod_image_rocm.sh` — D-32
 - `gates/g7/runner.py` — TTS A/B gate runner
 - `audit/chatterbox_d1_decision.md` — D-38 long-form decision record
-- `audit/gfx1151_op_status.md` — AUDIT-03 deliverable
+- `audit/gfx1151_op_status.md` — AUDIT-02 deliverable
 - `tools/audit_op_coverage.py` — op-by-op kernel dispatch capture per Claude's-Discretion default
 
 </canonical_refs>
@@ -163,7 +166,7 @@ The following Phase 3 gray areas were not discussed at this depth — defaults b
 - `substrate/_stub.py` import sites (if any remain) → `substrate/rocm.py` swap on the ROCm rail
 - `orchestration/vultr_mi300x.py` `provision()` stub body → real Vultr SDK call (or shell-out) after `authorize_spend()` succeeds
 - `gates/g7/runner.py` (new) — substrate-agnostic; mirrors `gates/g{1,2,3,5}/runner.py` shape
-- `tools/audit_op_coverage.py` (new) — invoked once-per-model on a warm MI300X pod; emits the AUDIT-03 deliverable
+- `tools/audit_op_coverage.py` (new) — invoked once-per-model on a warm MI300X pod; emits the AUDIT-02 deliverable
 - `dockerfiles/rocm/Dockerfile` (new) — separate base, same ENTRYPOINT, same ARG GIT_COMMIT pattern
 - `scripts/build_pod_image_rocm.sh` (new) OR add `--rail rocm|cuda` flag to existing `scripts/build_pod_image.sh` — planner's call
 

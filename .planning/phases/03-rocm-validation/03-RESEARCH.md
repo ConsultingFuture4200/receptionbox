@@ -735,24 +735,28 @@ async def run_g3_sweep(substrate, asset_set):
 
 **Recommendation:** Plan-phase should make A1, A2, A3, A4 explicit pre-execution checks in the first task ("Pod-image smoke + provisioning dry-run"), gating real-spend on their resolution.
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Does `rocm/vllm:rocm6.4_mi300_ubuntu22.04_py3.11_vllm_0.10.x` still exist as a pullable tag in May 2026?**
+   - **RESOLVED:** Plan 03-01 Task 5 (operator checkpoint) closes this — Step 1 of the checkpoint runs `docker pull` against the tag and records the digest; A1 + A4 gate failure blocks any real spend. If the pull fails, the checkpoint downgrades to migration to `vllm/vllm-openai-rocm` (D-32 amendment path).
    - What we know: AMD deprecated the `rocm/vllm` and `rocm/vllm-dev` Docker Hub images in favor of `vllm/vllm-openai-rocm`. Tag-deprecation timeline unclear.
    - What's unclear: Whether the specific `rocm6.4_mi300_*` tag remains pullable or has been removed.
    - Recommendation: Plan-phase task 1 = `docker pull` the tag, record digest, fail loudly if the pull fails. If failed, switch base image to `vllm/vllm-openai-rocm:<rocm6.4-tag>` and re-validate the harness pip-install list (most should be identical).
 
 2. **Is `aten::mm` traceable via torch.profiler when vLLM is the LLM serve path, or does vLLM bypass aten dispatch?**
+   - **RESOLVED:** Plan 03-06 Task 3 (operator checkpoint) closes this — the checkpoint explicitly inspects the captured trace for `aten::mm` presence under vLLM. A3 + A6 gate is the post-run verification step. If vLLM's AITER kernels bypass aten, Strategy B (direct PyTorch forward pass outside vLLM, plus a documented `rocprof` HIP-kernel-layer fallback path) is already wired into `tools/audit_op_coverage.py` per Plan 03-06 Task 1.
    - What we know: torch.profiler traces aten ops; vLLM's hot path uses Triton / AITER kernels that may or may not register at the aten layer.
    - What's unclear: Whether the gfx1151 op-coverage table is meaningful when the serving engine uses kernels-of-record that bypass aten.
    - Recommendation: AUDIT-02 captures profiler trace at *two* levels: (a) the model's forward pass run directly in PyTorch (one-time outside vLLM) for the aten-level op set, (b) inside vLLM serve for the actual production op set. The first feeds gfx1151 cross-reference; the second confirms the production code path uses those ops.
 
 3. **Does the Vultr API support MI300X provisioning the same way as general GPU instances, or is it a separate sales-touched flow like TensorWave?**
+   - **RESOLVED:** Plan 03-01 Task 5 (operator checkpoint) Step 5 closes this — A4 dry-run validation runs `GET /v2/plans?type=gpu` filtered to `MI300` and confirms self-serve plan-id existence. If empty, the checkpoint downgrades D-31 to "ledger-only dry-run until sales unblocks" and Plan 03-02 runs in dry-run mode for Day-1.
    - What we know: `cost/adapters/vultr.py` is real and exercises `/v2/billing/pending-charges` cleanly. Provisioning side is stubbed.
    - What's unclear: Whether MI300X provisioning hits self-serve `/v2/instances` or requires reserved-instance contact (24-mo prepaid path in Vultr's pricing).
    - Recommendation: Plan-phase task = dry-run `POST /v2/instances` with MI300X plan-id (operator must obtain from Vultr docs / dashboard). If response is "contact sales", scope falls back to the same blocker as TensorWave and D-31's Day-1-Vultr decision needs operator override.
 
 4. **Does devnen/Chatterbox-TTS-Server's `Dockerfile.rocm` work on MI300X (gfx942) or is it tuned for consumer Radeon (gfx110x)?**
+   - **RESOLVED:** Plan 03-02 Task 3 (Day-1 kill-switch) closes this — the entire 2-hr/$4 timebox (D-36, A5) exists precisely to answer this question with a fast pass-fail. The checkpoint emits `audit/chatterbox_d1_decision.json` with `pass_=true|false`; on fail, `config/sanity_strata.yaml` `tts.primary` flips to `kokoro` and the rest of Phase 3 proceeds without Chatterbox.
    - What we know: Dockerfile.rocm exists upstream, addresses issue #92 via `--no-deps`, targets ROCm 6.4.1.
    - What's unclear: Whether the gfx942 vs gfx110x kernel-arch differences cause torch wheel/ROCm runtime mismatch even with `--no-deps`.
    - Recommendation: Build attempt happens inside the D-36 2-hr/$4 timebox. Fast pass-fail decision is the *point* of the kill-switch; this question doesn't need to be answered pre-Phase-3.
