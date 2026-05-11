@@ -120,13 +120,22 @@ def test_strata_changing_seed_changes_assets(tmp_path: pathlib.Path) -> None:
 
 
 def test_committed_strata_matches_seed_42_build(tmp_path: pathlib.Path) -> None:
-    """Idempotency: running the builder reproduces the committed file's strata."""
+    """Idempotency: running the builder reproduces the committed file's strata
+    for the seed-42-built keys (g1, g2, g3, g5).
+
+    Plan 03-01 Task 4 added Phase 3 placeholder strata (g1_full..g7_full) that
+    are not produced by build_strata.py (operator iterates the full corpus
+    directly). The equality check is scoped to the seed-42 keys only; the
+    builder's output must be a subset of the committed strata.
+    """
     out = tmp_path / "fresh.yaml"
     fresh = build_strata.build(seed=42, manifest=MANIFEST, out=out)
     committed = yaml.safe_load(STRATA_FILE.read_text())
-    assert fresh["strata"] == committed["strata"], (
-        "committed config/sanity_strata.yaml drifted from build_strata.py output"
-    )
+    for key in fresh["strata"]:
+        assert key in committed["strata"], f"committed file missing seed-42 key: {key}"
+        assert fresh["strata"][key] == committed["strata"][key], (
+            f"committed config/sanity_strata.yaml drifted from build_strata.py output for {key}"
+        )
 
 
 def test_runner_loads_strata_via_helper() -> None:

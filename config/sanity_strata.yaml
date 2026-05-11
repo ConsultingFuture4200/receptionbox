@@ -2,6 +2,14 @@ version: '1.0'
 seed: 42
 generated_utc: '2026-05-06T17:07:56.153050'
 manifest_path: assets/manifest.csv
+
+# D-37: tts.primary is read by substrate/rocm.py:synthesize() at session start.
+# Default = chatterbox. Day-1 kill-switch (Plan 03-02) flips this to kokoro
+# if GATE-CHATTERBOX-D1 fails. AUDIT-03 (engine-swap-under-load) flips
+# this row mid-session and measures swap-time.
+tts:
+  primary: chatterbox
+
 strata:
   g1:
     rule: 10 calls from corpus_500; top-5 intents by frequency, 2 picks each (1 neutral
@@ -57,3 +65,20 @@ strata:
     - upl-0088
     - upl-0093
     - upl-0107
+  # Phase 3 full-corpus strata. Gate runners in Plan 03-03 / 03-04 iterate
+  # the full corpus directly when `assets:` is empty.
+  g1_full:
+    rule: full 500-call corpus
+    assets: []
+  g2_full:
+    rule: full 200 G.711 corpus
+    assets: []
+  g3_full:
+    rule: full hesitation corpus + 12 thresholds
+    assets: []
+  g5_full:
+    rule: 200 UPL + 50 benign control
+    assets: []
+  g7_full:
+    rule: 30 stimulus pairs
+    assets: []

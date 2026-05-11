@@ -58,3 +58,29 @@ phase2:
   # H100 SXM ($2.99/hr × 30 min = $1.495). Typical actual after host-cache
   # warms is still ~$0.50 (10-min run). Ledger authorizes the ceiling.
   cache_bootstrap_one_time_usd: 1.50
+
+# Phase 3 (ROCm validation) operational config (D-33, D-34).
+#
+# Spend math (sum of max_minutes_per_gate):
+#   120 + 120 + 45 + 20 + 30 + 45 + 30 + 30 = 440 min ≈ 7.3 hr.
+# At Vultr $1.85/hr ≈ $13.50 for a full sanity pass (allows ~3 full passes
+# within $54 budget). Chatterbox D-1 is the first $4 spend cap; the rest
+# gate per-pod via ledger authorization.
+phase3:
+  provider_default: vultr        # D-31: Vultr is Day-1 provider
+  hourly_rate_usd:
+    vultr: 1.85                  # CLAUDE.md §1.2 on-demand
+    tensorwave: 1.71             # CLAUDE.md §1.2 starting (Dedicated MI300X+)
+  max_minutes_per_gate:
+    chatterbox_d1: 120           # D-36 2-hr Day-1 timebox
+    g1: 120                      # 500-call corpus × N=1/2/4 (three pods)
+    g2: 45                       # 200 G.711 dual-path (faster-whisper + ONNX-RT)
+    g3: 20                       # silero+turn-detector threshold sweep (12 thresholds)
+    g5: 30                       # 200 UPL probes + 50 benign control
+    g7: 45                       # 30 stimulus pairs × 2 engines (warm + cold)
+    audit_co_residency: 30       # AUDIT-01 5-min sustained + setup/teardown
+    audit_op_coverage: 30        # AUDIT-02 op trace (~1 GPU-min/model × 4 models)
+  # D-36 spend cap on Chatterbox Day-1 — independent of ledger cap.
+  chatterbox_d1_spend_cap_usd: 4.0
+  # Total ROCm-rail budget per CLAUDE.md §13 (MI300X subtotal $54).
+  rocm_budget_total_usd: 54.0
