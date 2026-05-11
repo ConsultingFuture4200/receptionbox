@@ -1,0 +1,159 @@
+# DR-39: Product target pivot — Strix Halo → NVIDIA Jetson AGX Thor
+
+**File version:** v0.1.0
+**Status:** **PROPOSED** — pending parent thUMBox + UMB Group ratification
+**Proposed by:** Claude drafted at operator (Dustin) request, 2026-05-11
+**Supersedes (partial):** DR-24 (Strix Halo pivot, `docs/addendum-hardware-pivot-strix-halo-v0_1-2026-04-23.md`)
+**Affects:** thUMBox technical PRD v2.1, receptionBOX technical PRD v0.2, feasibility memo v0.3, hardware-pivot addendum v0.1, discovery addendum v0.2, virtual benchmark plan v0.1, `.planning/PROJECT.md`, `.planning/REQUIREMENTS.md`, `.planning/ROADMAP.md`, Phase 3 plans 03-01..03-06, CLAUDE.md §§1.2/2.1/4.1/4.2/5/6/7
+**Triggering event:** RunPod MI300X stock dry on 2026-05-11; TensorWave sales unblock pending ≥7 days; Vultr's only MI300X SKU is 8-GPU bare-metal preemptible at $14.80/hr (breaks budget 4×).
+
+---
+
+## §1 Decision (proposed)
+
+Pivot the receptionBOX appliance target hardware from **AMD Ryzen AI Max+ 395 "Strix Halo" (gfx1151)** to **NVIDIA Jetson AGX Thor**.
+
+This is a parent-thUMBox-platform decision, not a Phase 0 internal decision. Phase 0 inherits whatever the target is — but the choice of target materially changes Phase 0 scope, risk profile, and timeline.
+
+---
+
+## §2 Rationale (3 reasons, declining order of importance)
+
+### §2.1 Software-stack risk collapse
+
+The dominant Phase 0 risk per the existing PRD risk register is **"does the model loader stack actually run on AMD's ROCm path."** Specifically:
+
+- Chatterbox-Turbo ROCm install — devnen GitHub issues #92, #192, #445 open and unresolved as of 2026-05-11
+- vLLM ROCm AITER kernel coverage for Qwen3-4B AWQ-Int4
+- ONNX Runtime ROCm decoder path for distil-whisper INT8
+- faster-whisper CTranslate2 ROCm build correctness
+- `hipBLASLt` / rocBLAS / MIOpen op coverage on gfx1151 specifically (per PyTorch issues #171687, #6034 — gfx1151 has documented bf16 bugs + missing native kernels in current ROCm)
+
+Switching the target to Jetson AGX Thor replaces ROCm with **CUDA + JetPack**, which is the most mature inference stack on the planet. Phase 2 already validated this stack end-to-end on H100 (smoke verdict pass, 02-07 T7, run `2f6b…`). The receptionBOX harness uses faster-whisper, vLLM, Chatterbox, Kokoro, LiveKit Agents — all four have known-good CUDA paths and are routinely deployed on Jetson Orin in production.
+
+### §2.2 Cloud-derate-substrate matches abundant cloud supply
+
+The current product target (Strix Halo, gfx1151) has no commercially-available exact-match cloud silicon. The methodology was to measure on MI300X (gfx942) and derate to gfx1151 — but MI300X is scarce: Vultr's only SKU is wrong-size + wrong-pricing, TensorWave is sales-gated, RunPod stock is intermittent and only available in EU-RO-1.
+
+Jetson AGX Thor's closest cloud proxy is **NVIDIA H100 or H200** — both abundant on RunPod (9 DCs for H200; 5 DCs for H100 NVL including operator's existing volume DCs US-CA-2 + US-KS-2). Derate chain becomes: **H100 (Phase 2 already measured) → Jetson AGX Thor (one short hop using NVIDIA's published Thor inference benchmarks) → end**. One conversion, same vendor, well-documented hardware on both ends.
+
+### §2.3 Production-stack parity strengthens the firm conversation
+
+Phase 4's synthesis report has to survive adversarial review by the firm's technical advisors. The current methodology has a structural weakness: "we measured on AMD's flagship and projected to AMD's small chip" — but Strix Halo's RDNA3.5 ROCm support is publicly described as rough by NVIDIA's competitors and by AMD's own developer forums. The adversarial reviewer asks: "how do you know your benchmark Whisper INT8 latency on MI300X reflects what Whisper INT8 will do on Strix Halo's mostly-unsupported gfx1151 kernels?"
+
+With Jetson AGX Thor as target: "we measured on NVIDIA H100, derated to NVIDIA Jetson AGX Thor using NVIDIA's published Jetson Thor inference benchmarks (NIM containers, TensorRT-LLM optimized models)." The adversarial reviewer's question becomes: "did you account for Thor's INT8 vs H100's FP8 quantization shift?" — a smaller, more tractable question.
+
+---
+
+## §3 What changes if this is ratified
+
+### §3.1 Phase 0 (Phase 3 specifically)
+
+**Effectively shelved:** Phase 3 ROCm-specific plans become moot.
+- `03-01-PLAN.md` (HARNESS-03 substrate/rocm.py) — already SHIPPED; code stays in repo as optional ROCm path for future, not on critical path
+- `03-02-PLAN.md` (GATE-CHATTERBOX-D1) — moot; Chatterbox on CUDA already validated in Phase 2
+- `03-03-PLAN.md` (GATE-G1/G2/G3/G5 on MI300X) — RE-TARGETED to "Cross-substrate gates on H100/H200, then derate to Jetson AGX Thor"
+- `03-04-PLAN.md` (GATE-G7 TTS A/B) — RE-TARGETED to H100/H200
+- `03-05-PLAN.md` (AUDIT-01 co-residency, AUDIT-03 engine-swap) — RE-TARGETED to H100/H200 (still valid integration audits, just on CUDA)
+- `03-06-PLAN.md` (AUDIT-02 gfx1151 op coverage) — **OBSOLETE**, no AMD silicon to profile
+
+**Net effect:** Phase 3 collapses from ~$54 + ~2 weeks of ROCm risk validation to ~$30 + ~3 days of cross-substrate CUDA validation. Phase 4 synthesis follows immediately.
+
+### §3.2 Parent thUMBox PRDs
+
+Documents requiring update if ratified:
+- `docs/thumbox-technical-prd-v2_1-2026-04-16.md` — T3 hardware section: Strix Halo → Jetson AGX Thor
+- `docs/thumbox-business-prd-v2_1-2026-04-16.md` — BOM/cost section + vendor relationships
+- `docs/addendum-hardware-pivot-strix-halo-v0_1-2026-04-23.md` — Either supersede entirely or extend with a "DR-39 reversal" addendum
+- `docs/receptionbox-technical-prd-v0_2-2026-05-06.md` — Architecture diagrams + §4.x references to Strix Halo
+- `docs/receptionbox-technical-feasibility-memo-v0_3-2026-04-23.md` — Predictions section
+- `docs/addendum-receptionbox-discovery-v0_2-2026-04-22.md` — Sales-side talk track to firm
+- `docs/receptionbox-virtual-benchmark-plan-v0_1-2026-05-03.md` — Benchmark substrate references
+- `.planning/PROJECT.md` — T3 hardware references
+- `CLAUDE.md` §1.2 (MI300X providers), §2.1 (ROCm container), §4.1/§4.2 (STT engine choice — Jetson uses TensorRT-LLM not ROCm), §5 (TTS engine ROCm forks → JetPack/TensorRT), §6 (turn detector unaffected), §7 (derating methodology — replace Strix Halo bandwidth/compute baseline with Jetson AGX Thor's)
+
+### §3.3 Sales / firm conversation
+
+- The discovery addendum (`docs/addendum-receptionbox-discovery-v0_2-2026-04-22.md`) currently positions an "AMD-based local appliance." If this has been read by the firm, the substrate pivot must be disclosed and re-positioned.
+- The firm may or may not care about the SoC. Likely they care about: latency, privacy/on-prem, total cost, and warranty/support. NVIDIA Jetson is a stronger story on every dimension except possibly total BOM cost (Thor at ~$3.5–4k per unit vs Strix Halo at ~$2k).
+- "On-prem appliance" story is unchanged. Jetson AGX Thor is shippable as an appliance.
+
+### §3.4 BOM economics
+
+| | Strix Halo (current) | Jetson AGX Thor |
+|---|---|---|
+| Module unit cost | ~$1.4k (Strix Halo SoC alone, in mini-PC chassis) | ~$3.5–4k (Thor module incl. carrier, OEM volume) |
+| Full appliance BOM | ~$2k (Framework Desktop end-user MSRP) | ~$4–5k (custom chassis + cooling + NIC + storage) |
+| NRE | Already partially expensed | Higher — JetPack tuning, TensorRT optimization, Jetson-specific OEM relationships |
+| Volume pricing leverage | Unknown — Strix Halo via Framework | NVIDIA enterprise channel (likely better at >100 units) |
+| Power | ~120 W | 40–130 W configurable |
+| Software support timeline | ROCm gfx1151 still maturing | JetPack 7+ shipping, mature |
+
+**Net BOM impact: +$2–3k per unit.** At the law-firm tier this is likely absorbable; at small-firm volumes it would not be. The discovery SOW conversation needs to confirm the firm's price sensitivity before this is final.
+
+### §3.5 Vendor relationships
+
+- Any existing AMD partnership / co-marketing / developer credits in flight at parent thUMBox level becomes less relevant. **This is the politically-heaviest item and the one I do not have visibility into.** Operator must surface to UMB Group + parent thUMBox stakeholders.
+- NVIDIA channel: thUMBox doesn't currently appear to have an NVIDIA enterprise relationship; one would need to be established.
+
+---
+
+## §4 Risks of pivoting
+
+| Risk | Mitigation |
+|---|---|
+| Parent thUMBox has AMD strategic commitments invisible to receptionBOX | Operator must surface this to UMB/thUMBox stakeholders before ratifying; this DR is a *proposal* |
+| Firm conversation has been positioned around AMD | Operator must check the discovery thread; if positioned, plan a re-positioning conversation |
+| Jetson AGX Thor BOM is +$2-3k per unit | Confirm firm price tolerance during discovery conversation; alternative is Jetson AGX Orin 64GB at near-Strix-Halo BOM but with lower compute headroom |
+| Sunk-cost in Phase 3 ROCm work (~3 days of substrate + Dockerfile.rocm + Vultr orchestration) | Code stays in repo as optional ROCm path; not deleted; usable if vendor strategy ever flips back |
+| NVIDIA channel relationship not yet established at thUMBox parent level | Operator to evaluate; likely tractable since thUMBox already uses CUDA for cloud development |
+
+---
+
+## §5 Risks of NOT pivoting
+
+| Risk | Severity |
+|---|---|
+| Phase 0 stalls indefinitely on MI300X cloud supply | High — already 7+ days of waiting; no SLA on TensorWave sales response |
+| Chatterbox-ROCm install path fails on Day 1, scope-shrinks GATE-G7 | Medium-High (PRD risk register existing assessment) |
+| gfx1151 op coverage audit surfaces blocking gaps that force a product pivot anyway, after Phase 0 has already burned the $150 budget | Medium |
+| Gate decision package ships with "we don't know if Chatterbox loads on the target hardware" caveat | Medium-High — weakens firm conversation |
+
+---
+
+## §6 Open questions for parent thUMBox + UMB Group review
+
+1. Are there strategic AMD commitments at the parent thUMBox level that this pivot would conflict with?
+2. Has the firm conversation positioned around AMD-specific value (data residency on AMD silicon, etc.) or around generic "on-prem appliance"?
+3. Is the BOM cost increase (+$2–3k per unit) absorbable for the law-firm market segment receptionBOX targets?
+4. Does an NVIDIA enterprise relationship exist or need establishing?
+5. Is Jetson AGX Thor's 40–130 W power envelope (vs Strix Halo's ~120 W) acceptable for the "reception-desk appliance" form factor and acoustic budget?
+6. Should we consider **Jetson AGX Orin 64GB** as an intermediate option? Same software stack, ~$2k BOM (matches Strix Halo), lower compute headroom (~275 TOPS INT8 vs Thor's ~2 PFLOPS FP4). May be the sweet spot for receptionBOX's actual workload (Qwen3-4B + Whisper + TTS at concurrency 1-4).
+
+---
+
+## §7 Effective date if ratified
+
+| Ratification by | Action |
+|---|---|
+| End of operator decision (today) | This DR moves from PROPOSED to APPROVED; STATE.md updates pivot status; downstream doc-update plan executes |
+| Day 0 of ratification | Stop all MI300X-related cloud work; Phase 3 plans 03-02..03-06 marked OBSOLETE in ROADMAP; new Phase 3 scope drafted ("Cross-substrate CUDA validation + Jetson AGX Thor derate") |
+| Day +1 | Parent thUMBox PRDs updated; discovery addendum re-positioned for the firm |
+| Day +2 | Buy 1× Jetson AGX Thor dev kit if direct measurement is part of the new methodology (~$3.5k, ~1 week shipping) |
+| Day +3 onward | New Phase 3 executes; Phase 0 ships in ~5–7 calendar days from Day 0 |
+
+---
+
+## §8 Approval (sign here to ratify)
+
+- Operator (Dustin Powers): _________________
+- UMB Group / parent thUMBox stakeholder: _________________
+- Date ratified: _________________
+
+---
+
+## §9 Notes
+
+- This DR was drafted at operator request after Phase 0 MI300X cloud-supply blockers materialized. The technical case for Jetson AGX Thor is strong; the political/strategic case requires parent-team input that the drafting AI does not have visibility into.
+- The "smallest correct change" alternative is to stay on Strix Halo + wait for MI300X stock (RunPod poller has been deployed; first 24-72 hr will tell). This DR represents the larger pivot if the wait turns out to be unbounded.
+- If ratified, several Phase 3 artifacts (03-01-PLAN.md substrate + 03-01-AMENDMENTS.md + Dockerfile.rocm + orchestration/vultr_mi300x.py + substrate/rocm.py) **stay in the repo** as a parked ROCm path. They're tested code. Deleting them would lose optionality if AMD strategy ever reverses.

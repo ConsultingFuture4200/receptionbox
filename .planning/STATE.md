@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v0.4
 milestone_name: milestone
-status: executing
-stopped_at: "Phase 02 plans 02-04 / 02-07 / 02-08 summaries written; PREFLIGHT-01 closed; REQUIREMENTS / ROADMAP advanced. Phase 3 context (gathered separately at 16:18Z) preserved at .planning/phases/03-rocm-validation/03-CONTEXT.md and DISCUSSION-LOG.md — ready for /gsd-plan-phase 3."
-last_updated: "2026-05-11T17:51:45.181Z"
-last_activity: 2026-05-11
+status: pivot_proposed_awaiting_ratification
+stopped_at: "DR-39 Jetson Pivot drafted (PROPOSED 2026-05-11) — pivot product target from Strix Halo (gfx1151) to NVIDIA Jetson AGX Thor. Drafted at operator request after RunPod MI300X stock dry + TensorWave sales unblock pending ≥7 days + Vultr 8-GPU-bare-metal-preemptible breaks budget 4×. Phase 3 ROCm work HALTED pending parent thUMBox + UMB Group ratification of DR-39. MI300X poller stopped (1 probe recorded; no_stock). See docs/decisions/dr-39-jetson-pivot.v0.1.0.md."
+last_updated: "2026-05-11T20:30:00.000Z"
+last_activity: 2026-05-11 -- DR-39 Jetson Pivot drafted (PROPOSED status); Phase 3 ROCm work halted
 progress:
   total_phases: 4
   completed_phases: 2
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-04)
 
 **Core value:** Produce trustworthy go/no-go evidence on receptionBOX feasibility — derated Strix Halo predictions for latency/WER/turn-detection/UPL/TTS — before any sales commitment is made to the firm.
-**Current focus:** Phase 03 — rocm-validation
+**Current focus:** **DR-39 Jetson Pivot ratification** (parent thUMBox + UMB Group review). Phase 3 ROCm work HALTED.
 
 ## Current Position
 
-Phase: 03 (rocm-validation) — EXECUTING
-Plan: 2 of 6
-Status: Ready to execute
-Last activity: 2026-05-11
+Phase: 03 (rocm-validation) — **HALTED pending DR-39 ratification**
+Plan: 1 of 6 shipped (03-01 substrate); 03-02..06 frozen in PROPOSED-pivot state
+Status: Awaiting parent thUMBox + UMB Group ratification of DR-39 Jetson Pivot
+Last activity: 2026-05-11 -- DR-39 drafted
 
-Progress: [██████████] 100% (plans); smoke verdict pass; sanity carved out
+Progress: [██████████] 100% (Phase 2 plans + Phase 3 plans on disk); MI300X cloud supply blocker forced a strategic pause
 
 ## Performance Metrics
 
