@@ -44,7 +44,7 @@ Plans:
   2. Sanity runs of G1, G2, G3, G5 on H100 produce non-degenerate baseline numbers with substrate fingerprint = `cuda` recorded for downstream cross-substrate consistency check
   3. In-instance watchdog terminates the H100 pod after `max_minutes`, rsync result-pull fires on shutdown, and pre-teardown cloud-storage audit confirms no PII or real-audio files survived the session
   4. Persistent HF model cache on cloud volume eliminates re-downloads across pods, and every result row records `(image_digest, model_sha, asset_manifest_sha, git_commit, run_id, timestamp_utc)`
-**Plans**: 8 plans (3 gap-closure plans across 02-05 / 02-07 / 02-08)
+**Plans**: 9 plans (4 gap-closure plans across 02-05 / 02-07 / 02-08 / 02-09)
 Plans:
 - [x] 02-01-PLAN.md — substrate/cuda.py composing 4 backend adapters + LiveKit AgentSession pipeline rig (HARNESS-02)
 - [x] 02-02-PLAN.md — Substrate-agnostic gate runners g1/g2/g3/g5 + GateRunner base + env.json sidecar (HARNESS-05, HARNESS-06, REPRO-03 schema)
@@ -54,6 +54,7 @@ Plans:
 - [x] 02-06-PLAN.md — Custom rbox-pod image (FROM vllm/vllm-openai:v0.10.0) with pod_entrypoint baked as ENTRYPOINT, digest-pinned in _DEFAULT_IMAGE (DEV-1035)
 - [x] 02-07-PLAN.md — GAP CLOSURE: multi-service pod startup (vLLM+Kokoro) + corpus_500 in image + fetch_results transport pivot; image v8→v18 iteration; smoke verdict pass (closes 02-04 T4 / PREFLIGHT-01)
 - [x] 02-08-PLAN.md — RETROACTIVE GAP CLOSURE: image_digest + git_commit lineage on result rows (DEV-1021); REPRO-03 data verified on G2 diag pod
+- [ ] 02-09-PLAN.md — GAP CLOSURE (02-UAT.md Test 1, 2026-05-12): mock RunPod SDK in cold-start pytest; fix run_preflight smoke-test hang (fetch_results unmocked); add tests/conftest.py autouse fixture clearing RUNPOD_API_KEY for the test session
 
 ### Phase 3: RunPod NVIDIA → Jetson Orin Derate [REDIRECTED per DR-39 v0.3.0]
 **Goal**: Produce derated Jetson AGX Orin 64GB predictions for G1, G2, G3, G5, G7 from measurements taken on RunPod NVIDIA H100/H200 (Phase 2 stack, abundant supply). Derate basis: NVIDIA's published Jetson Orin Performance Benchmarks + community NIM Orin reproductions. One-hop, same-vendor, same-stack derate chain (NVIDIA cloud → NVIDIA edge). Phase 4 synthesis builds the gate decision from derated numbers with bounded confidence intervals.
