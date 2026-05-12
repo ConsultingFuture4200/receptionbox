@@ -68,14 +68,17 @@ Plans:
   5. G7 TTS A/B renders both warm-path and cold-path first-audio across 30 stimulus pairs on RunPod NVIDIA; first-audio latency derates to Orin
   6. AUDIT-01 co-residency on RunPod NVIDIA (4 models simultaneously); AUDIT-03 engine-swap demo same
   7. Phase 4 synthesis report cites NVIDIA's published Jetson Orin Performance Benchmarks (developer.nvidia.com/embedded/jetson-orin-benchmarks) as derate basis with explicit derate-error confidence interval
-**Plans**: TBD — new Phase 3 plan set drafts after Orin dev kit arrives. Old ROCm-targeted plans 03-01..03-06 + 03-01.5 are **parked-archival** (committed code stays in repo as optional ROCm path for future, off the critical path).
-Old plans (parked-archival per DR-39):
+**Phase dir**: `.planning/phases/03-cloud-derate/` (new dir created 2026-05-12 per DR-39 v0.3.0; `.planning/phases/03-rocm-validation-archived/` remains intact as the pre-pivot archive, never modified post-DR-39).
+
+**Plans**: Plan set TBD via `/gsd-plan-phase 3` (2026-05-12). **NO Orin dev kit purchase in Phase 0 critical path** (per CLAUDE.md §1.1 + DR-39 v0.3.0 methodology refinement): plans measure on RunPod NVIDIA H100/H200 only and produce Orin derates from NVIDIA's published Jetson Orin Performance Benchmarks. Old ROCm-targeted plans 03-01..03-06 + 03-01.5 are **parked-archival** in the archive dir (committed code stays in repo as optional ROCm path for future, off the critical path).
+
+Old plans in `.planning/phases/03-rocm-validation-archived/` (parked-archival per DR-39, NOT to be revived):
 - [archive] 03-01-PLAN.md — substrate/rocm.py + Dockerfile.rocm + Vultr provisioning + phase3 config (parked: code shipped, off critical path)
-- [obsolete] 03-01.5-PLAN.md — RunPod MI300X stock-poll + orchestration (obsolete under DR-39 redirect to direct Orin measurement)
+- [obsolete] 03-01.5-PLAN.md — RunPod MI300X stock-poll + orchestration (obsolete under DR-39 redirect to derate-based methodology)
 - [obsolete] 03-02-PLAN.md — Day-1 Chatterbox ROCm kill-switch (no ROCm risk to validate)
-- [redirect] 03-03-PLAN.md — G1+G2+G3+G5 (will be rewritten for Orin direct measurement)
-- [redirect] 03-04-PLAN.md — G7 TTS A/B (will be rewritten for Orin direct measurement)
-- [redirect] 03-05-PLAN.md — AUDIT-01 co-residency + AUDIT-03 engine-swap (will be rewritten for Orin direct measurement)
+- [obsolete] 03-03-PLAN.md — G1+G2+G3+G5 ROCm-targeted (superseded by new Phase 3 cloud-derate plans)
+- [obsolete] 03-04-PLAN.md — G7 TTS A/B ROCm-targeted (superseded by new Phase 3 cloud-derate plans)
+- [obsolete] 03-05-PLAN.md — AUDIT-01 / AUDIT-03 ROCm-targeted (superseded by new Phase 3 cloud-derate plans)
 - [obsolete] 03-06-PLAN.md — AUDIT-02 gfx1151 op-coverage (no AMD silicon in the new product target)
 
 ### Phase 4: Synthesis & Gate Decision
