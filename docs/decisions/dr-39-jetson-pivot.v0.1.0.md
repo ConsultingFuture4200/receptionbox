@@ -1,7 +1,7 @@
 # DR-39: Product target pivot — Strix Halo → NVIDIA Jetson AGX Thor
 
-**File version:** v0.2.0
-**Status:** **APPROVED 2026-05-11** — parent thUMBox + UMB Group ratified; **target SKU = NVIDIA Jetson AGX Orin 64GB** (not Thor as originally drafted; see §10)
+**File version:** v0.3.0
+**Status:** **APPROVED 2026-05-11** — parent thUMBox + UMB Group ratified; **target SKU = NVIDIA Jetson AGX Orin 64GB** (not Thor as originally drafted; see §10); **methodology refined 2026-05-11: cloud-measurement-and-derate, NOT dev-kit-direct-measurement (see §11)**
 **Proposed by:** Claude drafted at operator (Dustin) request, 2026-05-11
 **Ratified by:** Operator (Dustin) confirming parent thUMBox + UMB Group sign-off, 2026-05-11
 **Supersedes (partial):** DR-24 (Strix Halo pivot, `docs/addendum-hardware-pivot-strix-halo-v0_1-2026-04-23.md`)
@@ -201,6 +201,46 @@ Same direction as the original Thor proposal, with slightly tighter Jetson-side 
 - No derate distance at all between Orin Direct and shipped appliance — they're the same SoC
 
 Phase 0 timeline from this ratification: ~5–7 calendar days assuming Orin dev kit ships in ~3 days.
+
+## §11 Methodology refinement — cloud-derate (not direct-measure)
+
+Added 2026-05-11 after operator instruction "we will use runpod and derate." The §10 Thor→Orin substitution kept the original §3.4 / §7 plan to **buy 1× Orin 64GB Developer Kit** for direct measurement. This §11 supersedes that sub-decision: **no dev kit purchase; measure on RunPod NVIDIA H100/H200 and derate to Orin 64GB using NVIDIA's published Jetson Orin inference benchmarks as the derate basis.**
+
+### §11.1 Why this is the right call
+
+The Orin 64GB direct-measure path needed CapEx (~$2k) + shipping delay (~3-7 days) + workstation setup + JetPack flash + harness port to Tegra. All real work, all on the critical path. Cloud-derate eliminates all of that:
+
+- **Same vendor and stack** as the measurement: NVIDIA → NVIDIA, CUDA → CUDA. The derate distance shrinks dramatically vs the original AMD→AMD cross-architecture (gfx942 → gfx1151) chain.
+- **Cross-reference data already published**: NVIDIA publishes Jetson Orin inference benchmarks for the exact workloads we care about (Whisper INT8 STT, transformer LLM decode, TTS). The derate basis is grounded in NVIDIA's own measurements + community reproductions on NIM containers + Jetson Orin Performance Benchmark releases.
+- **No critical-path blockers**: cloud is provisioning now. Phase 3 can run this week.
+- **The bench code is already written**: `substrate/cuda.py` from Phase 2 already runs the harness on RunPod NVIDIA. No Tegra-specific substrate needed for measurement (would need it for direct measurement, but we're not direct-measuring).
+
+### §11.2 The new Phase 3 shape
+
+1. **Measurement substrate**: RunPod NVIDIA Secure Cloud. Card selection is engineering judgment — H100 NVL ($3.07/GPU-hr, plentiful, already validated in Phase 2 smoke `2f6b…`) is the most likely pick; H200 ($3.99/GPU-hr, slightly closer bandwidth profile to Orin's published memory subsystem) is an option if the operator wants a tighter derate.
+2. **Phase 3 plans**: rewrite 03-03 (G1+G2+G3+G5), 03-04 (G7), 03-05 (AUDIT-01+03) to target RunPod NVIDIA instead of cloud MI300X. The substrate-agnostic gate runners under `gates/g{1,2,3,5,7}/runner.py` carry over unchanged.
+3. **Derate chain**: cloud H100 measurement (Phase 2 + Phase 3) → published Jetson Orin 64GB inference benchmark numbers → Phase 4 synthesis report's appliance predictions. The chain is one hop within the same vendor.
+4. **Derate basis citation**: Phase 4 synthesis report cites NVIDIA's official Jetson Orin Performance Benchmarks (developer.nvidia.com/embedded/jetson-orin-benchmarks) + community NIM Orin reproductions (where applicable) + any model-specific Orin benchmarks the model authors publish.
+5. **What Phase 4's "What we did not measure" section says**: "We did not directly measure on a Jetson AGX Orin 64GB developer kit. We measured on RunPod H100 and derated to Orin using NVIDIA's published Orin inference benchmarks for [Whisper INT8 | Qwen3-4B AWQ-Int4 | Chatterbox | Kokoro]. Derate distance estimate: [bandwidth ratio for decode] / [compute ratio for prefill]. Confidence interval on Orin predictions: ±[N]%."
+6. **AUDIT-01 (co-residency)** + **AUDIT-03 (engine-swap)**: trivialized further — they happen on the same RunPod NVIDIA pod that runs G1-G7, as part of the existing 03-05-PLAN scope (rewritten to NVIDIA instead of MI300X).
+
+### §11.3 What the operator does NOT need to do anymore
+
+- ~~Order Jetson AGX Orin 64GB Developer Kit~~ (saved: ~$2k CapEx, ~3-7 days shipping)
+- ~~Set up the dev kit at the workstation~~ (saved: ~half-day of setup)
+- ~~Flash JetPack 6 + port harness to Tegra~~ (saved: ~1-2 days of engineering)
+- ~~Run direct measurement on Orin~~ (saved: ~1 day of run-and-collect)
+
+Approximate total saved: 5-10 days of program time + $2k CapEx.
+
+### §11.4 Trade-off accepted
+
+The cost: Phase 4 synthesis report's predictions for the Orin appliance carry a derate-error term that direct-measurement would have eliminated. For Phase 0's gate decision purpose ("go / no-go on the discovery SOW"), this is acceptable — derate confidence intervals are bounded and the same-vendor-same-stack derate chain is tractable to defend in adversarial review. If the firm signs the discovery SOW, Phase 1 work can include direct-measure validation on an Orin dev kit (and the dev kit purchase becomes Phase-1 capex, not Phase-0).
+
+### §11.5 What this means for §3 + §10
+
+- §3.1 Phase 0 (Phase 3) impact stays mostly the same — 03-02 / 03-06 still obsolete, 03-03 / 03-04 / 03-05 still need rewriting (just retargeted at RunPod NVIDIA instead of cloud MI300X).
+- §10.5 Phase 3 redirect implications: the line "Run the receptionBOX harness directly on Orin; compare to H100 measurements" is amended to: **measure on RunPod H100/H200; derate to Orin using NVIDIA's published Orin benchmarks; no direct measurement on Orin in Phase 0.**
 
 ## §9 Notes
 

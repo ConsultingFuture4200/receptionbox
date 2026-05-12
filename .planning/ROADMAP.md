@@ -12,7 +12,7 @@ Phase 0 is a one-week, $150-ceiling cloud benchmark harness that produces derate
 
 - [x] **Phase 1: Foundation** — Repo skeleton, asset curation, cost rails, NC-R14 resolution; zero GPU spend
 - [x] **Phase 2: CUDA Pre-flight** — RunPod H100 substrate proves pipeline with 5-call smoke (verdict pass) + G1/G2/G3/G5 sanity (DEV-1019 Delivered with operator-accepted 20-row-per-gate partial coverage)
-- [ ] **Phase 3: Jetson Orin Validation [REDIRECTED per DR-39 RATIFIED 2026-05-11]** — Direct measurement on Jetson AGX Orin 64GB Developer Kit (target SoC of the appliance). No further derate — Orin IS the appliance. Old "ROCm Validation on MI300X" scope is parked-archival.
+- [ ] **Phase 3: RunPod NVIDIA → Jetson Orin Derate [REDIRECTED per DR-39 v0.3.0]** — Measure on RunPod NVIDIA H100/H200 (abundant, $3-4/hr, Phase 2 stack); derate to Jetson AGX Orin 64GB (target SoC) using NVIDIA's published Jetson Orin Performance Benchmarks. Same-vendor same-stack derate chain, one hop. No Orin dev kit CapEx. Old "ROCm Validation on MI300X" scope is parked-archival.
 - [ ] **Phase 4: Synthesis & Gate Decision** — Per-stage derating, sales-safe report, feasibility memo v0.4, go/no-go package
 
 ## Phase Details
@@ -55,18 +55,18 @@ Plans:
 - [x] 02-07-PLAN.md — GAP CLOSURE: multi-service pod startup (vLLM+Kokoro) + corpus_500 in image + fetch_results transport pivot; image v8→v18 iteration; smoke verdict pass (closes 02-04 T4 / PREFLIGHT-01)
 - [x] 02-08-PLAN.md — RETROACTIVE GAP CLOSURE: image_digest + git_commit lineage on result rows (DEV-1021); REPRO-03 data verified on G2 diag pod
 
-### Phase 3: Jetson Orin Validation [REDIRECTED per DR-39 RATIFIED 2026-05-11]
-**Goal**: Direct measurement of the receptionBOX harness on the target appliance SoC — NVIDIA Jetson AGX Orin 64GB Developer Kit. Produces G1, G2, G3, G5, G7 numbers measured on the exact silicon the v1 appliance ships with, eliminating the cloud-derate confidence gap entirely. Derate methodology collapses: H100 (Phase 2 measured) → Orin Direct (Phase 3 measured) → no further derate (Orin IS the appliance). Phase 4 synthesis builds the gate decision directly from Phase 3's measured-on-target numbers.
-**Depends on**: Phase 2 + 1× Jetson AGX Orin 64GB Developer Kit on operator workstation (~$2k, ~1 week shipping from NVIDIA / Arrow / Amazon)
-**Requirements**: HARNESS-03 (REDIRECTED — was ROCm, now JetPack/CUDA on Orin), GATE-G1, GATE-G2, GATE-G3, GATE-G5, GATE-G7. **OBSOLETE under DR-39**: GATE-CHATTERBOX-D1 (Chatterbox-CUDA already validated in Phase 2; no ROCm risk to kill-switch), AUDIT-02 (gfx1151 op coverage — no AMD silicon in the new product target). AUDIT-01 (co-residency) + AUDIT-03 (engine-swap) remain valid but trivialized — both run directly on the operator's Orin dev kit alongside the gate measurements.
-**Success Criteria** (what must be TRUE — REWRITTEN per DR-39):
-  1. receptionBOX harness builds and runs on Jetson AGX Orin 64GB with JetPack 6+ / CUDA 12.x; vLLM, faster-whisper, Chatterbox, Kokoro, LiveKit Agents all load successfully
-  2. G1 latency on the 500-call corpus at N=1/2/4 reports p50/p90/p99 per-stage (STT TTFT, LLM TTFT, LLM decode, TTS first-audio) and aggregate, measured directly on Orin
-  3. G2 WER measured on 200 G.711 clips with faster-whisper INT8 on Orin (ONNX-RT ROCm dual-path obsolete under DR-39)
-  4. G3 turn-detection threshold sweep 400–1500ms in 100ms steps on Orin
-  5. G5 UPL probes against the receptionBOX-shaped reference prompt with grammar-constrained generation ON, on Orin
-  6. G7 TTS A/B renders both warm-path and cold-path first-audio across 30 stimulus pairs on Orin
-  7. Co-residency stack-load (AUDIT-01): all 4 models loaded simultaneously on Orin under sustained ≥ 5-min load; memory headroom + crash detection recorded
+### Phase 3: RunPod NVIDIA → Jetson Orin Derate [REDIRECTED per DR-39 v0.3.0]
+**Goal**: Produce derated Jetson AGX Orin 64GB predictions for G1, G2, G3, G5, G7 from measurements taken on RunPod NVIDIA H100/H200 (Phase 2 stack, abundant supply). Derate basis: NVIDIA's published Jetson Orin Performance Benchmarks + community NIM Orin reproductions. One-hop, same-vendor, same-stack derate chain (NVIDIA cloud → NVIDIA edge). Phase 4 synthesis builds the gate decision from derated numbers with bounded confidence intervals.
+**Depends on**: Phase 2 (substrate/cuda.py + runpod_h100.py both validated)
+**Requirements**: HARNESS-03 (REDIRECTED per DR-39 v0.3.0 — no longer a new substrate module; Phase 3 uses the existing substrate/cuda.py and the H100/H200 measurement is the basis for the Orin derate), GATE-G1, GATE-G2, GATE-G3, GATE-G5, GATE-G7. **OBSOLETE under DR-39**: GATE-CHATTERBOX-D1 (Chatterbox-CUDA already validated in Phase 2), AUDIT-02 (gfx1151 op coverage — no AMD silicon in new product target). AUDIT-01 (co-residency) + AUDIT-03 (engine-swap) remain valid; both run on RunPod NVIDIA pod alongside gate measurements.
+**Success Criteria** (what must be TRUE — REWRITTEN per DR-39 v0.3.0):
+  1. G1 latency on the 500-call corpus at N=1/2/4 reports p50/p90/p99 per-stage measured on RunPod NVIDIA (H100 NVL or H200), then derated to Orin via published Orin inference benchmarks
+  2. G2 WER measured on 200 G.711 clips with faster-whisper INT8 on RunPod NVIDIA (ONNX-RT ROCm dual-path obsolete)
+  3. G3 turn-detection threshold sweep 400–1500ms in 100ms steps on RunPod NVIDIA (semantic detector is substrate-agnostic; the latency component derates to Orin)
+  4. G5 UPL probes against the receptionBOX-shaped reference prompt with grammar-constrained generation ON, on RunPod NVIDIA
+  5. G7 TTS A/B renders both warm-path and cold-path first-audio across 30 stimulus pairs on RunPod NVIDIA; first-audio latency derates to Orin
+  6. AUDIT-01 co-residency on RunPod NVIDIA (4 models simultaneously); AUDIT-03 engine-swap demo same
+  7. Phase 4 synthesis report cites NVIDIA's published Jetson Orin Performance Benchmarks (developer.nvidia.com/embedded/jetson-orin-benchmarks) as derate basis with explicit derate-error confidence interval
 **Plans**: TBD — new Phase 3 plan set drafts after Orin dev kit arrives. Old ROCm-targeted plans 03-01..03-06 + 03-01.5 are **parked-archival** (committed code stays in repo as optional ROCm path for future, off the critical path).
 Old plans (parked-archival per DR-39):
 - [archive] 03-01-PLAN.md — substrate/rocm.py + Dockerfile.rocm + Vultr provisioning + phase3 config (parked: code shipped, off critical path)
