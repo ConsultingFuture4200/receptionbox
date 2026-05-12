@@ -183,6 +183,37 @@ def test_real_spend_pass_path_writes_verdict_manifest(
     assert len(tracker["create_calls"]) == 1
 
 
+def test_runpod_gpu_type_env_override_propagates_to_create_pod(
+    monkeypatch: pytest.MonkeyPatch, _repo_results_dir: pathlib.Path
+) -> None:
+    """RUNPOD_GPU_TYPE env override is forwarded to runpod.create_pod's
+    gpu_type_id kwarg so operators can route around H100 PCIe stockouts
+    without code changes (mirrors tools/run_preflight.py).
+    """
+    tracker = _install_fake_runpod(monkeypatch, pod_id="fake-pod-sxm")
+    monkeypatch.setenv("RUNPOD_API_KEY", "fake-but-set")
+    monkeypatch.setenv("RUNPOD_GPU_TYPE", "NVIDIA H100 SXM")
+
+    async def _exit_now(pod_id: str, *, timeout_s: int) -> str:
+        return "EXITED"
+
+    async def _spend() -> float:
+        return 0.0
+
+    monkeypatch.setattr(audit_harness_health, "_wait_for_pod_exit", _exit_now)
+    monkeypatch.setattr(audit_harness_health, "_final_spend", _spend)
+    import tools.fetch_results as fr
+
+    monkeypatch.setattr(fr, "fetch", lambda *a, **k: 0)
+
+    rc = audit_harness_health.main(["--real-spend", "--max-minutes=15"])
+    # rc may be 1 (no results synthesized) but the create_pod call is what
+    # this test asserts.
+    assert rc in (0, 1)
+    assert len(tracker["create_calls"]) == 1
+    assert tracker["create_calls"][0]["gpu_type_id"] == "NVIDIA H100 SXM"
+
+
 def test_budget_exhausted_returns_two_writes_error_manifest(
     monkeypatch: pytest.MonkeyPatch, tmp_path: pathlib.Path
 ) -> None:

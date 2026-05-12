@@ -168,16 +168,25 @@ async def main_async(argv: list[str]) -> int:
     if not wants_real:
         saved_key = os.environ.pop("RUNPOD_API_KEY", None)
 
+    # Honor RUNPOD_GPU_TYPE override (matches tools/run_preflight.py pattern)
+    # so operators can route around stockouts of the default H100 PCIe SKU
+    # without code changes. CLAUDE.md §1.1 names H100 SXM as the preferred
+    # H100 substrate anyway. Unset → provision() default (H100 PCIe) applies.
+    provision_kwargs: dict = {
+        "gate": "smoke",
+        "projected_cost": projected_cost,
+        "max_minutes": args.max_minutes,
+        "network_volume_id": os.environ.get("RUNPOD_NETWORK_VOLUME_ID"),
+        "ssh_pubkey": os.environ.get("SSH_PUBKEY"),
+        "operator_host": os.environ.get("OPERATOR_HOST"),
+    }
+    gpu_type_override = os.environ.get("RUNPOD_GPU_TYPE")
+    if gpu_type_override:
+        provision_kwargs["gpu_type"] = gpu_type_override
+
     try:
         try:
-            pr: ProvisionResult = provision(
-                gate="smoke",
-                projected_cost=projected_cost,
-                max_minutes=args.max_minutes,
-                network_volume_id=os.environ.get("RUNPOD_NETWORK_VOLUME_ID"),
-                ssh_pubkey=os.environ.get("SSH_PUBKEY"),
-                operator_host=os.environ.get("OPERATOR_HOST"),
-            )
+            pr: ProvisionResult = provision(**provision_kwargs)
         except BudgetExhausted as e:
             _write_manifest(
                 out_path,
