@@ -36,3 +36,13 @@ results/index.sqlite
 # NOTE: do NOT add wildcard exclusions for assets/ — manifest.csv is committed
 # and the pre-commit hook enforces every audio file is listed. Audio files
 # under assets/ ARE committed (small, deterministic from generator script + seed).
+
+# Secrets / local runtime state (must NEVER be committed)
+# secrets/rboxkey.md contains a live RunPod API key (rpa_...);
+# .claude/settings.local.json embeds the same key inside an "allow" permission rule.
+# Ignore specific .claude/* paths only — do NOT ignore the whole .claude/ dir,
+# since shared agents/skills configs may live there.
+secrets/
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+.claude/worktrees/
