@@ -73,7 +73,7 @@ Plans:
 **Plans**: 7 plans (drafted 2026-05-12 via `/gsd-plan-phase 3`). **NO Orin dev kit purchase in Phase 0 critical path** (per CLAUDE.md §1.1 + DR-39 v0.3.0 methodology refinement): plans measure on RunPod NVIDIA H100/H200 only and produce Orin derates from NVIDIA's published Jetson Orin Performance Benchmarks. Old ROCm-targeted plans 03-01..03-06 + 03-01.5 are **parked-archival** in the archive dir (committed code stays in repo as optional ROCm path for future, off the critical path).
 
 Plans:
-- [ ] 03-01-PLAN.md — substrate harness audit on fresh v18 pod (bootstrap baseline, $5)
+- [x] 03-01-PLAN.md — substrate harness audit on fresh v18 pod (bootstrap baseline, $5)
 - [ ] 03-02-PLAN.md — G2 STT WER (200 G.711 clips) + G3 turn detection threshold sweep ($5)
 - [ ] 03-03-PLAN.md — G5 UPL probes (200 + 50 controls via vLLM xgrammar, $3)
 - [ ] 03-04-PLAN.md — G7 TTS A/B (30 stimuli × 2 engines × 2 paths = 120 renders, $4)

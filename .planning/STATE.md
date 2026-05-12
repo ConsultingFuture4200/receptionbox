@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v0.4
 milestone_name: milestone
-status: pivot_ratified_methodology_runpod_derate
-stopped_at: "DR-39 RATIFIED 2026-05-11 — product target is NVIDIA Jetson AGX Orin 64GB (parent team substituted Orin 64GB for Thor on BOM grounds). Methodology refined 2026-05-11 (DR-39 §11): NO Orin dev kit purchase; measure on RunPod NVIDIA H100/H200; derate to Orin using NVIDIA's published Jetson Orin Performance Benchmarks as the derate basis. Same-vendor same-stack derate chain (NVIDIA cloud → NVIDIA edge), one hop. Saves ~$2k CapEx + 5-10 days of program time vs the direct-measure variant. Phase 3 plans 03-03/03-04/03-05 to be rewritten retargeted at RunPod NVIDIA (substrate-agnostic gate runners carry over). 03-02 / 03-06 obsolete (no ROCm risk in new target). 03-01 substrate code parked-archival."
-last_updated: "2026-05-11T21:00:00.000Z"
-last_activity: 2026-05-11 -- DR-39 v0.3.0: methodology refined to cloud-measure-and-derate via RunPod NVIDIA; no Orin CapEx
+status: executing
+stopped_at: "Phase 02 plans 02-04 / 02-07 / 02-08 summaries written; PREFLIGHT-01 closed; REQUIREMENTS / ROADMAP advanced. Phase 3 context (gathered separately at 16:18Z) preserved at .planning/phases/03-rocm-validation-archived/03-CONTEXT.md and DISCUSSION-LOG.md — ready for /gsd-plan-phase 3."
+last_updated: "2026-05-12T07:24:39.092Z"
+last_activity: 2026-05-12 -- Phase 03 execution started
 progress:
   total_phases: 4
   completed_phases: 2
-  total_plans: 19
-  completed_plans: 13
-  percent: 68
+  total_plans: 28
+  completed_plans: 15
+  percent: 54
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-04)
 
 **Core value:** Produce trustworthy go/no-go evidence on receptionBOX feasibility — derated Strix Halo predictions for latency/WER/turn-detection/UPL/TTS — before any sales commitment is made to the firm.
-**Current focus:** **Phase 3 retarget per DR-39 v0.3.0 (target=Jetson Orin 64GB, methodology=cloud-derate via RunPod NVIDIA)**. No dev kit purchase. Measure on H100/H200; derate to Orin via NVIDIA published benchmarks.
+**Current focus:** Phase 03 — cloud-derate
 
 ## Current Position
 
-Phase: 03 — **REDIRECTING per DR-39 v0.3.0**: rocm-validation → "RunPod NVIDIA measurement + derate to Jetson Orin via published Orin benchmarks"
-Plan: 03-01 / 03-01.5 / 03-02 / 03-06 parked-archival/obsolete; 03-03 / 03-04 / 03-05 to be retargeted at RunPod NVIDIA (substrate-agnostic gate runners carry over from Phase 2)
-Status: Ready to fire. No external blockers — RunPod NVIDIA stock is abundant; substrate code (`substrate/cuda.py`) and orchestration (`orchestration/runpod_h100.py`) already validated in Phase 2.
-Last activity: 2026-05-11 -- DR-39 v0.3.0 methodology refinement (cloud-derate, no dev kit)
+Phase: 03 (cloud-derate) — EXECUTING
+Plan: 1 of 7
+Status: Executing Phase 03
+Last activity: 2026-05-12 -- Phase 03 execution started
 
 Progress: Phase 2 complete; Phase 3 path now unblocked. New plan set draft is the immediate next step (`/gsd-plan-phase 3 --gaps`).
 
