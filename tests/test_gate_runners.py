@@ -360,8 +360,11 @@ async def test_g3_runner_records_endpoint_and_fp_flag(
     """Stub substrate's transcribe yields end_ms=1000; gt=2000 → false_positive=True."""
     from gates.g3.runner import G3Runner
 
+    # Plan 03-02 Task 1 — single-threshold for backward compat with the
+    # original single-row-per-asset shape this test was written against.
     runner = G3Runner(
         substrate=_StubSubstrate(),
+        threshold_ms_list=[800],
         asset_manifest_path=manifest_csv,
         results_dir=tmp_path,
     )
@@ -375,8 +378,9 @@ async def test_g3_runner_records_endpoint_and_fp_flag(
     [r] = await runner.run_all([asset])
     assert r.status == "ok"
     assert r.metrics["gt_endpoint_ms"] == 2000.0
-    # Stub end_ms is 1000; 1000 < 2000 → false_positive
+    # threshold=800, gt=2000: 800 < 2000 → FP (detector would fire before true EOT)
     assert r.metrics["false_positive"] is True
+    assert r.metrics["threshold_ms"] == 800
 
 
 @pytest.mark.asyncio
@@ -387,6 +391,7 @@ async def test_g3_runner_records_hesitation_pattern(
 
     runner = G3Runner(
         substrate=_StubSubstrate(),
+        threshold_ms_list=[800],
         asset_manifest_path=manifest_csv,
         results_dir=tmp_path,
     )
