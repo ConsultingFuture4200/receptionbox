@@ -1,0 +1,12 @@
+{
+  "gates": [
+    {
+      "error": "There are no longer any instances available with the requested specifications. Please refresh and try again.",
+      "gate": "bootstrap",
+      "status": "provision_error"
+    }
+  ],
+  "mode": "bootstrap",
+  "session_id": "20260507T060715Z",
+  "started_utc": "2026-05-07T06:07:15.941927"
+}

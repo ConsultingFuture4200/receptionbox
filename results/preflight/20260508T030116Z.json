@@ -1,0 +1,12 @@
+{
+  "gates": [
+    {
+      "error": "Syntax Error: Unterminated string.",
+      "gate": "smoke",
+      "status": "provision_error"
+    }
+  ],
+  "mode": "smoke",
+  "session_id": "20260508T030116Z",
+  "started_utc": "2026-05-08T03:01:16.236120"
+}

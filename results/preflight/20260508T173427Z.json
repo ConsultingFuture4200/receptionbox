@@ -1,0 +1,16 @@
+{
+  "gates": [
+    {
+      "auth_id": 37,
+      "final_spend_usd": 0.0,
+      "gate": "bootstrap",
+      "pod_id": "p0r1nvzunxt1nu",
+      "projected_cost_usd": 1.5,
+      "status": "EXITED",
+      "wall_clock_s": 487.64604663848877
+    }
+  ],
+  "mode": "bootstrap",
+  "session_id": "20260508T173427Z",
+  "started_utc": "2026-05-08T17:34:27.567797"
+}

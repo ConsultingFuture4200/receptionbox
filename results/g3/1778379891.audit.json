@@ -1,0 +1,26 @@
+{
+  "extension_check": {
+    "offending_files": [],
+    "violations": 0
+  },
+  "manifest_check": {
+    "expected_count": 755,
+    "extras": [],
+    "found_count": 700,
+    "mismatches": [],
+    "violations": 0
+  },
+  "pii_check": {
+    "files_checked": 2,
+    "hits": [],
+    "violations": 0
+  },
+  "schema_version": "1.0",
+  "summary": {
+    "files_checked": 2,
+    "finished_utc": "2026-05-10T02:24:51.766720",
+    "manifest_sha": "751423c77cae5ce9547372521cb2be3b9c3805130998e8fbafea635785f03d73",
+    "started_utc": "2026-05-10T02:24:51.504720",
+    "violations": 0
+  }
+}

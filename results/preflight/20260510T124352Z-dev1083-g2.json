@@ -1,0 +1,16 @@
+{
+  "gates": [
+    {
+      "auth_id": 53,
+      "final_spend_usd": 0.0,
+      "gate": "g2",
+      "pod_id": "8c87u0t8m2snt8",
+      "projected_cost_usd": 0.67,
+      "status": "GONE",
+      "wall_clock_s": 433.98155069351196
+    }
+  ],
+  "mode": "single-gate-g2",
+  "session_id": "20260510T124352Z-dev1083-g2",
+  "started_utc": "2026-05-10T12:43:52.970408"
+}

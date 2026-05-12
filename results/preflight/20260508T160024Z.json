@@ -1,0 +1,12 @@
+{
+  "gates": [
+    {
+      "error": "There are no longer any instances available with the requested specifications. Please refresh and try again.",
+      "gate": "smoke",
+      "status": "provision_error"
+    }
+  ],
+  "mode": "smoke",
+  "session_id": "20260508T160024Z",
+  "started_utc": "2026-05-08T16:00:24.354836"
+}

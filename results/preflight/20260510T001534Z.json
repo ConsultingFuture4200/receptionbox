@@ -1,0 +1,43 @@
+{
+  "gates": [
+    {
+      "auth_id": 45,
+      "final_spend_usd": 0.0,
+      "gate": "g1",
+      "pod_id": "ys4b1csjoy9sm3",
+      "projected_cost_usd": 1.34,
+      "status": "GONE",
+      "wall_clock_s": 428.5250473022461
+    },
+    {
+      "auth_id": 46,
+      "final_spend_usd": 0.0,
+      "gate": "g2",
+      "pod_id": "9um2j0abdv1wfq",
+      "projected_cost_usd": 0.67,
+      "status": "GONE",
+      "wall_clock_s": 123.44663619995117
+    },
+    {
+      "auth_id": 47,
+      "final_spend_usd": 0.0,
+      "gate": "g3",
+      "pod_id": "w6a2dvkyg02b6m",
+      "projected_cost_usd": 0.45,
+      "status": "GONE",
+      "wall_clock_s": 123.5884735584259
+    },
+    {
+      "auth_id": 48,
+      "final_spend_usd": 0.0,
+      "gate": "g5",
+      "pod_id": "kom9zjgviz8nl6",
+      "projected_cost_usd": 0.67,
+      "status": "GONE",
+      "wall_clock_s": 123.74041771888733
+    }
+  ],
+  "mode": "sanity",
+  "session_id": "20260510T001534Z",
+  "started_utc": "2026-05-10T00:15:34.099076"
+}

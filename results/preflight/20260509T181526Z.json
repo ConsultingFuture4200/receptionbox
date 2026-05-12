@@ -1,0 +1,26 @@
+{
+  "gates": [
+    {
+      "auth_id": 42,
+      "final_spend_usd": 0.0,
+      "gate": "smoke",
+      "pod_id": "0hs2bmc9i2lj8w",
+      "projected_cost_usd": 2.69,
+      "smoke_verdict": {
+        "a_5_rows": false,
+        "b_under_30min": false,
+        "c_under_1usd": false,
+        "d_per_stage_timings": false,
+        "e_env_sidecar": false,
+        "error": "no JSONL found",
+        "f_audit_clean": false,
+        "pass": false
+      },
+      "status": "GONE",
+      "wall_clock_s": 185.75923037528992
+    }
+  ],
+  "mode": "smoke",
+  "session_id": "20260509T181526Z",
+  "started_utc": "2026-05-09T18:15:26.721811"
+}

@@ -1,0 +1,11 @@
+{
+  "gates": [
+    {
+      "gate": "bootstrap",
+      "status": "operator-action"
+    }
+  ],
+  "mode": "bootstrap",
+  "session_id": "20260506T172231Z",
+  "started_utc": "2026-05-06T17:22:31.377162"
+}

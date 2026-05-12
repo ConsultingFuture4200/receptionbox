@@ -1,0 +1,14 @@
+{
+  "gates": [
+    {
+      "auth_id": 6,
+      "gate": "smoke",
+      "pod_id": "dry-run",
+      "projected_cost_usd": 1.34,
+      "status": "dry-run"
+    }
+  ],
+  "mode": "smoke",
+  "session_id": "20260506T171417Z",
+  "started_utc": "2026-05-06T17:14:17.644095"
+}

@@ -1,0 +1,14 @@
+{
+  "gates": [
+    {
+      "auth_id": 7,
+      "gate": "bootstrap",
+      "pod_id": "dry-run",
+      "projected_cost_usd": 0.67,
+      "status": "dry-run"
+    }
+  ],
+  "mode": "bootstrap",
+  "session_id": "20260506T175559Z",
+  "started_utc": "2026-05-06T17:55:59.038903"
+}

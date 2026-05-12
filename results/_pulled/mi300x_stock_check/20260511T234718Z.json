@@ -1,0 +1,8 @@
+{
+  "utc": "2026-05-11T23:47:18.620267",
+  "success": false,
+  "detail": "no_stock",
+  "pod_id": null,
+  "gpu_type_id": "AMD Instinct MI300X OAM",
+  "data_center": "EU-RO-1"
+}
