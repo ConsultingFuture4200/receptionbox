@@ -22,12 +22,14 @@ updated: 2026-05-12T05:55:00Z
 
 ### 1. Cold Start Smoke Test
 expected: From a clean shell in /home/bob/RBOX, `uv sync && uv run pytest -q` completes without errors. Test suite passes (no failures, no collection errors). No hidden dependency on a running pod, lock files, or warm caches.
-result: issue
-reported: |
-  Suite hangs and never produces final summary. 211 passed, 1 failed, 2 skipped before hang.
-  - FAILED: tests/test_orchestration_skeletons.py::test_runpod_provision_authorizes_within_budget — calls runpod_h100.provision() with NO mock; with RUNPOD_API_KEY in operator env, makes real GraphQL call to RunPod; fails with "no instances available" because stock thin (matches STATE.md). Companion tensorwave/vultr tests pass because their keys are UNSET sentinels.
-  - HUNG: tests/test_run_preflight.py::test_run_preflight_smoke_honors_runpod_gpu_type — DOES call _install_fake_runpod(monkeypatch) at line 295, so it should be mocked. Hangs anyway. Likely a code path in run_preflight.main(["--mode","smoke"]) not covered by the fake (watchdog/polling loop or runpodctl subprocess).
-severity: blocker
+result: pass
+evidence: |
+  Re-verified 2026-05-12 after Plan 02-09 gap closure (commits 97919eb..55b02e6).
+  uv run pytest -q -> "288 passed, 2 skipped in 7.68s" (exit 0). Operator-confirmed.
+  Originally failed (2026-05-12 first pass) with 1 FAIL + 1 HANG:
+    - test_runpod_provision_authorizes_within_budget made real RunPod GraphQL calls (no SDK mock); failed when stock thin.
+    - test_run_preflight_smoke_honors_runpod_gpu_type hung — _install_fake_runpod did not patch tools.fetch_results.fetch called in run_preflight smoke-mode at line 240.
+  Both root causes fixed in Plan 02-09 (T1 stubs fetch_results.fetch; T2 forces dry-run via delenv; T3 adds tests/conftest.py autouse fixture clearing RUNPOD_API_KEY/TENSORWAVE_API_KEY/VULTR_API_KEY per test).
 
 ### 2. Substrate adapters log+swallow on errors (no raise, no payload leak)
 expected: All 4 adapters in `substrate/adapters/` (VLLMClient, FasterWhisperEngine, ChatterboxClient, KokoroClient) log a WARNING and return/yield-nothing on every error path — they never raise. The TTS error path never logs the request payload (verified by `test_chatterbox_logs_status_only_no_payload`). Run `uv run pytest tests/test_cuda_substrate.py -q` and confirm all adapter tests pass.
@@ -83,8 +85,8 @@ reason: "DEV-1019 sanity not run; operator-driven RunPod spend session required.
 ## Summary
 
 total: 9
-passed: 7
-issues: 1
+passed: 8
+issues: 0
 pending: 0
 skipped: 0
 blocked: 1
@@ -92,7 +94,10 @@ blocked: 1
 ## Gaps
 
 - truth: "pytest suite completes cleanly on cold-start (`uv sync && uv run pytest -q`)"
-  status: failed
+  status: resolved
+  resolved_by: Plan 02-09 (commits 97919eb, a7e368d, ee684bc, 55b02e6) 2026-05-12
+  resolved_evidence: "uv run pytest -q -> 288 passed, 2 skipped in 7.68s (exit 0); operator-confirmed"
+  prior_status: failed
   reason: |
     Suite hangs at ~73% with 1 prior FAIL. Two distinct test defects:
     (a) tests/test_orchestration_skeletons.py::test_runpod_provision_authorizes_within_budget
