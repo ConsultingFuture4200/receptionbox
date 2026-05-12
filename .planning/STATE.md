@@ -128,6 +128,12 @@ None yet.
 - **gfx942 → gfx1151 kernel gap:** dominant residual technical risk. Phase 3 must produce op-by-op kernel-coverage audit; Phase 4 widens confidence bands for "unknown" ops.
 - **Phase 3 research recommended:** Chatterbox-Turbo ROCm install on TensorWave MI300X is highest-risk surface (devnen issues #192/#445 unresolved). Consider `/gsd-research-phase` before Phase 3 begins.
 
+## Quick Tasks Completed
+
+| ID | Date | Description | Commits |
+|----|------|-------------|---------|
+| 260511-vgz | 2026-05-12 | Triage 55 untracked files: gitignore vs atomic commits (post-DR-39 cleanup) | 5 (`6e6c155` gitignore, `bb81ea5` PRD v0.2, `664c9e0` DEV-1083 debug, `414f455` runpod tools, `fe2bf93` Phase 02 results) |
+
 ## Session Continuity
 
 Last session: 2026-05-10T16:35:00.000Z
