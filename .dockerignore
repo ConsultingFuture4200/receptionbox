@@ -18,7 +18,9 @@ docs
 # is operator-side only (Pitfall 1 — torch<=2.5.1 isolation).
 # assets/corpus_500  (intentionally NOT excluded — see comment above)
 # assets/corpus_g711 (intentionally NOT excluded — see comment above)
-assets/corpus_hesitation
+# corpus_hesitation re-included as of image v19: G3 turn-detection runs the
+# full 51-clip corpus through the threshold sweep (plan 03-02 must_have).
+# assets/corpus_hesitation
 assets/render_env
 assets/__pycache__
 

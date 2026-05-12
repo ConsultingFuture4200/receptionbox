@@ -417,7 +417,13 @@ if [[ "$GATE" == "smoke" ]]; then
     python -m gates.g1.runner --gate=smoke --n-calls=5 --corpus=corpus_500 \
         --whisper-dir="$WHISPER_DIR" &
 else
-    python -m gates."$GATE".runner --gate="$GATE" --strata=config/sanity_strata.yaml \
+    # Plan 03-02 / image v19: honor STRATA_PATH env override. Defaults to the
+    # Phase 02 sanity subset (10/10 assets per gate) for backward compat;
+    # Phase 3 callers set STRATA_PATH=config/phase3_strata.yaml to get full
+    # corpora (200 g711 / 51 hesitation / 500 calls / etc).
+    STRATA_PATH="${STRATA_PATH:-config/sanity_strata.yaml}"
+    echo "[entrypoint] gate=$GATE strata=$STRATA_PATH"
+    python -m gates."$GATE".runner --gate="$GATE" --strata="$STRATA_PATH" \
         --whisper-dir="$WHISPER_DIR" &
 fi
 RUNNER_PID=$!
