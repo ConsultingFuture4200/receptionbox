@@ -229,7 +229,20 @@ def test_run_preflight_bootstrap_default_gpu_when_env_unset(
 
 
 def _install_fake_runpod(monkeypatch: pytest.MonkeyPatch) -> list[dict]:
-    """Test helper: install a fake runpod SDK and return the create_pod call list."""
+    """Test helper: install a fake runpod SDK and return the create_pod call list.
+
+    Plan 02-09 gap closure (2026-05-12): the helper also stubs
+    `tools.fetch_results.fetch`. The smoke-mode path in
+    `tools/run_preflight.py:_run_gate` (lines 238-260) calls
+    `from tools.fetch_results import fetch as fetch_results` and invokes it
+    when `final_state in ("EXITED", "GONE") and network_volume_id`. Without
+    the stub, `fetch_results.fetch` makes real subprocess + RunPod SDK calls
+    that hang the suite. The stub returns rc=0 (success) without producing
+    files; the smoke tests in this file assert on `create_pod` kwargs, not on
+    a passing `_validate_smoke` verdict (the full validate path is exercised
+    by `test_validate_smoke_pass_path` further down using synthesized
+    fixtures).
+    """
     import sys
     import types
 
@@ -249,6 +262,14 @@ def _install_fake_runpod(monkeypatch: pytest.MonkeyPatch) -> list[dict]:
 
     monkeypatch.setattr(run_preflight, "_wait_for_pod_exit", _exit_now)
     monkeypatch.setattr(run_preflight, "_final_spend", _spend)
+
+    # Plan 02-09: stub fetch_results.fetch at the module attribute so the
+    # `from tools.fetch_results import fetch as fetch_results` import inside
+    # `_run_gate` picks up the stub (the import binds the current attribute
+    # value at call time).
+    import tools.fetch_results as _fetch_results_mod
+
+    monkeypatch.setattr(_fetch_results_mod, "fetch", lambda *_a, **_kw: 0)
     return calls
 
 
