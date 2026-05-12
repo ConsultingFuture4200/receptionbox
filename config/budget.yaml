@@ -33,6 +33,17 @@ gates:
   canary:
     projected_cost_per_run_usd: 1.0
     expected_runs: 1
+  # Plan 03-01 (cloud-derate Phase 3): reserved bucket name for harness-audit
+  # ledger rows. Note: the 03-01 audit driver currently routes its real-spend
+  # provision() call through gate='smoke' because the v18 pod image has no
+  # gates.harness_audit.runner module; pod_entrypoint.sh would FATAL on the
+  # missing runner. This entry is here so the budget table acknowledges the
+  # logical harness-audit allowance, and so any future pod-side audit gate
+  # (image v19+) can call authorize_spend(provider='runpod', gate='harness-
+  # audit', ...) without further config changes.
+  harness-audit:
+    projected_cost_per_run_usd: 1.0
+    expected_runs: 1
 
 # Phase 2 (CUDA pre-flight) operational config (D-18, D-20).
 # - max_minutes_per_gate drives the in-instance watchdog (CLOUD-04, D-16);
