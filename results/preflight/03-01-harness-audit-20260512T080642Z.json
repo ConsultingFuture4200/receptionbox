@@ -1,0 +1,27 @@
+{
+  "adapter_health": {
+    "llm": true,
+    "stt": true,
+    "tts": true
+  },
+  "audit_clean": true,
+  "auth_id": 59,
+  "data_provenance": "results/_pulled/rziqa6o1yrq9iu/smoke/ (rsynced via fetch-pod 3s8epdmqe4ohi3)",
+  "fetch_path": "manual retry via tools.fetch_results after stockout",
+  "final_pod_state": "GONE",
+  "final_spend_basis": "estimated from pod lifetime ~7m08s \u00d7 H100 NVL $2.59/hr; cost-watch in-pod adapter sample rate was 300s and the pod self-terminated before the first sample completed",
+  "final_spend_usd": 0.31,
+  "gpu_type": "NVIDIA H100 NVL",
+  "image_digest": "sha256:abcf19f8d84c165682f615b6e609e209850593b44b67dbec80fb93275ea9d217",
+  "image_ref": "ghcr.io/consultingfuture4200/rbox-pod@sha256:abcf19f8d84c165682f615b6e609e209850593b44b67dbec80fb93275ea9d217",
+  "max_minutes": 15,
+  "plan": "03-01",
+  "pod_id": "rziqa6o1yrq9iu",
+  "pod_url": null,
+  "projected_cost_usd": 0.67,
+  "real_spend": true,
+  "rows_observed": 5,
+  "started_utc": "20260512T074658Z",
+  "terminated_utc": "2026-05-12T07:54:10Z",
+  "verdict": "pass"
+}

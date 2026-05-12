@@ -1,0 +1,24 @@
+{
+  "adapter_health": {
+    "llm": true,
+    "stt": true,
+    "tts": true
+  },
+  "audit_clean": true,
+  "auth_id": 59,
+  "final_pod_state": "GONE",
+  "final_spend_usd": 0.0,
+  "gpu_type": "NVIDIA H100 NVL",
+  "image_digest": "sha256:abcf19f8d84c165682f615b6e609e209850593b44b67dbec80fb93275ea9d217",
+  "image_ref": "ghcr.io/consultingfuture4200/rbox-pod@sha256:abcf19f8d84c165682f615b6e609e209850593b44b67dbec80fb93275ea9d217",
+  "max_minutes": 15,
+  "plan": "03-01",
+  "pod_id": "rziqa6o1yrq9iu",
+  "pod_url": null,
+  "projected_cost_usd": 0.67,
+  "real_spend": true,
+  "rows_observed": 5,
+  "started_utc": "20260512T074658Z",
+  "terminated_utc": "2026-05-12T07:54:10.494211",
+  "verdict": "pass"
+}

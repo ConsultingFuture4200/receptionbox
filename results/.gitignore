@@ -14,3 +14,6 @@
 !smoke/2f6b0aa20acb4ebda0302d51b98c6334.jsonl
 # DEV-1021 lineage capture verification (G2 diag pod)
 !_pulled/jow8x9kugpkgxm/g2/e9319ce2d8124b1fb5c0ebccae37b551.jsonl
+# Plan 03-01 harness-audit verdict (rziqa6o1yrq9iu, 2026-05-12)
+!smoke/6bc74f546d604b63a4febdf502b63e2a.jsonl
+!_pulled/rziqa6o1yrq9iu/smoke/6bc74f546d604b63a4febdf502b63e2a.jsonl
