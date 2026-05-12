@@ -36,17 +36,26 @@ def init_runpod_ledger(monkeypatch, tmp_path):
     return db
 
 
-def test_runpod_provision_authorizes_within_budget(init_runpod_ledger) -> None:
+def test_runpod_provision_authorizes_within_budget(init_runpod_ledger, monkeypatch) -> None:
     from orchestration import runpod_h100
 
     # Phase 2 changed the return type to ProvisionResult; the cost-ledger
     # Authorization is now reachable via .authorization. The AST ordering
     # contract (authorize_spend FIRST in provision()) is preserved — see
     # test_orchestration_modules_call_authorize_spend_first below.
+    #
+    # Plan 02-09 gap closure (2026-05-12): force the dry-run path by unsetting
+    # RUNPOD_API_KEY. Without this, an operator-set key (the normal state
+    # post secrets/rboxkey.md) causes provision() to hit the real RunPod
+    # GraphQL endpoint, which flake-fails with "no instances available" when
+    # H100 stock is thin. Mirrors the vultr/tensorwave dry-run pattern below.
+    monkeypatch.delenv("RUNPOD_API_KEY", raising=False)
+
     result = runpod_h100.provision(gate="smoke", projected_cost=10.0)
     auth = result.authorization
     assert auth.provider == "runpod"
     assert auth.gate == "smoke"
+    assert result.pod_id == "dry-run"  # positive proof the dry-run path was taken
 
 
 def test_runpod_provision_refused_over_budget(init_runpod_ledger) -> None:
