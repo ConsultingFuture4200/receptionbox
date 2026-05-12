@@ -31,8 +31,14 @@ logger = logging.getLogger(__name__)
 # create_pod time so a missed pin can't silently recur.
 _DEFAULT_IMAGE = (
     "ghcr.io/consultingfuture4200/rbox-pod"
-    "@sha256:abcf19f8d84c165682f615b6e609e209850593b44b67dbec80fb93275ea9d217"
+    "@sha256:dc3661f12e0ad35b4b21dedf782895496abf80aeb2d1dc90b1fb71b701e03047"
 )
+# v19a (2026-05-12, image-v19 strata-only rebuild): bumps from v18
+# (sha256:abcf19f8…ea9d217). What changed: pod_entrypoint.sh honors
+# STRATA_PATH env override; corpus_hesitation (50 wavs, 8.8M) is bundled
+# in the image; config/phase3_strata.yaml is baked at /workspace.
+# Chatterbox install is intentionally NOT in v19a — deferred to v20
+# (gates plan 03-04 G7 TTS A/B scope).
 _DEFAULT_GPU = "NVIDIA H100 PCIe"
 
 

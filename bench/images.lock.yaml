@@ -6,6 +6,18 @@
 # Schema validated by pydantic in tests/test_lockfiles.py.
 
 images:
+  # rbox-pod (derived) — the entrypoint-baked image actually deployed to pods.
+  # Operator-resolved digests for each revision are recorded here for repro;
+  # the live default is also pinned in orchestration/runpod_h100.py:_DEFAULT_IMAGE.
+  - provider: runpod
+    rail: cuda
+    image_ref: ghcr.io/consultingfuture4200/rbox-pod
+    tag: v19a
+    digest: sha256:dc3661f12e0ad35b4b21dedf782895496abf80aeb2d1dc90b1fb71b701e03047
+    registry: ghcr.io
+    captured_utc: "2026-05-12T08:50:00Z"
+    notes: "Image v19a strata-only rebuild. Adds STRATA_PATH env override in pod_entrypoint.sh + bundles assets/corpus_hesitation + bakes config/phase3_strata.yaml. Chatterbox install deferred to v20 (plan 03-04 scope). Supersedes v18 sha256:abcf19f8…ea9d217."
+
   - provider: runpod
     rail: cuda
     image_ref: vllm/vllm-openai
