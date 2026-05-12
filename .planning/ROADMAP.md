@@ -54,7 +54,7 @@ Plans:
 - [x] 02-06-PLAN.md — Custom rbox-pod image (FROM vllm/vllm-openai:v0.10.0) with pod_entrypoint baked as ENTRYPOINT, digest-pinned in _DEFAULT_IMAGE (DEV-1035)
 - [x] 02-07-PLAN.md — GAP CLOSURE: multi-service pod startup (vLLM+Kokoro) + corpus_500 in image + fetch_results transport pivot; image v8→v18 iteration; smoke verdict pass (closes 02-04 T4 / PREFLIGHT-01)
 - [x] 02-08-PLAN.md — RETROACTIVE GAP CLOSURE: image_digest + git_commit lineage on result rows (DEV-1021); REPRO-03 data verified on G2 diag pod
-- [ ] 02-09-PLAN.md — GAP CLOSURE (02-UAT.md Test 1, 2026-05-12): mock RunPod SDK in cold-start pytest; fix run_preflight smoke-test hang (fetch_results unmocked); add tests/conftest.py autouse fixture clearing RUNPOD_API_KEY for the test session
+- [x] 02-09-PLAN.md — GAP CLOSURE (02-UAT.md Test 1, 2026-05-12): mock RunPod SDK in cold-start pytest; fix run_preflight smoke-test hang (fetch_results unmocked); add tests/conftest.py autouse fixture clearing RUNPOD_API_KEY for the test session
 
 ### Phase 3: RunPod NVIDIA → Jetson Orin Derate [REDIRECTED per DR-39 v0.3.0]
 **Goal**: Produce derated Jetson AGX Orin 64GB predictions for G1, G2, G3, G5, G7 from measurements taken on RunPod NVIDIA H100/H200 (Phase 2 stack, abundant supply). Derate basis: NVIDIA's published Jetson Orin Performance Benchmarks + community NIM Orin reproductions. One-hop, same-vendor, same-stack derate chain (NVIDIA cloud → NVIDIA edge). Phase 4 synthesis builds the gate decision from derated numbers with bounded confidence intervals.
@@ -70,7 +70,16 @@ Plans:
   7. Phase 4 synthesis report cites NVIDIA's published Jetson Orin Performance Benchmarks (developer.nvidia.com/embedded/jetson-orin-benchmarks) as derate basis with explicit derate-error confidence interval
 **Phase dir**: `.planning/phases/03-cloud-derate/` (new dir created 2026-05-12 per DR-39 v0.3.0; `.planning/phases/03-rocm-validation-archived/` remains intact as the pre-pivot archive, never modified post-DR-39).
 
-**Plans**: Plan set TBD via `/gsd-plan-phase 3` (2026-05-12). **NO Orin dev kit purchase in Phase 0 critical path** (per CLAUDE.md §1.1 + DR-39 v0.3.0 methodology refinement): plans measure on RunPod NVIDIA H100/H200 only and produce Orin derates from NVIDIA's published Jetson Orin Performance Benchmarks. Old ROCm-targeted plans 03-01..03-06 + 03-01.5 are **parked-archival** in the archive dir (committed code stays in repo as optional ROCm path for future, off the critical path).
+**Plans**: 7 plans (drafted 2026-05-12 via `/gsd-plan-phase 3`). **NO Orin dev kit purchase in Phase 0 critical path** (per CLAUDE.md §1.1 + DR-39 v0.3.0 methodology refinement): plans measure on RunPod NVIDIA H100/H200 only and produce Orin derates from NVIDIA's published Jetson Orin Performance Benchmarks. Old ROCm-targeted plans 03-01..03-06 + 03-01.5 are **parked-archival** in the archive dir (committed code stays in repo as optional ROCm path for future, off the critical path).
+
+Plans:
+- [ ] 03-01-PLAN.md — substrate harness audit on fresh v18 pod (bootstrap baseline, $5)
+- [ ] 03-02-PLAN.md — G2 STT WER (200 G.711 clips) + G3 turn detection threshold sweep ($5)
+- [ ] 03-03-PLAN.md — G5 UPL probes (200 + 50 controls via vLLM xgrammar, $3)
+- [ ] 03-04-PLAN.md — G7 TTS A/B (30 stimuli × 2 engines × 2 paths = 120 renders, $4)
+- [ ] 03-05-PLAN.md — AUDIT-01 co-residency + AUDIT-03 engine-swap + Ollama-overhead measurement ($3)
+- [ ] 03-06-PLAN.md — G1 latency (500-call corpus × N=1/2/4 concurrencies; most expensive, runs LAST; $12)
+- [ ] 03-07-PLAN.md — derate synthesis prep (local Python pandas+scipy.bootstrap, NVIDIA cross-check; $0)
 
 Old plans in `.planning/phases/03-rocm-validation-archived/` (parked-archival per DR-39, NOT to be revived):
 - [archive] 03-01-PLAN.md — substrate/rocm.py + Dockerfile.rocm + Vultr provisioning + phase3 config (parked: code shipped, off critical path)
