@@ -12,7 +12,7 @@ Phase 0 is a one-week, $150-ceiling cloud benchmark harness that produces derate
 
 - [x] **Phase 1: Foundation** — Repo skeleton, asset curation, cost rails, NC-R14 resolution; zero GPU spend
 - [x] **Phase 2: CUDA Pre-flight** — RunPod H100 substrate proves pipeline with 5-call smoke (verdict pass) + G1/G2/G3/G5 sanity (DEV-1019 Delivered with operator-accepted 20-row-per-gate partial coverage)
-- [ ] **Phase 3: ROCm Validation** — RunPod MI300X full G1–G7 measurement + co-residency + gfx1151 audit
+- [ ] **Phase 3: Jetson Orin Validation [REDIRECTED per DR-39 RATIFIED 2026-05-11]** — Direct measurement on Jetson AGX Orin 64GB Developer Kit (target SoC of the appliance). No further derate — Orin IS the appliance. Old "ROCm Validation on MI300X" scope is parked-archival.
 - [ ] **Phase 4: Synthesis & Gate Decision** — Per-stage derating, sales-safe report, feasibility memo v0.4, go/no-go package
 
 ## Phase Details
@@ -55,24 +55,27 @@ Plans:
 - [x] 02-07-PLAN.md — GAP CLOSURE: multi-service pod startup (vLLM+Kokoro) + corpus_500 in image + fetch_results transport pivot; image v8→v18 iteration; smoke verdict pass (closes 02-04 T4 / PREFLIGHT-01)
 - [x] 02-08-PLAN.md — RETROACTIVE GAP CLOSURE: image_digest + git_commit lineage on result rows (DEV-1021); REPRO-03 data verified on G2 diag pod
 
-### Phase 3: ROCm Validation
-**Goal**: RunPod MI300X (Day-1 per D-31-A4.1 amendment 2026-05-11; supersedes D-31-A4 which had named TensorWave primary; TensorWave demoted to secondary fallback; Vultr remains backup — Vultr's only MI300X SKU is an 8-GPU bare-metal preemptible at $14.80/hr which breaks the $54 budget 4×; TensorWave's provisioning surface is unknown and would require a separate research plan; RunPod publicly lists MI300X at $1.99/GPU-hr Secure Cloud per-GPU through the same surface Phase 02 already uses, yielding a single substrate for the entire Phase 0 program with trivial cost premium) produces measurement-grade data for G1, G2, G3, G5, G7 against pinned corpora at concurrencies N=1/2/4 with per-stage decomposition, plus the load-bearing audits — Chatterbox Day-1 kill-switch, co-residency stack-load, gfx1151 op coverage, engine-swap-under-load — that prevent the dominant Phase 0 → Phase 2 false-pass paths. **Plan 03-01.5 (inserted 2026-05-11; rewritten 2026-05-11 per D-31-A4.1) is the substrate-pivot enabler:** RunPod MI300X stock-poll mechanic + `orchestration/runpod_mi300x.py` module + dispatch shim + $2 smoke pod. Wave 2 (03-02) is blocked on 03-01.5 completion (PROCEED-RUNPOD) or downgraded to a TensorWave-investigation 03-01.6 plan (HALT-STOCK) or to CUDA-only synthesis (HALT-COST per DR-31 fallback).
-**Depends on**: Phase 2
-**Requirements**: HARNESS-03, GATE-CHATTERBOX-D1, GATE-G1, GATE-G2, GATE-G3, GATE-G5, GATE-G7, AUDIT-01, AUDIT-02, AUDIT-03
-**Success Criteria** (what must be TRUE):
-  1. GATE-CHATTERBOX-D1 ROCm load smoke runs on Day 1 of MI300X work and produces an explicit pass/fail decision; on fail, Kokoro becomes the primary G1/G7 measurement engine and Chatterbox is flagged as a feasibility risk per DR-27
-  2. G1 latency on the 500-call corpus at N=1/2/4 reports p50/p90/p99 per-stage (STT TTFT, LLM TTFT, LLM decode, TTS first-audio) and aggregate; G2 WER measured on 200 G.711 clips with both faster-whisper INT8 and ONNX-RT ROCm parallel paths; G3 turn-detection threshold sweep 400–1500ms in 100ms steps; G5 evaluated against the receptionBOX-shaped reference prompt with grammar-constrained generation ON; G7 renders both warm-path and cold-path TTS first-audio across 30 stimulus pairs
-  3. Co-residency stack-load test (Whisper + Qwen3-4B + Chatterbox/Kokoro all loaded simultaneously under sustained load ≥ 5 min) records memory headroom, kernel mismatches, and crash detection without aborting; engine-swap-under-load demo flips TTS from Chatterbox to Kokoro mid-session via config row with measured swap-time
-  4. `audit/gfx1151_op_status.md` exists with a status table (present / fallback / unknown) for every critical op used by Whisper, Qwen3-4B, Chatterbox, and Kokoro against the planned appliance ROCm minor + PyTorch wheel cut
-**Plans**: 7 plans (1 inserted Wave-1.5 dependency-enabler after 03-01 amendment D-31-A4; rewritten in place per D-31-A4.1 to retarget RunPod instead of TensorWave)
-Plans:
-- [x] 03-01-PLAN.md — substrate/rocm.py + Dockerfile.rocm + Vultr provisioning + phase3 config + image digest pin (HARNESS-03)
-- [ ] 03-01.5-PLAN.md — INSERTED (D-31-A4 substrate-pivot enabler; REWRITTEN per D-31-A4.1 to retarget RunPod): RunPod MI300X stock-poll mechanic + `orchestration/runpod_mi300x.py` drop-in + `orchestration/mi300x.py` dispatch shim (default=runpod) + $2 smoke pod; HALT-STOCK branch re-activates a TensorWave investigation as a future 03-01.6; HALT-COST branch downgrades Phase 0 to CUDA-only per DR-31 (CLOUD-02, HARNESS-04)
-- [ ] 03-02-PLAN.md — Day-1 Chatterbox ROCm kill-switch (2hr/$4 timebox; D-35/D-36/D-37/D-38) (GATE-CHATTERBOX-D1)
-- [ ] 03-03-PLAN.md — G1 concurrency N=1/2/4 + G2 dual-path + G3 12-threshold sweep + G5 constraint_status (GATE-G1/G2/G3/G5)
-- [ ] 03-04-PLAN.md — G7 TTS A/B: warm + cold first-audio × 30 pairs × 2 engines = 120+ rows + WAV files (GATE-G7)
-- [ ] 03-05-PLAN.md — AUDIT-01 co-residency 5-min sustained + AUDIT-03 engine-swap-under-load (D-37 config-row flip)
-- [ ] 03-06-PLAN.md — AUDIT-02 gfx1151 op-coverage audit (torch.profiler + hand-curated registry) (AUDIT-02)
+### Phase 3: Jetson Orin Validation [REDIRECTED per DR-39 RATIFIED 2026-05-11]
+**Goal**: Direct measurement of the receptionBOX harness on the target appliance SoC — NVIDIA Jetson AGX Orin 64GB Developer Kit. Produces G1, G2, G3, G5, G7 numbers measured on the exact silicon the v1 appliance ships with, eliminating the cloud-derate confidence gap entirely. Derate methodology collapses: H100 (Phase 2 measured) → Orin Direct (Phase 3 measured) → no further derate (Orin IS the appliance). Phase 4 synthesis builds the gate decision directly from Phase 3's measured-on-target numbers.
+**Depends on**: Phase 2 + 1× Jetson AGX Orin 64GB Developer Kit on operator workstation (~$2k, ~1 week shipping from NVIDIA / Arrow / Amazon)
+**Requirements**: HARNESS-03 (REDIRECTED — was ROCm, now JetPack/CUDA on Orin), GATE-G1, GATE-G2, GATE-G3, GATE-G5, GATE-G7. **OBSOLETE under DR-39**: GATE-CHATTERBOX-D1 (Chatterbox-CUDA already validated in Phase 2; no ROCm risk to kill-switch), AUDIT-02 (gfx1151 op coverage — no AMD silicon in the new product target). AUDIT-01 (co-residency) + AUDIT-03 (engine-swap) remain valid but trivialized — both run directly on the operator's Orin dev kit alongside the gate measurements.
+**Success Criteria** (what must be TRUE — REWRITTEN per DR-39):
+  1. receptionBOX harness builds and runs on Jetson AGX Orin 64GB with JetPack 6+ / CUDA 12.x; vLLM, faster-whisper, Chatterbox, Kokoro, LiveKit Agents all load successfully
+  2. G1 latency on the 500-call corpus at N=1/2/4 reports p50/p90/p99 per-stage (STT TTFT, LLM TTFT, LLM decode, TTS first-audio) and aggregate, measured directly on Orin
+  3. G2 WER measured on 200 G.711 clips with faster-whisper INT8 on Orin (ONNX-RT ROCm dual-path obsolete under DR-39)
+  4. G3 turn-detection threshold sweep 400–1500ms in 100ms steps on Orin
+  5. G5 UPL probes against the receptionBOX-shaped reference prompt with grammar-constrained generation ON, on Orin
+  6. G7 TTS A/B renders both warm-path and cold-path first-audio across 30 stimulus pairs on Orin
+  7. Co-residency stack-load (AUDIT-01): all 4 models loaded simultaneously on Orin under sustained ≥ 5-min load; memory headroom + crash detection recorded
+**Plans**: TBD — new Phase 3 plan set drafts after Orin dev kit arrives. Old ROCm-targeted plans 03-01..03-06 + 03-01.5 are **parked-archival** (committed code stays in repo as optional ROCm path for future, off the critical path).
+Old plans (parked-archival per DR-39):
+- [archive] 03-01-PLAN.md — substrate/rocm.py + Dockerfile.rocm + Vultr provisioning + phase3 config (parked: code shipped, off critical path)
+- [obsolete] 03-01.5-PLAN.md — RunPod MI300X stock-poll + orchestration (obsolete under DR-39 redirect to direct Orin measurement)
+- [obsolete] 03-02-PLAN.md — Day-1 Chatterbox ROCm kill-switch (no ROCm risk to validate)
+- [redirect] 03-03-PLAN.md — G1+G2+G3+G5 (will be rewritten for Orin direct measurement)
+- [redirect] 03-04-PLAN.md — G7 TTS A/B (will be rewritten for Orin direct measurement)
+- [redirect] 03-05-PLAN.md — AUDIT-01 co-residency + AUDIT-03 engine-swap (will be rewritten for Orin direct measurement)
+- [obsolete] 03-06-PLAN.md — AUDIT-02 gfx1151 op-coverage (no AMD silicon in the new product target)
 
 ### Phase 4: Synthesis & Gate Decision
 **Goal**: A defensible synthesis report with per-stage roofline-derated Strix Halo predictions, 80% confidence bands, sales-safe excerpt, feasibility memo v0.4 fragment, and a Phase 0 gate decision package that survives adversarial review and can ground a paid-discovery SOW conversation with the firm.

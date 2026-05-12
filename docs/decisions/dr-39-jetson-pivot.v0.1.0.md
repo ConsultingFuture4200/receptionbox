@@ -1,17 +1,18 @@
 # DR-39: Product target pivot — Strix Halo → NVIDIA Jetson AGX Thor
 
-**File version:** v0.1.0
-**Status:** **PROPOSED** — pending parent thUMBox + UMB Group ratification
+**File version:** v0.2.0
+**Status:** **APPROVED 2026-05-11** — parent thUMBox + UMB Group ratified; **target SKU = NVIDIA Jetson AGX Orin 64GB** (not Thor as originally drafted; see §10)
 **Proposed by:** Claude drafted at operator (Dustin) request, 2026-05-11
+**Ratified by:** Operator (Dustin) confirming parent thUMBox + UMB Group sign-off, 2026-05-11
 **Supersedes (partial):** DR-24 (Strix Halo pivot, `docs/addendum-hardware-pivot-strix-halo-v0_1-2026-04-23.md`)
 **Affects:** thUMBox technical PRD v2.1, receptionBOX technical PRD v0.2, feasibility memo v0.3, hardware-pivot addendum v0.1, discovery addendum v0.2, virtual benchmark plan v0.1, `.planning/PROJECT.md`, `.planning/REQUIREMENTS.md`, `.planning/ROADMAP.md`, Phase 3 plans 03-01..03-06, CLAUDE.md §§1.2/2.1/4.1/4.2/5/6/7
 **Triggering event:** RunPod MI300X stock dry on 2026-05-11; TensorWave sales unblock pending ≥7 days; Vultr's only MI300X SKU is 8-GPU bare-metal preemptible at $14.80/hr (breaks budget 4×).
 
 ---
 
-## §1 Decision (proposed)
+## §1 Decision (ratified)
 
-Pivot the receptionBOX appliance target hardware from **AMD Ryzen AI Max+ 395 "Strix Halo" (gfx1151)** to **NVIDIA Jetson AGX Thor**.
+Pivot the receptionBOX appliance target hardware from **AMD Ryzen AI Max+ 395 "Strix Halo" (gfx1151)** to **NVIDIA Jetson AGX Orin 64GB** (see §10 — original proposal named Thor; parent team substituted Orin 64GB on BOM grounds).
 
 This is a parent-thUMBox-platform decision, not a Phase 0 internal decision. Phase 0 inherits whatever the target is — but the choice of target materially changes Phase 0 scope, risk profile, and timeline.
 
@@ -144,13 +145,62 @@ Documents requiring update if ratified:
 
 ---
 
-## §8 Approval (sign here to ratify)
+## §8 Approval
 
-- Operator (Dustin Powers): _________________
-- UMB Group / parent thUMBox stakeholder: _________________
-- Date ratified: _________________
+- Operator (Dustin Powers): **APPROVED 2026-05-11**
+- UMB Group / parent thUMBox stakeholder: **APPROVED 2026-05-11** (operator confirming on behalf of stakeholders)
+- Date ratified: **2026-05-11**
+- Target SKU: **NVIDIA Jetson AGX Orin 64GB** (Thor substituted out — see §10)
 
 ---
+
+## §10 Thor → Orin 64GB substitution (added at ratification, 2026-05-11)
+
+DR-39 v0.1.0 named **Jetson AGX Thor** as the target. The parent thUMBox + UMB Group review substituted **Jetson AGX Orin 64GB** at ratification on BOM-economics grounds. Rationale captured here for downstream coherence.
+
+### §10.1 What stays the same
+
+Every §2 rationale (software-stack risk collapse, cloud-derate-substrate match, production-stack parity) applies identically to Orin 64GB. Both are CUDA + JetPack; both have abundant H100/H200 cloud proxies; both eliminate the ROCm risk surface. The §3 doc-update scope is unchanged.
+
+### §10.2 What changes vs the Thor draft
+
+| Field | Thor (DR-39 v0.1.0 draft) | Orin 64GB (RATIFIED) |
+|---|---|---|
+| Unit cost (module + carrier, OEM volume) | ~$3.5–4k | **~$2k** (matches Strix Halo BOM) |
+| BOM impact vs Strix Halo | +$2-3k per unit | **~$0** (cost-neutral) |
+| Compute headroom | ~2 PFLOPS FP4 sparse marketing number; ~275 dense TOPS INT8 real | ~275 TOPS INT8 (Orin) |
+| Memory | 128 GB unified LPDDR5X | 64 GB unified LPDDR5 |
+| Memory bandwidth | ~273 GB/s | 204 GB/s |
+| Power envelope | 40–130 W configurable | 15–60 W configurable |
+| Software stack | JetPack 7+ / CUDA 13+ | **JetPack 6+ / CUDA 12.x — mature, deployed in production at scale** |
+| Workload fit (Qwen3-4B Q4 + Whisper INT8 + Chatterbox + Kokoro at concurrency 1–4) | Massive headroom (probably 8–10x what receptionBOX needs) | **Comfortable fit (estimated 2–3x headroom)** |
+
+### §10.3 Why Orin 64GB is the right call for receptionBOX specifically
+
+1. **BOM cost neutral with Strix Halo.** No discovery-SOW price renegotiation needed. The firm conversation does not have to absorb a "appliance got $2k more expensive" line.
+2. **Mature software.** JetPack 6 has been in production deployment for ~18 months as of ratification; thousands of robotics/edge AI products ship on Orin. CUDA 12.x is the same stack as RunPod H100 (Phase 2 substrate). Risk of dependency surprises near zero.
+3. **Workload fit.** receptionBOX maxes out at concurrency-4 per the PRD. Qwen3-4B Q4 weights are ~2.4 GB; Whisper INT8 ~150 MB; Chatterbox ~700 MB; Kokoro ~80 MB; KV cache for 4 concurrent calls ~3-4 GB. Total VRAM working set ~10 GB. Orin 64GB unified memory is comfortable. Thor's 128 GB was overkill.
+4. **Power.** 15–60 W is reception-desk friendly (passive or low-RPM fan; near-silent). Thor's 40–130 W needs active cooling.
+5. **Future optionality.** If volume scales and the workload grows, Thor upgrade path is the same socket family — re-platform later if/when justified by data.
+
+### §10.4 Where Thor would have won
+
+- Multi-pack future (DR-25 v2 — currently out of scope per PROJECT.md)
+- Higher-concurrency law firm tier (>4 simultaneous callers) — not the inbound lead's profile
+- FP4/sparse model variants from 2026+ that genuinely need Thor's transformer engine
+
+These are real but not relevant to receptionBOX v1.
+
+### §10.5 Implications for the Phase 3 redirect
+
+Same direction as the original Thor proposal, with slightly tighter Jetson-side derate confidence:
+- Phase 3 collapses to "CUDA validation on H100/H200 (already partial from Phase 2) + direct measurement on Orin 64GB dev kit"
+- Buy 1 Jetson AGX Orin 64GB Developer Kit (~$2k, ~1 week shipping from NVIDIA / arrow.com / amazon)
+- Run the receptionBOX harness directly on Orin; compare to H100 measurements
+- Derate methodology becomes: H100 numbers (upper bound, Phase 2) → Orin Direct (measured, Phase 3) → "the appliance"
+- No derate distance at all between Orin Direct and shipped appliance — they're the same SoC
+
+Phase 0 timeline from this ratification: ~5–7 calendar days assuming Orin dev kit ships in ~3 days.
 
 ## §9 Notes
 

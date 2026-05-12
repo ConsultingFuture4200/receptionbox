@@ -2,7 +2,7 @@
 
 ## What This Is
 
-A pre-discovery cloud benchmark effort that validates whether receptionBOX (a voice AI personality pack for the thUMBox edge-AI appliance platform, targeting law firms) can hit its end-to-end latency and quality budgets on the planned T3 hardware (Framework Desktop / AMD Ryzen AI Max+ 395 "Strix Halo"). Phase 0 runs entirely on rented cloud GPUs (RunPod H100 for CUDA pre-flight, MI300X via Vultr or TensorWave for ROCm validation) and produces derated Strix Halo predictions plus an updated feasibility memo. **It is the gate that determines whether UMB Group offers a paid discovery SOW to the inbound large-law-firm lead.**
+A pre-discovery benchmark effort that validates whether receptionBOX (a voice AI personality pack for the thUMBox edge-AI appliance platform, targeting law firms) can hit its end-to-end latency and quality budgets on the planned T3 hardware. **DR-39 RATIFIED 2026-05-11: T3 hardware retargeted from AMD Strix Halo (Framework Desktop) → NVIDIA Jetson AGX Orin 64GB Developer Kit (cost-neutral BOM at ~$2k, mature CUDA software stack, eliminates ROCm risk surface).** Phase 0 originally planned for cloud-only on RunPod H100 (CUDA pre-flight, COMPLETE) + MI300X (ROCm validation, OBSOLETE under DR-39). New Phase 3 path: H100 measurement (Phase 2 done) + direct measurement on operator's Jetson AGX Orin 64GB dev kit. **Phase 0 is the gate that determines whether UMB Group offers a paid discovery SOW to the inbound large-law-firm lead.**
 
 ## Core Value
 

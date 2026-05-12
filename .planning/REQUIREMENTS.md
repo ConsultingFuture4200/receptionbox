@@ -31,7 +31,7 @@ Requirements for the Phase 0 deliverable set. Each maps to roadmap phases.
 
 - [x] **HARNESS-01**: `substrate/__init__.py` defines `Substrate` ABC with `load_stt`, `load_llm`, `load_tts`, `transcribe`, `generate`, `synthesize`, `env_fingerprint` methods; gate runners may not import torch/onnxruntime directly
 - [x] **HARNESS-02**: `substrate/cuda.py` implements the ABC for RunPod H100 (vLLM 0.10+ CUDA wheel, faster-whisper INT8, Chatterbox-Turbo CUDA, Kokoro CUDA, LiveKit Agents 1.x)
-- [x] **HARNESS-03**: `substrate/rocm.py` implements the ABC for TensorWave/Vultr MI300X (vLLM ROCm wheel, faster-whisper INT8 ROCm, devnen Chatterbox-TTS-Server, moritzchow Kokoro-FastAPI-ROCm, LiveKit Agents 1.x)
+- [x] **HARNESS-03 [REDIRECTED per DR-39 RATIFIED 2026-05-11]**: Originally `substrate/rocm.py` implementing the ABC for MI300X. ROCm code shipped (parked-archival in repo as optional path). **New scope under DR-39**: `substrate/jetson.py` implements the ABC for Jetson AGX Orin 64GB (JetPack 6+, CUDA 12.x, TensorRT-LLM, faster-whisper CUDA INT8, Chatterbox CUDA, Kokoro CUDA, LiveKit Agents 1.x). Will be drafted in Phase 3 redirect work after Orin dev kit arrives.
 - [x] **HARNESS-04**: Result schema is pydantic-validated with `schema_version` field; results stored as JSONL + Parquet + SQLite index in `results/`
 - [x] **HARNESS-05**: Each gate run emits an `env.json` sidecar (substrate fingerprint, model SHAs, image digests, git commit, asset manifest hash, timestamps)
 - [x] **HARNESS-06**: Gate runners under `gates/g{1,2,3,5,7}/runner.py` are substrate-agnostic and standalone-invokable via `make gN`
@@ -62,9 +62,9 @@ Requirements for the Phase 0 deliverable set. Each maps to roadmap phases.
 
 ### Critical Audits (ROCm Phase)
 
-- [ ] **AUDIT-01**: Co-residency stack-load test — Whisper + Qwen3-4B + Chatterbox/Kokoro all loaded simultaneously on MI300X under sustained load (≥ 5 min); memory headroom, kernel mismatch, and crash detection
-- [ ] **AUDIT-02**: gfx1151 (Strix Halo) kernel-coverage audit — every critical op used by Whisper, Qwen3-4B, Chatterbox, Kokoro is checked against the planned appliance ROCm minor + PyTorch wheel cut; status table per op (present / fallback / unknown) committed as `audit/gfx1151_op_status.md`
-- [ ] **AUDIT-03**: Engine-swap-under-load demo — TTS engine flipped from Chatterbox to Kokoro mid-session via Postgres config row (or local equivalent), measured swap-time, no audible disruption — proves DR-27 pluggable-TTS architecture viability
+- [ ] **AUDIT-01 [REDIRECTED per DR-39]**: Co-residency stack-load test on Jetson AGX Orin 64GB (was MI300X) — Whisper + Qwen3-4B + Chatterbox/Kokoro all loaded simultaneously under sustained load (≥ 5 min); memory headroom, kernel mismatch, crash detection. Trivially runnable on the operator's Orin dev kit alongside the gate measurements.
+- [ ] **AUDIT-02 [OBSOLETE per DR-39]**: gfx1151 kernel-coverage audit. Original justification was "gfx1151 on Strix Halo has ROCm op gaps." Under DR-39 the target is Jetson AGX Orin (CUDA, no gfx1151 silicon in the product), so this audit no longer applies. Closed by product retarget rather than measurement.
+- [ ] **AUDIT-03 [REDIRECTED per DR-39]**: Engine-swap-under-load demo on Jetson AGX Orin 64GB (was MI300X) — TTS engine flipped from Chatterbox to Kokoro mid-session via config row, measured swap-time, no audible disruption. DR-27 pluggable-TTS architecture viability proven on target hardware directly.
 
 ### Derating & Methodology
 

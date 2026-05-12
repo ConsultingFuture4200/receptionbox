@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v0.4
 milestone_name: milestone
-status: pivot_proposed_awaiting_ratification
-stopped_at: "DR-39 Jetson Pivot drafted (PROPOSED 2026-05-11) — pivot product target from Strix Halo (gfx1151) to NVIDIA Jetson AGX Thor. Drafted at operator request after RunPod MI300X stock dry + TensorWave sales unblock pending ≥7 days + Vultr 8-GPU-bare-metal-preemptible breaks budget 4×. Phase 3 ROCm work HALTED pending parent thUMBox + UMB Group ratification of DR-39. MI300X poller stopped (1 probe recorded; no_stock). See docs/decisions/dr-39-jetson-pivot.v0.1.0.md."
-last_updated: "2026-05-11T20:30:00.000Z"
-last_activity: 2026-05-11 -- DR-39 Jetson Pivot drafted (PROPOSED status); Phase 3 ROCm work halted
+status: pivot_ratified_jetson_orin_64gb
+stopped_at: "DR-39 Jetson Pivot RATIFIED 2026-05-11 — product target is NVIDIA Jetson AGX Orin 64GB (parent team substituted Orin 64GB for Thor on BOM grounds; BOM cost-neutral with Strix Halo at ~$2k). Phase 3 ROCm work fully obsolete. All Phase 3 plans 03-01 through 03-06 and the inserted 03-01.5 are parked-archival under the new direction. New Phase 3 shape: buy 1× Jetson AGX Orin 64GB Developer Kit (~$2k, ~1 week shipping); run receptionBOX harness directly on Orin; derate from H100 (Phase 2 measured) → Orin Direct (Phase 3 measured) → no further derate (Orin IS the appliance SoC). See docs/decisions/dr-39-jetson-pivot.v0.1.0.md §10 for full Thor→Orin substitution rationale."
+last_updated: "2026-05-11T20:50:00.000Z"
+last_activity: 2026-05-11 -- DR-39 RATIFIED (target = Jetson AGX Orin 64GB); Phase 3 ROCm parked-archival; new Phase 3 shape = direct Orin measurement
 progress:
   total_phases: 4
   completed_phases: 2
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-04)
 
 **Core value:** Produce trustworthy go/no-go evidence on receptionBOX feasibility — derated Strix Halo predictions for latency/WER/turn-detection/UPL/TTS — before any sales commitment is made to the firm.
-**Current focus:** **DR-39 Jetson Pivot ratification** (parent thUMBox + UMB Group review). Phase 3 ROCm work HALTED.
+**Current focus:** **Phase 3 retarget per DR-39 RATIFIED 2026-05-11**: Jetson AGX Orin 64GB direct measurement (replaces MI300X-cloud-derate path).
 
 ## Current Position
 
-Phase: 03 (rocm-validation) — **HALTED pending DR-39 ratification**
-Plan: 1 of 6 shipped (03-01 substrate); 03-02..06 frozen in PROPOSED-pivot state
-Status: Awaiting parent thUMBox + UMB Group ratification of DR-39 Jetson Pivot
-Last activity: 2026-05-11 -- DR-39 drafted
+Phase: 03 — **REDIRECTING per DR-39 (RATIFIED)**: rocm-validation → jetson-orin-validation
+Plan: 03-01..03-06 + 03-01.5 all parked-archival; new plan set drafts pending
+Status: Operator action — order 1× Jetson AGX Orin 64GB Developer Kit (~$2k, ~1 week shipping). Phase 3 execution starts when device arrives.
+Last activity: 2026-05-11 -- DR-39 RATIFIED with Orin 64GB substitution
 
-Progress: [██████████] 100% (Phase 2 plans + Phase 3 plans on disk); MI300X cloud supply blocker forced a strategic pause
+Progress: Phase 2 + 03-01 substrate code shipped (parked-archival as optional ROCm path). New Phase 3 scope drafts pending.
 
 ## Performance Metrics
 
