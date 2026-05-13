@@ -51,7 +51,7 @@ PREFLIGHT-01 closed. PREFLIGHT-02 + PREFLIGHT-03 carved out as DEV-1019 (operato
 
 ### GAP-1 (PREFLIGHT-01 not executed, BLOCKING) → RESOLVED
 
-Smoke real-spend executed via 02-07 T7 on 2026-05-09 23:17; verdict pass. See `results/preflight/20260509T231720Z.json` and `results/smoke/2f6b0aa20acb4ebda0302d51b98c6334.jsonl`.
+Smoke real-spend executed via 02-07 T7 on 2026-05-09 23:17; verdict pass. See `results/preflight/20260509T231720Z.json` and `results/smoke_pre_v19a/2f6b0aa20acb4ebda0302d51b98c6334.jsonl` (archived from `results/smoke/` on 2026-05-12 ahead of v19a image cutover).
 
 ### GAP-2 (PREFLIGHT-02 + PREFLIGHT-03 not executed, BLOCKING) → REFRAMED
 

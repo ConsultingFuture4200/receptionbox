@@ -66,7 +66,7 @@ evidence: |
   Pre-DEV-1021 rows (v16 and earlier) under results/_pulled/{4z8jr9...,kom9zjg...,etc.} still show "pending"/"unknown" — expected, those predate the fix.
 
 ### 8. G1 smoke verdict pass on real H100 (session 20260509T231720Z)
-expected: `results/smoke/` (or `results/_pulled/d6ii16l245t41m/smoke/`) contains the audit + env JSONs for run `2f6b0aa20acb4ebda0302d51b98c6334`. Audit JSON shows verdict pass across all 6 D-25 sub-criteria; pod self-terminated GONE; wall-clock ~185 s; estimated true spend ~$0.14.
+expected: `results/smoke_pre_v19a/` (archived from `results/smoke/` on 2026-05-12 ahead of v19a image cutover; mirror at `results/_pulled/d6ii16l245t41m/smoke/`) contains the audit + env JSONs for run `2f6b0aa20acb4ebda0302d51b98c6334`. Audit JSON shows verdict pass across all 6 D-25 sub-criteria; pod self-terminated GONE; wall-clock ~185 s; estimated true spend ~$0.14.
 result: pass
 evidence: |
   results/_pulled/d6ii16l245t41m/smoke/ contains:
