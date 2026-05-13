@@ -69,10 +69,10 @@ Requirements for the Phase 0 deliverable set. Each maps to roadmap phases.
 ### Derating & Methodology
 
 - [x] **DERATE-01**: `derating/strix_model.py` implements per-stage roofline derating with arithmetic-intensity classification (STT compute-bound INT8; LLM TTFT bandwidth-bound; LLM decode bandwidth-bound; TTS first-audio compute-bound); unit-tested on synthetic data
-- [ ] **DERATE-02**: 80% confidence bands derived via bootstrap (`scipy.stats.bootstrap`) on per-stage measurements + LPDDR5X-vs-HBM3 regime-change uncertainty term
+- [x] **DERATE-02**: 80% confidence bands derived via bootstrap (`scipy.stats.bootstrap`) on per-stage measurements + LPDDR5X-vs-HBM3 regime-change uncertainty term
 - [ ] **DERATE-03**: Cross-substrate consistency check — H100→MI300X projection within 25%; failures flagged in synthesis as methodology warning
 - [ ] **DERATE-04**: Q4_K_M ↔ AWQ-Int4 substitution validity characterized — WER and TTFT measured on both quantizations on H100; substitution-error term added to confidence band
-- [ ] **DERATE-05**: Ollama-overhead derate (~1.3–1.5×) applied when projecting from vLLM-cloud measurements to Ollama-appliance reality; documented in synthesis methodology section
+- [x] **DERATE-05**: Ollama-overhead derate (~1.3–1.5×) applied when projecting from vLLM-cloud measurements to Ollama-appliance reality; documented in synthesis methodology section
 
 ### Synthesis & Reporting
 
@@ -180,10 +180,10 @@ Populated by `gsd-roadmapper` after ROADMAP.md creation.
 | AUDIT-02 | Phase 3 | Pending |
 | AUDIT-03 | Phase 3 | Pending |
 | DERATE-01 | Phase 1 | Complete |
-| DERATE-02 | Phase 4 | Pending |
+| DERATE-02 | Phase 4 | Complete |
 | DERATE-03 | Phase 4 | Pending |
 | DERATE-04 | Phase 4 | Pending |
-| DERATE-05 | Phase 4 | Pending |
+| DERATE-05 | Phase 4 | Complete |
 | REPORT-01 | Phase 4 | Pending |
 | REPORT-02 | Phase 4 | Pending |
 | REPORT-03 | Phase 4 | Pending |

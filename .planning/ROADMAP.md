@@ -77,9 +77,9 @@ Plans:
 - [ ] 03-02-PLAN.md — G2 STT WER (200 G.711 clips) + G3 turn detection threshold sweep ($5)
 - [ ] 03-03-PLAN.md — G5 UPL probes (200 + 50 controls via vLLM xgrammar, $3)
 - [ ] 03-04-PLAN.md — G7 TTS A/B (30 stimuli × 2 engines × 2 paths = 120 renders, $4)
-- [ ] 03-05-PLAN.md — AUDIT-01 co-residency + AUDIT-03 engine-swap + Ollama-overhead measurement ($3)
+- [x] 03-05-PLAN.md — AUDIT-01 co-residency + AUDIT-03 engine-swap + Ollama-overhead measurement ($3)
 - [ ] 03-06-PLAN.md — G1 latency (500-call corpus × N=1/2/4 concurrencies; most expensive, runs LAST; $12)
-- [ ] 03-07-PLAN.md — derate synthesis prep (local Python pandas+scipy.bootstrap, NVIDIA cross-check; $0)
+- [x] 03-07-PLAN.md — derate synthesis prep (local Python pandas+scipy.bootstrap, NVIDIA cross-check; $0)
 
 Old plans in `.planning/phases/03-rocm-validation-archived/` (parked-archival per DR-39, NOT to be revived):
 - [archive] 03-01-PLAN.md — substrate/rocm.py + Dockerfile.rocm + Vultr provisioning + phase3 config (parked: code shipped, off critical path)
