@@ -114,14 +114,46 @@ class CUDASubstrate(Substrate):
         text: str,
         *,
         voice: VoiceRef | None = None,
+        engine_hint: str | None = None,
     ) -> AsyncIterator[bytes]:
-        # DR-27 fallback: prefer Chatterbox; switch to Kokoro if unhealthy.
+        """Stream PCM audio.
+
+        engine_hint:
+          - "chatterbox" → route to Chatterbox even if its health check fails
+            (logs WARNING; no DR-27 fallback). Used by G7 to measure both
+            engines explicitly.
+          - "kokoro" → same, routed to Kokoro.
+          - None → preserve DR-27 behavior (Chatterbox first; Kokoro fallback
+            on unhealthy Chatterbox).
+        """
         tts: ChatterboxClient | KokoroClient
-        if await self._chatterbox.health():
+        if engine_hint == "chatterbox":
+            if not await self._chatterbox.health():
+                logger.warning(
+                    "[cuda-substrate] Chatterbox unhealthy but engine_hint='chatterbox' "
+                    "— attempting render anyway (G7 explicit-engine path)"
+                )
             tts = self._chatterbox
-        else:
-            logger.warning("[cuda-substrate] Chatterbox unhealthy; falling back to Kokoro (DR-27)")
+        elif engine_hint == "kokoro":
+            if not await self._kokoro.health():
+                logger.warning(
+                    "[cuda-substrate] Kokoro unhealthy but engine_hint='kokoro' "
+                    "— attempting render anyway (G7 explicit-engine path)"
+                )
             tts = self._kokoro
+        elif engine_hint is None:
+            # DR-27 fallback: prefer Chatterbox; switch to Kokoro if unhealthy.
+            if await self._chatterbox.health():
+                tts = self._chatterbox
+            else:
+                logger.warning(
+                    "[cuda-substrate] Chatterbox unhealthy; falling back to Kokoro (DR-27)"
+                )
+                tts = self._kokoro
+        else:
+            raise ValueError(
+                f"engine_hint must be 'chatterbox', 'kokoro', or None; got {engine_hint!r}"
+            )
         async for chunk in tts.synthesize(text, voice):
             yield chunk
 
