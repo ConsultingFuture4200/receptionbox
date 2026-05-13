@@ -156,10 +156,26 @@ def run(
     return pd.DataFrame(out_rows)
 
 
-def main() -> int:
+def _load_measurements() -> pd.DataFrame:
+    """Prefer measurements.sqlite (canonical post-03-07b) -> measurements.csv -> live ingest."""
+    import sqlite3
+
+    sqlite_path = pathlib.Path("results/synthesis/measurements.sqlite")
+    csv_path = pathlib.Path("results/synthesis/measurements.csv")
+    if sqlite_path.exists():
+        with sqlite3.connect(sqlite_path) as con:
+            return pd.read_sql("SELECT * FROM measurements", con)
+    if csv_path.exists():
+        return pd.read_csv(csv_path)
+    # Last-resort: live ingest. Keeps `python -m synthesis.derate_pipeline`
+    # working as a single-shot rebuild when measurements/* are absent.
     from synthesis.ingest_gate_jsonls import load_all
 
-    df = load_all()
+    return load_all()
+
+
+def main() -> int:
+    df = _load_measurements()
     audit_03 = pathlib.Path("results/audit_03")
     oo = _measure_ollama_overhead(audit_03)
     out = run(df, ollama_overhead=oo)
