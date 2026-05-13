@@ -17,7 +17,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-GateName = Literal["g1", "g2", "g3", "g5", "g7", "smoke", "canary"]
+GateName = Literal["g1", "g2", "g3", "g5", "g7", "smoke", "canary", "audit_01", "audit_03"]
 Status = Literal["ok", "error", "timeout"]
 SubstrateName = Literal["cuda", "rocm"]
 
