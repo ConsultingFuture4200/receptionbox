@@ -72,8 +72,8 @@ g5:
 	uv run python -m gates.g5.runner --gate=g5 --strata=config/sanity_strata.yaml $(_RUNNER_FLAGS)
 
 g7:
-	@echo "Gate g7 deferred to MI300X (Phase 3) per PREFLIGHT-02." >&2
-	@exit 1
+	uv run python -m gates.g7.runner --gate=g7 --corpus=tts_pairs \
+		--audio-out-dir=results/g7/audio $(_RUNNER_FLAGS)
 
 # Phase 4 placeholders
 report:
