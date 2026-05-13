@@ -401,6 +401,31 @@ _start_cost_watch
 _start_watchdog
 _start_inference_services
 
+# Plan 03-05 / AUDIT-03: install Ollama on demand for the Ollama-vs-vLLM
+# overhead measurement. Skipped for non-audit gates so non-audit runs
+# don't pay the install + pull cost (~1.5 GB model + a few seconds).
+if [[ "$GATE" == audit_* || "$GATE" == audit-* ]]; then
+    if ! command -v ollama >/dev/null 2>&1; then
+        echo "[entrypoint] installing Ollama for ${GATE}..."
+        if curl -fsSL https://ollama.com/install.sh | sh; then
+            nohup ollama serve > /tmp/ollama.log 2>&1 &
+            OLLAMA_PID=$!
+            echo "[entrypoint] ollama serve pid=${OLLAMA_PID} (log: /tmp/ollama.log)"
+            # Wait briefly for the daemon socket before pulling.
+            for _ in 1 2 3 4 5 6 7 8 9 10; do
+                if ollama list >/dev/null 2>&1; then break; fi
+                sleep 1
+            done
+            ollama pull "${OLLAMA_MODEL:-qwen3:4b-q4_K_M}" \
+                || echo "[entrypoint] WARNING ollama pull failed; AUDIT-03 will record ollama_not_installed errors"
+        else
+            echo "[entrypoint] WARNING Ollama install failed; AUDIT-03 will record ollama_not_installed errors"
+        fi
+    else
+        echo "[entrypoint] ollama already present: $(ollama --version 2>&1 | head -1)"
+    fi
+fi
+
 # Exec the gate runner. D-24: smoke profile is g1.runner --n-calls=5 against
 # corpus_500. Sanity gates use config/sanity_strata.yaml (Plan 02-04).
 #

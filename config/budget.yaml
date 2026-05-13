@@ -27,6 +27,15 @@ gates:
   g7:
     projected_cost_per_run_usd: 2.0
     expected_runs: 2
+  # Plan 03-05: AUDIT-01 co-residency + AUDIT-03 engine-swap + Ollama
+  # overhead. Both run on one v18 H100 pod session (~25-30 min). Budget
+  # envelope: ≤ $3.50 against the plan's $3 target.
+  audit_01:
+    projected_cost_per_run_usd: 0.75
+    expected_runs: 1
+  audit_03:
+    projected_cost_per_run_usd: 2.0
+    expected_runs: 1
   preflight_setup:
     projected_cost_per_run_usd: 7.0
     expected_runs: 1
