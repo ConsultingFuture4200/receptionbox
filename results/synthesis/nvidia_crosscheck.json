@@ -1,0 +1,6 @@
+{
+  "comparisons": [],
+  "flags": [],
+  "status": "awaiting_operator_curation",
+  "note": "data/nvidia_orin_published_benchmarks.json is a TEMPLATE. Operator must populate value_* fields with NVIDIA-published numbers from developer.nvidia.com/embedded/jetson-orin-benchmarks before the cross-check is meaningful."
+}
