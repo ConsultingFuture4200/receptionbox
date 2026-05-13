@@ -1,0 +1,26 @@
+{
+  "_source": "developer.nvidia.com/embedded/jetson-orin-benchmarks",
+  "_curated_utc": null,
+  "_status": "TEMPLATE — operator MUST populate with NVIDIA-published Jetson AGX Orin 64GB numbers before synthesis/cross_check_nvidia.py emits meaningful comparisons",
+  "_notes": "All `value_*` fields are null in the template. The cross-check runner detects this and emits status=awaiting_operator_curation in results/synthesis/nvidia_crosscheck.json. Once populated, status flips to 'ok' or 'flags_present' depending on whether any derated prediction diverges >50% from the published number.",
+  "benchmarks": [
+    {
+      "workload": "whisper-large-v3-int8",
+      "metric": "encoder_latency_ms_per_audio_sec",
+      "value_ms_per_sec_audio": null,
+      "notes": "Whisper-large-v3 INT8 encoder pass per second of audio on Orin AGX 64GB MAXN; faster-whisper CTranslate2 equivalent"
+    },
+    {
+      "workload": "qwen2-7b-q4",
+      "metric": "decode_tokens_per_sec",
+      "value_tokens_per_sec": null,
+      "notes": "Qwen2-7B INT4 (closest Orin-published analog to Qwen3-4B AWQ-Int4); Ollama/llama.cpp Q4_K_M expected"
+    },
+    {
+      "workload": "qwen2-7b-q4",
+      "metric": "ttft_ms_at_seq_len_200",
+      "value_ms": null,
+      "notes": "Qwen2-7B INT4 TTFT at sequence length 200 (intake-conversation typical prefill)"
+    }
+  ]
+}
