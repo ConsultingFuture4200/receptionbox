@@ -16,6 +16,7 @@ from __future__ import annotations
 import json
 import os
 import pathlib
+import sqlite3
 
 import pandas as pd
 
@@ -70,13 +71,55 @@ def load_all(results_root: pathlib.Path | None = None) -> pd.DataFrame:
     return df
 
 
+_SQLITE_TABLE = "measurements"
+_SQLITE_UNIQUE_KEY = ("gate", "run_id", "asset_id", "stage")
+
+
+def write_sqlite(df: pd.DataFrame, out_path: pathlib.Path) -> None:
+    """Write `df` to a SQLite DB at `out_path`, table=measurements.
+
+    - Nested dict/list cells are JSON-stringified (SQLite has no native dict type).
+    - A UNIQUE index on (gate, run_id, asset_id, stage) is created when all four
+      columns are present, giving the downstream caller idempotent INSERT-OR-
+      REPLACE semantics. The `stage` column is synthesized from a Cartesian
+      product of the per-stage columns when absent so the index can still apply.
+    """
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    scalar_df = df.copy()
+    for col in scalar_df.columns:
+        if scalar_df[col].apply(lambda v: isinstance(v, (dict, list))).any():
+            scalar_df[col] = scalar_df[col].apply(
+                lambda v: json.dumps(v) if isinstance(v, (dict, list)) else v
+            )
+
+    with sqlite3.connect(out_path) as con:
+        scalar_df.to_sql(_SQLITE_TABLE, con, if_exists="replace", index=False)
+        cols = set(scalar_df.columns)
+        # The natural key is (gate, run_id, asset_id) — the per-row JSONL identity.
+        # `stage` is per-row in derate output but isn't a column in raw ingest, so
+        # apply the unique index over whatever subset of the natural-key columns is
+        # actually present (typical raw ingest: gate + run_id + asset_id).
+        index_cols = [c for c in _SQLITE_UNIQUE_KEY if c in cols]
+        if len(index_cols) >= 2:
+            con.execute(
+                f"CREATE UNIQUE INDEX IF NOT EXISTS idx_{_SQLITE_TABLE}_key "
+                f"ON {_SQLITE_TABLE}({', '.join(index_cols)})"
+            )
+        con.commit()
+
+
 def main() -> int:
     df = load_all()
     out_dir = pathlib.Path("results/synthesis")
     out_dir.mkdir(parents=True, exist_ok=True)
-    out_path = out_dir / "measurements.csv"
-    df.to_csv(out_path, index=False)
-    print(f"[ingest] {len(df)} rows -> {out_path}")
+    csv_path = out_dir / "measurements.csv"
+    sqlite_path = out_dir / "measurements.sqlite"
+    df.to_csv(csv_path, index=False)
+    if not df.empty:
+        write_sqlite(df, sqlite_path)
+        print(f"[ingest] {len(df)} rows -> {sqlite_path} (+ {csv_path})")
+    else:
+        print(f"[ingest] 0 rows; wrote empty {csv_path}; sqlite skipped")
     return 0
 
 
