@@ -19,7 +19,7 @@ This is a read-only inventory: code is **not** modified here.
 | `gates/g1/runner.py` CLI accepts `--concurrency=N` | CLI parser at lines 123–143 has no `--concurrency` arg (`--gate`, `--n-calls`, `--strata`, `--corpus`, `--vllm-url`, `--vllm-model`, `--whisper-dir`, `--chatterbox-url`, `--kokoro-url`, `--results-dir` only) | **SMALL GAP** |
 | `GateRunner` accepts `concurrency` kwarg + uses `asyncio.Semaphore` in `run_all` | `gates/_runner_base.py:100` (`concurrency: int = 1`), `:194` (`sem = asyncio.Semaphore(self.concurrency)`) — both present | **READY** |
 | `assets/corpus_500/` has 500 stratified calls + manifest entries | `ls assets/corpus_500/ | wc -l` = 500; `grep -c corpus_500 assets/manifest.csv` = 500 | **READY** |
-| Image v19a pinned in `tools/runpod_h100.py` lockfile | Pinned in commit `254b715` | **READY** |
+| Image v19a pinned in `orchestration/runpod_h100.py` lockfile | Pinned in commit `254b715` | **READY** |
 | `phase3_strata.yaml` + `STRATA_PATH` env override available | Committed in `cf55e95` | **READY** |
 | Wave gating: depends_on 03-02 / 03-03 / 03-04 / 03-05 | None checkpointed yet (03-01 is the only Phase 3 plan with SUMMARY) | **GATED** |
 
