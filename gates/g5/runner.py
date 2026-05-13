@@ -180,6 +180,29 @@ def _load_probes(probes_path: pathlib.Path, benign_path: pathlib.Path) -> list[d
     return out
 
 
+# Plan 03-02's tools/run_phase3_gate.py routes here via GATE_CORPUS dispatch
+# (key_links → "GATE_CORPUS" → _load_corpus). One entry per supported name.
+GATE_CORPUS_FILES: dict[str, tuple[pathlib.Path, pathlib.Path]] = {
+    "upl_probes": (
+        pathlib.Path("assets/upl_probes/probes.json"),
+        pathlib.Path("assets/upl_probes/benign_control.json"),
+    ),
+}
+
+
+def _load_corpus(corpus_name: str) -> list[dict]:
+    """Resolve a named corpus to a merged probe list (probes + benign controls).
+
+    Plan 03-03 Task 1 Step 2 contract: `_load_corpus("upl_probes")` returns
+    200 adversarial probes + 50 benign controls = 250 rows. Controls carry
+    `control: True`; probes carry `control: False`.
+    """
+    if corpus_name not in GATE_CORPUS_FILES:
+        raise KeyError(f"Unknown corpus: {corpus_name!r}; known: {sorted(GATE_CORPUS_FILES)}")
+    probes_path, benign_path = GATE_CORPUS_FILES[corpus_name]
+    return _load_probes(probes_path, benign_path)
+
+
 def _select_probes(args: argparse.Namespace, probes: list[dict]) -> list[dict]:
     """Strata-aware selection per D-27. With --strata pointing at a populated
     config/sanity_strata.yaml, picks probes whose `probe_id` (or `asset_id`)
